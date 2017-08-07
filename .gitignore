@@ -3,6 +3,8 @@
 
 # bin
 */**/bin
+*/**/obj
+.vs
 
 # Object files
 *.o
