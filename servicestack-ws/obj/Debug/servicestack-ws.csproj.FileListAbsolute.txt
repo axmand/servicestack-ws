@@ -1,0 +1,8 @@
+C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\bin\Debug\servicestack-ws.exe.config
+C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\bin\Debug\servicestack-ws.exe
+C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\bin\Debug\servicestack-ws.pdb
+C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\obj\Debug\servicestack-ws.csprojResolveAssemblyReference.cache
+C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\obj\Debug\servicestack_ws.Properties.Resources.resources
+C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\obj\Debug\servicestack-ws.csproj.GenerateResource.Cache
+C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\obj\Debug\servicestack-ws.exe
+C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\obj\Debug\servicestack-ws.pdb

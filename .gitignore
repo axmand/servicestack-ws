@@ -1,6 +1,9 @@
 # Prerequisites
 *.d
 
+# bin
+*/**/bin
+
 # Object files
 *.o
 *.ko

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "servicestack-ws", "servicestack-ws\servicestack-ws.csproj", "{D1A5F94F-2E8F-47FB-9DC7-B1E8C7F1D2AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hardware", "hardware\hardware.csproj", "{42E94936-2FD9-4542-B994-80C6A776E9E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inventory-server", "inventory-server\inventory-server.csproj", "{492FB8B1-B780-45F2-A216-DA353BF4E5CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D1A5F94F-2E8F-47FB-9DC7-B1E8C7F1D2AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1A5F94F-2E8F-47FB-9DC7-B1E8C7F1D2AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1A5F94F-2E8F-47FB-9DC7-B1E8C7F1D2AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1A5F94F-2E8F-47FB-9DC7-B1E8C7F1D2AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42E94936-2FD9-4542-B994-80C6A776E9E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42E94936-2FD9-4542-B994-80C6A776E9E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42E94936-2FD9-4542-B994-80C6A776E9E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42E94936-2FD9-4542-B994-80C6A776E9E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{492FB8B1-B780-45F2-A216-DA353BF4E5CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{492FB8B1-B780-45F2-A216-DA353BF4E5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{492FB8B1-B780-45F2-A216-DA353BF4E5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{492FB8B1-B780-45F2-A216-DA353BF4E5CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

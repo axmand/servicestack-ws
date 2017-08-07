@@ -1,0 +1,5 @@
+C:\Users\81596\Desktop\servicestack-ws\hardware\bin\Debug\hardware.dll
+C:\Users\81596\Desktop\servicestack-ws\hardware\bin\Debug\hardware.pdb
+C:\Users\81596\Desktop\servicestack-ws\hardware\obj\Debug\hardware.csprojResolveAssemblyReference.cache
+C:\Users\81596\Desktop\servicestack-ws\hardware\obj\Debug\hardware.dll
+C:\Users\81596\Desktop\servicestack-ws\hardware\obj\Debug\hardware.pdb
