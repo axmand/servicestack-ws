@@ -15,3 +15,10 @@ C:\Users\81596\Desktop\servicestack-ws\inventory-server\bin\Debug\ServiceStack.T
 C:\Users\81596\Desktop\servicestack-ws\inventory-server\obj\Debug\inventory-server.csprojResolveAssemblyReference.cache
 C:\Users\81596\Desktop\servicestack-ws\inventory-server\obj\Debug\inventory-server.dll
 C:\Users\81596\Desktop\servicestack-ws\inventory-server\obj\Debug\inventory-server.pdb
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\inventory-server\bin\Debug\inventory-server.dll
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\inventory-server\bin\Debug\inventory-server.pdb
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\inventory-server\bin\Debug\hardware.dll
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\inventory-server\bin\Debug\hardware.pdb
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\inventory-server\obj\Debug\inventory-server.csprojResolveAssemblyReference.cache
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\inventory-server\obj\Debug\inventory-server.dll
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\inventory-server\obj\Debug\inventory-server.pdb

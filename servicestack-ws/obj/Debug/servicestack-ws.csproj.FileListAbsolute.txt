@@ -6,3 +6,13 @@ C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\obj\Debug\servicestack_ws
 C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\obj\Debug\servicestack-ws.csproj.GenerateResource.Cache
 C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\obj\Debug\servicestack-ws.exe
 C:\Users\81596\Desktop\servicestack-ws\servicestack-ws\obj\Debug\servicestack-ws.pdb
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\servicestack-ws\bin\Debug\servicestack-ws.exe.config
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\servicestack-ws\bin\Debug\servicestack-ws.exe
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\servicestack-ws\bin\Debug\servicestack-ws.pdb
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\servicestack-ws\bin\Debug\inventory-server.dll
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\servicestack-ws\bin\Debug\inventory-server.pdb
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\servicestack-ws\obj\Debug\servicestack-ws.csprojResolveAssemblyReference.cache
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\servicestack-ws\obj\Debug\servicestack_ws.Properties.Resources.resources
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\servicestack-ws\obj\Debug\servicestack-ws.csproj.GenerateResource.Cache
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\servicestack-ws\obj\Debug\servicestack-ws.exe
+C:\Users\DELL\Documents\Visual Studio 2017\Projects\servicestack-ws\servicestack-ws\obj\Debug\servicestack-ws.pdb
