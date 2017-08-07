@@ -1,4 +1,6 @@
-﻿using System;
+﻿using inventory_server;
+using inventory_server.Helper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +14,15 @@ namespace servicestack_ws
 {
     public partial class Main : Form
     {
+
+        const string _url = "http://localhost:1337/";
+
         public Main()
         {
             InitializeComponent();
+
+            InventoryHelper.Start(_url);
+
         }
     }
 }

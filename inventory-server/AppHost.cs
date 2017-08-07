@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Funq;
+using inventory_server.Server;
+using ServiceStack;
 
 namespace inventory_server
 {
-    class AppHost
+    public class AppHost : AppSelfHostBase
     {
+        public AppHost()
+            : base("Customer REST Example", typeof(InventoryServer).Assembly) { }
+
+        public override void Configure(Container container)
+        {
+
+
+        }
     }
 }

@@ -15,3 +15,5 @@ C:\Users\81596\Desktop\servicestack-ws\inventory-server\bin\Debug\ServiceStack.T
 C:\Users\81596\Desktop\servicestack-ws\inventory-server\obj\Debug\inventory-server.csprojResolveAssemblyReference.cache
 C:\Users\81596\Desktop\servicestack-ws\inventory-server\obj\Debug\inventory-server.dll
 C:\Users\81596\Desktop\servicestack-ws\inventory-server\obj\Debug\inventory-server.pdb
+C:\Users\81596\Desktop\servicestack-ws\inventory-server\bin\Debug\Newtonsoft.Json.dll
+C:\Users\81596\Desktop\servicestack-ws\inventory-server\bin\Debug\Newtonsoft.Json.xml
