@@ -19,5 +19,10 @@ namespace inventory_server.Route
 
     }
 
+    [Route("/bluetooth/getlist", "GET")]
+    public class GetBlueToothList
+    {
+        public string _list { get; set; }
+    }
 
 }
