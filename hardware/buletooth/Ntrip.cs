@@ -43,7 +43,7 @@ namespace hardware.buletooth
         /// <summary>
         /// 
         /// </summary>
-        string _sourceTable="";
+   
 
         SerialPort sp = new SerialPort();//实例化串口通讯类
 

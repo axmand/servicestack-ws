@@ -22,7 +22,7 @@ namespace inventory_server.Route
     [Route("/bluetooth/getlist", "GET")]
     public class GetBlueToothList
     {
-        public string _list { get; set; }
+        public string _list { get; set; }//_list这个是随便写的嘛？ 0809
     }
 
 }
