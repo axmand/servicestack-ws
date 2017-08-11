@@ -48,5 +48,9 @@ namespace inventory_server.Server
         {
             SerialPortConnect.spOpen(request.spname);
         }
+        public void Get(CloseSp request)
+        {
+            SerialPortConnect.spClose(request.spname);
+        }
     }
 }

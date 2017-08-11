@@ -40,4 +40,9 @@ namespace inventory_server.Route
     {
         public string spname { get; set; }
     }
+    [Route("/bluetooth/connect/closesp/{spname}", "GET")]
+    public class CloseSp
+    {
+        public string spname { get; set; }
+    }
 }
