@@ -38,9 +38,15 @@ namespace inventory_server.Server
 
         public void Get(ConnectBlueTooth request)
         {
-          
             BlueToothList.connect(request.devicename);
         }
-
+        public string Get(GetSpList request)
+        {
+            return SerialPortConnect.spList();
+        }
+        public void Get(ConnectSp request)
+        {
+            SerialPortConnect.spOpen(request.spname);
+        }
     }
 }

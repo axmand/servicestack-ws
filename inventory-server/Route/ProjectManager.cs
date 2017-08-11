@@ -30,4 +30,14 @@ namespace inventory_server.Route
     { 
         public string devicename { get; set; }
     }
+    [Route("/bluetooth/connect/splist", "GET")]
+    public class GetSpList
+    {
+        public string[] _splist { get; set; }
+    }
+    [Route("/bluetooth/connect/sp/{spname}", "GET")]
+    public class ConnectSp
+    {
+        public string spname { get; set; }
+    }
 }
