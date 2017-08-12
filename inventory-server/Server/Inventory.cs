@@ -23,19 +23,14 @@ namespace inventory_server.Server
             };
             return Newtonsoft.Json.JsonConvert.SerializeObject(s);
         }
-
         public string Get(ProjecListGet request)
         {
             return null;
         }
-        /// <summary>
-        /// 0809
-        /// </summary>
         public string Get(GetBlueToothList request)
         {
             return BlueToothList.getlist();
         }
-
         public void Get(ConnectBlueTooth request)
         {
             BlueToothList.connect(request.devicename);
@@ -51,6 +46,11 @@ namespace inventory_server.Server
         public void Get(CloseSp request)
         {
             SerialPortConnect.spClose(request.spname);
+        }
+        public void Get(ConnectStation request)
+        {
+            SerialPortConnect.setAccountAndKey(request.account,request.key);
+            SerialPortConnect.GetRTCMdata(request.address,request.mountpoint);
         }
     }
 }

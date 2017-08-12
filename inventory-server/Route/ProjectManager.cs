@@ -45,4 +45,12 @@ namespace inventory_server.Route
     {
         public string spname { get; set; }
     }
+    [Route("/bluetooth/connect/RTK/{address}/{mountpoint}/{account}/{key}", "GET")]
+    public class ConnectStation
+    {
+        public string address { get; set; }
+        public string mountpoint { get; set; }
+        public string account { get; set; }
+        public string key { get; set; }
+    }
 }

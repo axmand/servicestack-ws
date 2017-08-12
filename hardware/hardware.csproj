@@ -63,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="buletooth\BlueToothList.cs" />
-    <Compile Include="buletooth\Ntrip.cs" />
     <Compile Include="buletooth\SerialPortConnect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
