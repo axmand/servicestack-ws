@@ -25,14 +25,6 @@ namespace hardware.bluetooth
         static string _key;
         static string _basicAccountAndKey = "";
         /// <summary>
-        /// 创建线程
-        /// </summary>
-       // static private Thread _getReceive;
-        //static bool _bAccpet = false;
-
-
-
-        /// <summary>
         /// 获取可用端口名称
         /// </summary>
         public static string spList()
@@ -119,37 +111,13 @@ namespace hardware.bluetooth
 
         }
         /// <summary>
-        /// 返回NMEA数据
+        /// 打印NMEA格式数据
         /// </summary>
-        //public static void GetNmeaData()
-        //{
-        //    _bAccpet = true;
-        //    _getReceive = new Thread(new ThreadStart(testDelegate));
-        //    _getReceive.Start();
-        //}
-        //public static void testDelegate()
-        //{
-        //    reaction r = new reaction(fun);
-        //    r();
-        //}
-        //delegate void DelegateAcceptData();
-        //static void fun()
-        //{
-        //    while (_bAccpet)
-        //    {
-        //        AcceptData();
-        //    }
-        //}
-        //delegate void reaction();
-        //static void AcceptData()
-        //{
-        //    DelegateAcceptData ddd = new DelegateAcceptData(AcceptData);
-        //}
-
+        /// <returns></returns>
         public static string PrintNmeaData()
         {
             string str = _sp.ReadExisting();
-            string str2=str.Replace("\r", "\n");
+            string str2=str.Replace("\r\n", "\n");
             return str2;
         }
 
