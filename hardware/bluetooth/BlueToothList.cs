@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hardware.buletooth
+namespace hardware.bluetooth
 {
     public class BlueToothList
     {

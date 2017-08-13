@@ -8,42 +8,41 @@ using System.IO.Ports;
 using System.Threading;
 using System.Net;
 
-namespace hardware.buletooth
+namespace hardware.bluetooth
 {
     public class SerialPortConnect
     {
-        //   /58.49.58.149/URUMO/fmy/fmy123
+        /// <summary>
+        /// 实例化串口通讯类
+        /// </summary>
         static SerialPort _sp = new SerialPort();
         /// <summary>
-        /// 数据获取ip地址
+        /// /58.49.58.149/URUM0/fmy/fmy123
         /// </summary>
         static string _address;
-        /// <summary>
-        /// 用户名
-        /// </summary>
+        static string _mountPoint;
         static string _account;
-        /// <summary>
-        /// 密码
-        /// </summary>
         static string _key;
-        /// <summary>
-        /// store the result of account/key which converts to base64
-        /// </summary>
         static string _basicAccountAndKey = "";
         /// <summary>
-        /// 
+        /// 创建线程
         /// </summary>
-        static string _mountPoint;
+       // static private Thread _getReceive;
+        //static bool _bAccpet = false;
 
 
+
+        /// <summary>
+        /// 获取可用端口名称
+        /// </summary>
         public static string spList()
         {
             string[] _spList = SerialPort.GetPortNames();
-
             return Newtonsoft.Json.JsonConvert.SerializeObject(_spList);
-
         }
-
+        /// <summary>
+        /// 开关端口
+        /// </summary>
         public static void spOpen(string spname)
         {
             _sp.PortName = spname;  // 端口名 
@@ -65,7 +64,9 @@ namespace hardware.buletooth
         {
             _sp.Close();
         }
-
+        /// <summary>
+        /// 发送RTCM数据
+        /// </summary>
         public static void setAccountAndKey(string account, string key)
         {
             _account = account;
@@ -117,5 +118,40 @@ namespace hardware.buletooth
             }
 
         }
+        /// <summary>
+        /// 返回NMEA数据
+        /// </summary>
+        //public static void GetNmeaData()
+        //{
+        //    _bAccpet = true;
+        //    _getReceive = new Thread(new ThreadStart(testDelegate));
+        //    _getReceive.Start();
+        //}
+        //public static void testDelegate()
+        //{
+        //    reaction r = new reaction(fun);
+        //    r();
+        //}
+        //delegate void DelegateAcceptData();
+        //static void fun()
+        //{
+        //    while (_bAccpet)
+        //    {
+        //        AcceptData();
+        //    }
+        //}
+        //delegate void reaction();
+        //static void AcceptData()
+        //{
+        //    DelegateAcceptData ddd = new DelegateAcceptData(AcceptData);
+        //}
+
+        public static string PrintNmeaData()
+        {
+            string str = _sp.ReadExisting();
+            string str2=str.Replace("\r", "\n");
+            return str2;
+        }
+
     }
 }

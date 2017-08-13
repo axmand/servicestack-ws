@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace inventory_server.Route
 {
     [Route("/project/remove/{id}", "GET")]
-    public  class ProjectRemoveGet
+    public class ProjectRemoveGet
     {
         public string id { get; set; }
     }
@@ -27,7 +27,7 @@ namespace inventory_server.Route
 
     [Route("/bluetooth/connect/{devicename}", "GET")]
     public class ConnectBlueTooth
-    { 
+    {
         public string devicename { get; set; }
     }
     [Route("/bluetooth/connect/splist", "GET")]
@@ -52,5 +52,15 @@ namespace inventory_server.Route
         public string mountpoint { get; set; }
         public string account { get; set; }
         public string key { get; set; }
+    }
+    //[Route("/bluetooth/connect/RTK/startreceive", "GET")]
+    //public class StartReceive
+    //{
+
+    //}
+    [Route("/bluetooth/connect/RTK/printnmea", "GET")]
+    public class PrintNmea
+    {
+        public string nmea { get; set; }
     }
 }
