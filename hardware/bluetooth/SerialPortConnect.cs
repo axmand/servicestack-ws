@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Ports;
 using System.Threading;
 using System.Net;
+using System.Timers;
 
 namespace hardware.bluetooth
 {
@@ -24,6 +25,9 @@ namespace hardware.bluetooth
         static string _account;
         static string _key;
         static string _basicAccountAndKey = "";
+
+        static bool _bAccpet;
+        public static string str;
         /// <summary>
         /// 获取可用端口名称
         /// </summary>
@@ -51,6 +55,11 @@ namespace hardware.bluetooth
             {
                 _sp.Open();
             }
+            // 开启接收数据的线程
+            Thread pr = new Thread(_printNmea);
+            pr.IsBackground = true;
+            pr.Start();
+            _bAccpet = true;
         }
         public static void spClose(string spname)
         {
@@ -110,16 +119,27 @@ namespace hardware.bluetooth
             }
 
         }
+
+
+
+
+        public static void _printNmea()
+        {
+            while (_bAccpet)
+            {
+                str = _sp.ReadExisting();
+                Thread.Sleep(1000);
+            }
+        }
         /// <summary>
         /// 打印NMEA格式数据
         /// </summary>
         /// <returns></returns>
         public static string PrintNmeaData()
         {
-            string str = _sp.ReadExisting();
-            string str2=str.Replace("\r\n", "\n");
-            return str2;
+             return Newtonsoft.Json.JsonConvert.SerializeObject(str);
         }
-
     }
+
 }
+
