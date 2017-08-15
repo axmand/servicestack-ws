@@ -55,6 +55,7 @@ namespace hardware.bluetooth
             {
                 _sp.Open();
             }
+
             // 开启接收数据的线程
             Thread pr = new Thread(_printNmea);
             pr.IsBackground = true;
@@ -120,9 +121,9 @@ namespace hardware.bluetooth
 
         }
 
-
-
-
+        /// <summary>
+        /// 实时收取NEMA数据的线程
+        /// </summary>
         public static void _printNmea()
         {
             while (_bAccpet)
@@ -132,12 +133,24 @@ namespace hardware.bluetooth
             }
         }
         /// <summary>
-        /// 打印NMEA格式数据
+        /// 获取经纬度JSON数据
         /// </summary>
         /// <returns></returns>
-        public static string PrintNmeaData()
+        public static string[] PrintNmeaData()
         {
-             return Newtonsoft.Json.JsonConvert.SerializeObject(str);
+            int indexR = str.LastIndexOf("$GPRMC");
+            int indexN = str.Length;
+            if (indexN > (indexR + 50))
+            {
+                string gnrmc = str.Substring((indexR + 18), 32);
+                //return gnrmc;//    gnrmc=3031.69748195,N,11421.38629542,E
+                string lat = gnrmc.Substring(0, 13);
+                string lon = gnrmc.Substring(16, 13);
+                string[] od = { lat, lon };
+                return od;
+            }
+            else
+            { return null; }
         }
     }
 

@@ -58,7 +58,13 @@ namespace inventory_server.Server
         //}
         public string Get(PrintNmea request)
         {
-            return SerialPortConnect.PrintNmeaData();
+           // return SerialPortConnect.PrintNmeaData();
+            var coordinate = new
+            {
+                lat = SerialPortConnect.PrintNmeaData()[0],
+                lon = SerialPortConnect.PrintNmeaData()[1]
+            };
+            return Newtonsoft.Json.JsonConvert.SerializeObject(coordinate);
         }
     }
 }
