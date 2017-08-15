@@ -22,7 +22,7 @@ namespace inventory_server.Route
     [Route("/bluetooth/getlist", "GET")]
     public class GetBlueToothList
     {
-        public string _list { get; set; }//_list这个是随便写的嘛？ 0809
+        public string _list { get; set; }
     }
 
     [Route("/bluetooth/connect/{devicename}", "GET")]
@@ -53,11 +53,6 @@ namespace inventory_server.Route
         public string account { get; set; }
         public string key { get; set; }
     }
-    //[Route("/bluetooth/connect/RTK/startreceive", "GET")]
-    //public class StartReceive
-    //{
-
-    //}
     [Route("/bluetooth/connect/RTK/printnmea", "GET")]
     public class PrintNmea
     {
