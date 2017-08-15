@@ -52,10 +52,6 @@ namespace inventory_server.Server
             SerialPortConnect.setAccountAndKey(request.account,request.key);
             SerialPortConnect.GetRTCMdata(request.address,request.mountpoint);
         }
-        //public void Get(StartReceive request)
-        //{
-        //    SerialPortConnect.GetNmeaData();
-        //}
         public string Get(PrintNmea request)
         {
            // return SerialPortConnect.PrintNmeaData();
