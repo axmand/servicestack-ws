@@ -1,11 +1,5 @@
-﻿using InTheHand.Net.Sockets;
-using InTheHand.Net.Bluetooth;
-using InTheHand.Net;
-using inventory_server.Route;
+﻿using inventory_server.Route;
 using ServiceStack;
-using System.Collections.Generic;
-using System.Text;
-using System;
 using hardware.bluetooth;
 
 namespace inventory_server.Server
