@@ -1,6 +1,7 @@
 ﻿using inventory_server.Route;
 using ServiceStack;
 using hardware.bluetooth;
+using System.Collections.Generic;
 
 namespace inventory_server.Server
 {
@@ -19,7 +20,11 @@ namespace inventory_server.Server
         }
         public string Get(ProjecListGet request)
         {
-            return null;
+            List<string> list = new List<string>()
+            {
+                "项目1", "项目2" ,"项目3"
+            };
+            return new OkResponse(list).ToString();
         }
         public string Get(GetBlueToothList request)
         {
