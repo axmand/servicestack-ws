@@ -16,7 +16,7 @@ namespace inventory_server.Route
     [Route("/project/list", "GET")]
     public class ProjecListGet
     {
-
+        public string[] _prolist { get; set; }
     }
 
     [Route("/bluetooth/getlist", "GET")]

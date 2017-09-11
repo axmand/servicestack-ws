@@ -15,15 +15,12 @@ namespace servicestack_ws
     public partial class Main : Form
     {
 
-        //const string _url = "http://localhost:1337/";
-        const string _url = "http://172.16.102.90:1337/";
+        const string _url = "http://*:1338/";
 
         public Main()
         {
             InitializeComponent();
-
             InventoryHelper.Start(_url);
-
         }
     }
 }
