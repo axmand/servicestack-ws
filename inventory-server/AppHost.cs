@@ -11,7 +11,7 @@ namespace inventory_server
 
         public override void Configure(Container container)
         {
-
+            this.Plugins.Add(new CorsFeature());//跨域
 
         }
     }
