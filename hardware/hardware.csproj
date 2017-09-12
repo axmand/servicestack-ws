@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="bluetooth\BlueToothList.cs" />
     <Compile Include="bluetooth\SerialPortConnect.cs" />
+    <Compile Include="projectmanager\ImportProject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

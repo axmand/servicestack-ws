@@ -1,6 +1,7 @@
 ﻿using inventory_server.Route;
 using ServiceStack;
 using hardware.bluetooth;
+using hardware.projectmanager;
 using System.Collections.Generic;
 
 namespace inventory_server.Server
@@ -10,6 +11,10 @@ namespace inventory_server.Server
     /// </summary>
     public class InventoryServer : Service
     {
+        /// <summary>
+        /// Project
+        /// </summary>
+
         public string Get(ProjectRemoveGet request)
         {
             var s = new
@@ -20,12 +25,21 @@ namespace inventory_server.Server
         }
         public string Get(ProjecListGet request)
         {
-            List<string> list = new List<string>()
-            {
-                "项目1", "项目2" ,"项目3"
-            };
-            return new OkResponse(list).ToString();
+            //List<string> list = new List<string>()
+            //{
+            //    "项目1", "项目2" ,"项目3"
+            //};
+            //return new OkResponse(list).ToString();
+            return ImportProject.ShowProj();            
         }
+        public string Get(ProjectCreate request)
+        {
+            return new OkResponse(ImportProject.CreateProj(request.name)).ToString();
+        }
+
+        /// <summary>
+        /// 蓝牙
+        /// </summary>
         public string Get(GetBlueToothList request)
         {
             return BlueToothList.getlist();

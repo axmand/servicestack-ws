@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace inventory_server.Route
 {
+    /// <summary>
+    /// Project
+    /// </summary>
     [Route("/project/remove/{id}", "GET")]
     public class ProjectRemoveGet
     {
@@ -18,7 +21,14 @@ namespace inventory_server.Route
     {
         public string[] _prolist { get; set; }
     }
-
+    [Route("/project/create/{name}", "GET")]
+    public class ProjectCreate
+    {
+        public string name { get; set; }
+    }
+    /// <summary>
+    /// 蓝牙
+    /// </summary>
     [Route("/bluetooth/getlist", "GET")]
     public class GetBlueToothList
     {
