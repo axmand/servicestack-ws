@@ -64,11 +64,11 @@ namespace hardware.projectmanager
         {
 
             string Data1 = System.IO.File.ReadAllText(path + pro + "\\Forms\\all.txt");
-            List<pro> all = JsonConvert.DeserializeObject<List<pro>>(Data1);
+            List<Pro> all = JsonConvert.DeserializeObject<List<Pro>>(Data1);
             // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
             return all.ToString();
         }
-        public class f1
+        public class F1
         {
             public long TableID { get; set; }
             public string ParcelCode { get; set; }
@@ -117,7 +117,7 @@ namespace hardware.projectmanager
             public string CommonUse { get; set; }
             public string Explain { get; set; }
         }
-        public class f2
+        public class F2
         {
             public string[] LandPointCodeList { get; set; }
             public int[] LandPointTypeList { get; set; }
@@ -126,10 +126,10 @@ namespace hardware.projectmanager
             public int[] LandBoundaryLocation { get; set; }
             public string[] LandBoundaryExplain { get; set; }
         }
-        public class pro
+        public class Pro
         {
-            public f1 f1 { get; set; }
-            public f2 f2 { get; set; }
+            public F1 f1 { get; set; }
+            public F2 f2 { get; set; }
         }
     }
 }
