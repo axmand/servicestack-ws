@@ -30,7 +30,7 @@ namespace inventory_server.Server
             //    "项目1", "项目2" ,"项目3"
             //};
             //return new OkResponse(list).ToString();
-            return ImportProject.ShowProj();            
+            return new OkResponse(ImportProject.ShowProj()).ToString();            
         }
         public string Get(ProjectCreate request)
         {
