@@ -33,7 +33,8 @@ namespace hardware.projectmanager
 
         }
 
-        public static string ShowProj()
+        //public static string ShowProj()
+        public static List<string> ShowProj()
         {
 
 
@@ -47,16 +48,17 @@ namespace hardware.projectmanager
             }
 
             string[] _proList;
-            // _proList = Directory.GetDirectories("D:\\ProjectTest");//项目保存路径
             _proList = Directory.GetDirectories(path);
+
             int n = _proList.Length;
             for (int i = 0; i < n; i++)
             {
                 int m = _proList[i].LastIndexOf("\\") + 1;
                 _proList[i] = _proList[i].Substring(m, _proList[i].Length - m);
-
             }
-            return Newtonsoft.Json.JsonConvert.SerializeObject(_proList);
+            List<string> list = new List<string>(_proList);
+
+            return list;
         }
         public static string SendProjData(string pro)
         {
