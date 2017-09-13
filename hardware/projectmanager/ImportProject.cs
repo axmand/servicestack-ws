@@ -13,10 +13,10 @@ namespace hardware.projectmanager
         public static string path = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest";
         public static string CreateProj(string projectName)
         {
-            string _projPath = path + projectName;// 存成项目名字
-            string _formPath = path + projectName + "/Forms";
-            string _fingerPath = path + projectName + "/Fingers";
-            string _picPath = path + projectName + "/pics";
+            string _projPath = path + "/"+projectName;// 存成项目名字
+            string _formPath = path+ "/" + projectName + "\\Forms";
+            string _fingerPath = path + "/"+ projectName + "\\Fingers";
+            string _picPath = path + "/" + projectName + "\\pics";
             if (!Directory.Exists(_projPath))
             {
                 Directory.CreateDirectory(_projPath);
