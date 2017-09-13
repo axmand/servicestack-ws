@@ -10,13 +10,13 @@ namespace hardware.projectmanager
 {
     public class ImportProject
     {
-
+        public static string path = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest";
         public static string CreateProj(string projectName)
         {
-            string _projPath = @"D:/ProjectTest/" + projectName;// 存成项目名字
-            string _formPath = @"D:/ProjectTest/" + projectName + "/Forms";
-            string _fingerPath = @"D:/ProjectTest/" + projectName + "/Fingers";
-            string _picPath = @"D:/ProjectTest/" + projectName + "/pics";
+            string _projPath = path + projectName;// 存成项目名字
+            string _formPath = path + projectName + "/Forms";
+            string _fingerPath = path + projectName + "/Fingers";
+            string _picPath = path + projectName + "/pics";
             if (!Directory.Exists(_projPath))
             {
                 Directory.CreateDirectory(_projPath);
@@ -34,7 +34,7 @@ namespace hardware.projectmanager
 
         public static string ShowProj()
         {
-            string path = System.IO.Directory.GetCurrentDirectory();
+            
             
             if (File.Exists(path))
             {
@@ -60,7 +60,7 @@ namespace hardware.projectmanager
         public static string SendProjData(string pro)
         {
 
-            string Data1 = System.IO.File.ReadAllText("D:\\ProjectTest\\" + pro+ "\\Forms\\all.txt"); 
+            string Data1 = System.IO.File.ReadAllText(path + pro+ "\\Forms\\all.txt"); 
             List<pro> all = JsonConvert.DeserializeObject<List<pro>>(Data1);
             // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
             return all.ToString();
