@@ -1,5 +1,5 @@
 ﻿using ServiceStack;
-using ServiceStack.Web;
+using ServiceStack.ServiceHost;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +23,11 @@ namespace inventory_server.Route
     }
     [Route("/project/create/{name}", "GET")]
     public class ProjectCreate
+    {
+        public string name { get; set; }
+    }
+    [Route("/project/open/{name}", "GET")]
+    public class ProjectOpen
     {
         public string name { get; set; }
     }

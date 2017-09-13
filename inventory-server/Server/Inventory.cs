@@ -1,5 +1,5 @@
 ﻿using inventory_server.Route;
-using ServiceStack;
+using ServiceStack.ServiceInterface;
 using hardware.bluetooth;
 using hardware.projectmanager;
 using System.Collections.Generic;
@@ -35,6 +35,11 @@ namespace inventory_server.Server
         public string Get(ProjectCreate request)
         {
             return new OkResponse(ImportProject.CreateProj(request.name)).ToString();
+        }
+
+        public string Get(ProjectOpen request)
+        {
+            return ImportProject.SendProjData(request.name);
         }
 
         /// <summary>
