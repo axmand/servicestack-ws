@@ -33,7 +33,8 @@ namespace hardware.projectmanager
 
         }
 
-        public static string ShowProj()
+        //public static string ShowProj()
+        public static List<string> ShowProj()
         {
 
 
@@ -47,26 +48,27 @@ namespace hardware.projectmanager
             }
 
             string[] _proList;
-            // _proList = Directory.GetDirectories("D:\\ProjectTest");//项目保存路径
             _proList = Directory.GetDirectories(path);
+
             int n = _proList.Length;
             for (int i = 0; i < n; i++)
             {
                 int m = _proList[i].LastIndexOf("\\") + 1;
                 _proList[i] = _proList[i].Substring(m, _proList[i].Length - m);
-
             }
-            return Newtonsoft.Json.JsonConvert.SerializeObject(_proList);
+            List<string> list = new List<string>(_proList);
+
+            return list;
         }
         public static string SendProjData(string pro)
         {
 
             string Data1 = System.IO.File.ReadAllText(path + pro + "\\Forms\\all.txt");
-            List<pro> all = JsonConvert.DeserializeObject<List<pro>>(Data1);
+            List<Pro> all = JsonConvert.DeserializeObject<List<Pro>>(Data1);
             // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
             return all.ToString();
         }
-        public class f1
+        public class F1
         {
             public long TableID { get; set; }
             public string ParcelCode { get; set; }
@@ -115,7 +117,7 @@ namespace hardware.projectmanager
             public string CommonUse { get; set; }
             public string Explain { get; set; }
         }
-        public class f2
+        public class F2
         {
             public string[] LandPointCodeList { get; set; }
             public int[] LandPointTypeList { get; set; }
@@ -124,10 +126,10 @@ namespace hardware.projectmanager
             public int[] LandBoundaryLocation { get; set; }
             public string[] LandBoundaryExplain { get; set; }
         }
-        public class pro
+        public class Pro
         {
-            public f1 f1 { get; set; }
-            public f2 f2 { get; set; }
+            public F1 f1 { get; set; }
+            public F2 f2 { get; set; }
         }
     }
 }
