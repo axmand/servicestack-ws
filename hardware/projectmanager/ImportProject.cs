@@ -34,8 +34,20 @@ namespace hardware.projectmanager
 
         public static string ShowProj()
         {
+            string path = System.IO.Directory.GetCurrentDirectory();
+            
+            if (File.Exists(path))
+            {
+
+            }
+            else
+            {
+                System.IO.Directory.CreateDirectory(path);
+            }
+
             string[] _proList;
-            _proList = Directory.GetDirectories("D:\\ProjectTest");//项目保存路径
+            // _proList = Directory.GetDirectories("D:\\ProjectTest");//项目保存路径
+            _proList = Directory.GetDirectories(path);
             int n = _proList.Length;
             for (int i = 0; i < n; i++)
             {
