@@ -48,6 +48,7 @@ namespace inventory_server.Server
         public string Get(GetBlueToothList request)
         {
             return BlueToothList.getlist();
+            
         }
         public void Get(ConnectBlueTooth request)
         {
@@ -57,18 +58,20 @@ namespace inventory_server.Server
         {
             return SerialPortConnect.spList();
         }
-        public void Get(ConnectSp request)
+        public string  Get(ConnectSp request)
         {
-            SerialPortConnect.spOpen(request.spname);
+            //SerialPortConnect.spOpen(request.spname);
+            return new OkResponse(SerialPortConnect.spOpen(request.spname)).ToString();
         }
         public void Get(CloseSp request)
         {
             SerialPortConnect.spClose(request.spname);
         }
-        public void Get(ConnectStation request)
+        public string Get(ConnectStation request)
         {
             SerialPortConnect.setAccountAndKey(request.account,request.key);
-            SerialPortConnect.GetRTCMdata(request.address,request.mountpoint);
+            //SerialPortConnect.GetRTCMdata(request.address,request.mountpoint);
+            return new OkResponse(SerialPortConnect.GetRTCMdata(request.address, request.mountpoint)).ToString();
         }
         public string Get(PrintNmea request)
         {

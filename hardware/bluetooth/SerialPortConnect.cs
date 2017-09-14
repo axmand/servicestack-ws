@@ -8,6 +8,7 @@ using System.IO.Ports;
 using System.Threading;
 using System.Net;
 using System.Timers;
+using System.Management;
 
 namespace hardware.bluetooth
 {
@@ -26,20 +27,60 @@ namespace hardware.bluetooth
         static string _key;
         static string _basicAccountAndKey = "";
 
+        static int closeNumber = 0;
         static bool _bAccpet;
         public static string str;
+        /// <summary>
+        /// 线程
+        /// </summary>
+        static Thread pr = new Thread(_printNmea);
+        static Thread th = new Thread(download);
         /// <summary>
         /// 获取可用端口名称
         /// </summary>
         public static string spList()
         {
-            string[] _spList = SerialPort.GetPortNames();
+            //string[] _spList = SerialPort.GetPortNames();
+            string[] _spList = MulGetHardwareInfo(HardwareEnum.Win32_SerialPort, "Name");
             return Newtonsoft.Json.JsonConvert.SerializeObject(_spList);
+        }
+        public enum HardwareEnum
+        {
+
+            Win32_SerialPort, // 串口
+        }
+        public static string[] MulGetHardwareInfo(HardwareEnum hardType, string propKey)
+        {
+
+            List<string> strs = new List<string>();
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from " + hardType))
+                {
+                    var hardInfos = searcher.Get();
+                    foreach (var hardInfo in hardInfos)
+                    {
+                        if (hardInfo.Properties[propKey].Value.ToString().Contains("COM"))
+                        {
+                            strs.Add(hardInfo.Properties[propKey].Value.ToString());
+                        }
+
+                    }
+                    searcher.Dispose();
+                }
+                return strs.ToArray();
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            { strs = null; }
         }
         /// <summary>
         /// 开关端口
         /// </summary>
-        public static void spOpen(string spname)
+        public static string spOpen(string spname)
         {
             _sp.PortName = spname;  // 端口名 
             _sp.BaudRate = 115200;  // 波特率
@@ -48,23 +89,39 @@ namespace hardware.bluetooth
 
             if (_sp.IsOpen)
             {
-                _sp.Close();
-                _sp.Open();
+                return "ok";
             }
             else
             {
                 _sp.Open();
+                _bAccpet = true;
+                printdata();
+                return "ok";
             }
+        }
+        public static void printdata()
+        {
 
             // 开启接收数据的线程
-            Thread pr = new Thread(_printNmea);
-            pr.IsBackground = true;
-            pr.Start();
-            _bAccpet = true;
+            if (closeNumber > 0)
+            {
+                pr.Resume();
+            }
+            else
+            {
+                pr.Start();
+                pr.IsBackground = true;
+            }
+
+
         }
         public static void spClose(string spname)
         {
+            _bAccpet = false;
+            pr.Suspend();
+            if (closeNumber > 0) { th.Suspend(); }
             _sp.Close();
+            closeNumber++;
         }
         /// <summary>
         /// 发送RTCM数据
@@ -77,13 +134,26 @@ namespace hardware.bluetooth
             _basicAccountAndKey = Convert.ToBase64String(byteArray);
             _basicAccountAndKey = "Basic " + _basicAccountAndKey;
         }
-        public static void GetRTCMdata(string address, string mountPoint)
+        public static string GetRTCMdata(string address, string mountPoint)
         {
             _address = "http://" + address + "/";
             _mountPoint = mountPoint;
-            Thread th = new Thread(download);
-            th.IsBackground = true;
-            th.Start();
+            int i = 0;
+            if (closeNumber > 0 && i > 0)
+            {
+                th.Resume();
+            }
+            else
+            {
+                th.Start();
+                th.IsBackground = true;
+            }
+            i++;
+            //th.Start();
+            //th.IsBackground = true;
+            return "RTCM Transport Success";
+
+
         }
         public static void download()
         {
@@ -108,9 +178,9 @@ namespace hardware.bluetooth
 
             while (size > 0 && connect == true)
             {
+                size = responseStream.Read(bArr, 0, (int)bArr.Length);
                 if (_sp.IsOpen)
                 {
-                    size = responseStream.Read(bArr, 0, (int)bArr.Length);
                     _sp.Write(bArr, 0, size);
                 }
                 else
@@ -138,6 +208,7 @@ namespace hardware.bluetooth
         /// <returns></returns>
         public static string[] PrintNmeaData()
         {
+
             int indexR = str.LastIndexOf("$GPRMC");
             int indexN = str.Length;
             if (indexN > (indexR + 50))
