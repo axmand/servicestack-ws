@@ -39,7 +39,7 @@ namespace inventory_server.Server
 
         public string Get(ProjectOpen request)
         {
-            return ImportProject.SendProjData(request.name);
+            return new OkResponse(ImportProject.SendProjData(request.name)).ToString(); 
         }
 
         /// <summary>

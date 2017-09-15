@@ -63,10 +63,11 @@ namespace hardware.projectmanager
         public static string SendProjData(string pro)
         {
 
-            string Data1 = System.IO.File.ReadAllText(path + pro + "\\Forms\\all.txt");
+            string Data1 = System.IO.File.ReadAllText(path +"\\"+ pro + "\\Forms\\all.txt");
             List<Pro> all = JsonConvert.DeserializeObject<List<Pro>>(Data1);
             // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
-            return all.ToString();
+            string t = JsonConvert.SerializeObject(all);
+            return t;
         }
         public class F1
         {
