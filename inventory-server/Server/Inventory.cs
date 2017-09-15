@@ -63,9 +63,9 @@ namespace inventory_server.Server
             //SerialPortConnect.spOpen(request.spname);
             return new OkResponse(SerialPortConnect.spOpen(request.spname)).ToString();
         }
-        public void Get(CloseSp request)
+        public string Get(CloseSp request)
         {
-            SerialPortConnect.spClose(request.spname);
+            return new OkResponse(SerialPortConnect.spClose(request.spname)).ToString();
         }
         public string Get(ConnectStation request)
         {
@@ -75,13 +75,13 @@ namespace inventory_server.Server
         }
         public string Get(PrintNmea request)
         {
-           // return SerialPortConnect.PrintNmeaData();
-            var coordinate = new
-            {
-                lat = SerialPortConnect.PrintNmeaData()[0],
-                lon = SerialPortConnect.PrintNmeaData()[1]
-            };
-            return Newtonsoft.Json.JsonConvert.SerializeObject(coordinate);
+            // return SerialPortConnect.PrintNmeaData();
+            //var coordinate = new
+            //{
+            //    lat = SerialPortConnect.PrintNmeaData()[0],
+            //    lon = SerialPortConnect.PrintNmeaData()[1]
+            //};
+            return new OkResponse(SerialPortConnect.PrintNmeaData()).ToString();
         }
     }
 }

@@ -86,17 +86,24 @@ namespace hardware.bluetooth
             _sp.BaudRate = 115200;  // 波特率
             _sp.DataBits = 8;       // 数据位
             _sp.StopBits = (StopBits)int.Parse("1"); // 停止位
-
+            
             if (_sp.IsOpen)
             {
                 return "ok";
             }
             else
             {
-                _sp.Open();
-                _bAccpet = true;
-                printdata();
-                return "ok";
+                try
+                {
+                    _sp.Open();
+                    _bAccpet = true;
+                    printdata();
+                    return "ok";
+                }
+                catch (Exception)
+                {
+                    return "can't find " + spname;
+                }
             }
         }
         public static void printdata()
@@ -115,13 +122,14 @@ namespace hardware.bluetooth
 
 
         }
-        public static void spClose(string spname)
+        public static string spClose(string spname)
         {
             _bAccpet = false;
             pr.Suspend();
             if (closeNumber > 0) { th.Suspend(); }
             _sp.Close();
             closeNumber++;
+            return "close ok";
         }
         /// <summary>
         /// 发送RTCM数据
@@ -206,7 +214,7 @@ namespace hardware.bluetooth
         /// 获取经纬度JSON数据
         /// </summary>
         /// <returns></returns>
-        public static string[] PrintNmeaData()
+        public static List<string> PrintNmeaData()
         {
 
             int indexR = str.LastIndexOf("$GPRMC");
@@ -217,11 +225,58 @@ namespace hardware.bluetooth
                 //return gnrmc;//    gnrmc=3031.69748195,N,11421.38629542,E
                 string lat = gnrmc.Substring(0, 13);
                 string lon = gnrmc.Substring(16, 13);
-                string[] od = { lat, lon };
-                return od;
+                if (IsCoordinate(lat) && IsCoordinate(lon))
+                {
+                    lat = DF2D(lat);
+                    lon = DF2D(lon);
+                    string[] od = { lat, lon };
+                    List<string> coordinate = new List<string>(od);
+
+                    return coordinate;
+                }
+                else
+                {
+                    lat = "00.000";
+                    lon = "00.000";
+                    string[] od = { lat, lon };
+                    List<string> coordinate = new List<string>(od);
+
+                    return coordinate;
+
+                }
             }
             else
-            { return null; }
+            {
+                string lat = "00.000";
+                string lon = "00.000";
+                string[] od = { lat, lon };
+                List<string> coordinate = new List<string>(od);
+
+                return coordinate;
+
+            }
+            bool IsCoordinate(string str)
+            {
+                try
+                {
+                    double i = Convert.ToDouble(str);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            string DF2D(string s)
+            {
+                int i = s.IndexOf(".");
+                string du = s.Substring(0, i - 2);
+                string fen = s.Substring(i - 2, s.Length - i);
+                double fen2du = Convert.ToDouble(fen) / 60;
+                double degree = Convert.ToDouble(du) + fen2du;
+                string Degree = Convert.ToString(degree);
+                return Degree;
+            }
         }
     }
 
