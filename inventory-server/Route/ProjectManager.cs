@@ -31,6 +31,11 @@ namespace inventory_server.Route
     {
         public string name { get; set; }
     }
+    [Route("/project/fill/{name}", "GET")]
+    public class ProjectFormsFill
+    {
+        public string name { get; set; }
+    }
     /// <summary>
     /// 蓝牙
     /// </summary>

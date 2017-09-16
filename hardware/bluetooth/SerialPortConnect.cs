@@ -9,6 +9,7 @@ using System.Threading;
 using System.Net;
 using System.Timers;
 using System.Management;
+using System.Net.Sockets;
 
 namespace hardware.bluetooth
 {
@@ -20,8 +21,16 @@ namespace hardware.bluetooth
         static SerialPort _sp = new SerialPort();
         /// <summary>
         /// /58.49.58.149/URUM0/fmy/fmy123
+        /// 
+        /// 
+        /// IP：113.57.219.8:12307
+        ///端口： 12307
+        ///用户名：kqgps 密码： kqgnss
+        ///源节点有三个：KQT816061010，KQT817011002，KQT816031001
         /// </summary>
         static string _address;
+        static public string ip = "";
+        static public int port;
         static string _mountPoint;
         static string _account;
         static string _key;
@@ -86,7 +95,7 @@ namespace hardware.bluetooth
             _sp.BaudRate = 115200;  // 波特率
             _sp.DataBits = 8;       // 数据位
             _sp.StopBits = (StopBits)int.Parse("1"); // 停止位
-            
+
             if (_sp.IsOpen)
             {
                 return "ok";
@@ -144,7 +153,12 @@ namespace hardware.bluetooth
         }
         public static string GetRTCMdata(string address, string mountPoint)
         {
-            _address = "http://" + address + "/";
+            string[] AddressMessage = address.Split(':');
+            _address = AddressMessage[0];
+            if (AddressMessage.Length != 1)
+                port = int.Parse(AddressMessage[1]);
+            else
+                port = 80;
             _mountPoint = mountPoint;
             int i = 0;
             if (closeNumber > 0 && i > 0)
@@ -165,28 +179,31 @@ namespace hardware.bluetooth
         }
         public static void download()
         {
-            string uriaddress = _address + _mountPoint;
-            Uri siteUri = new Uri(uriaddress);
-            HttpWebRequest httpWebRequestTest = (HttpWebRequest)WebRequest.Create(siteUri);
-            //设置请求方法
-            httpWebRequestTest.Method = "GET";
-            //设置userAgent
-            httpWebRequestTest.UserAgent = "NTRIP NtripClientPOSIX/1.50";
-            //设置版本
-            //httpWebRequestTest.ProtocolVersion = HttpVersion.Version10;
-            httpWebRequestTest.Headers.Add("Ntrip-Version", "Ntrip/2.0");
-            httpWebRequestTest.Headers.Add("Authorization", _basicAccountAndKey);
-            //建立响应对象 用来接收http请求的反映
-            HttpWebResponse myHttpWebResponse = (HttpWebResponse)httpWebRequestTest.GetResponse();
+            string uriaddress = _address;
+            IPAddress ipAddress = IPAddress.Parse(uriaddress);
+            IPEndPoint iep = new IPEndPoint(ipAddress, port);
+            Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+
+            clientSocket.Connect(iep);
+
             bool connect = true;
-            Stream responseStream = myHttpWebResponse.GetResponseStream();
-            //创建本地文件写入流
+
+            String requestmsg = "GET /" + " HTTP/1.0\r\n";
+            requestmsg += "User-Agent: NTRIP GNSSInternetRadio/1.2.0\r\n";
+            requestmsg += "Accept: */*\r\n";
+            requestmsg += "Connection: close\r\n";
+            requestmsg += "\r\n";
+            string message = requestmsg;
+            byte[] sendbytes = System.Text.Encoding.UTF8.GetBytes(message);
+            int successSendBtyes = clientSocket.Send(sendbytes, sendbytes.Length, SocketFlags.None);
+
             byte[] bArr = new byte[1024];
-            int size = responseStream.Read(bArr, 0, (int)bArr.Length);
+            int size = clientSocket.Receive(bArr);
 
             while (size > 0 && connect == true)
             {
-                size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                
                 if (_sp.IsOpen)
                 {
                     _sp.Write(bArr, 0, size);
@@ -219,8 +236,10 @@ namespace hardware.bluetooth
 
             int indexR = str.LastIndexOf("$GPRMC");
             int indexN = str.Length;
+            int indexM = str.LastIndexOf("*");
             if (indexN > (indexR + 50))
             {
+                string model = str.Substring((indexM - 1), 1);
                 string gnrmc = str.Substring((indexR + 18), 32);
                 //return gnrmc;//    gnrmc=3031.69748195,N,11421.38629542,E
                 string lat = gnrmc.Substring(0, 13);
@@ -229,7 +248,7 @@ namespace hardware.bluetooth
                 {
                     lat = DF2D(lat);
                     lon = DF2D(lon);
-                    string[] od = { lat, lon };
+                    string[] od = { lat, lon ,model};
                     List<string> coordinate = new List<string>(od);
 
                     return coordinate;
@@ -269,13 +288,18 @@ namespace hardware.bluetooth
             }
             string DF2D(string s)
             {
-                int i = s.IndexOf(".");
-                string du = s.Substring(0, i - 2);
-                string fen = s.Substring(i - 2, s.Length - i);
-                double fen2du = Convert.ToDouble(fen) / 60;
-                double degree = Convert.ToDouble(du) + fen2du;
-                string Degree = Convert.ToString(degree);
-                return Degree;
+                try
+                {
+                    int i = s.IndexOf(".");
+                    string du = s.Substring(0, i - 2);
+                    string fen = s.Substring(i - 2, s.Length - i);
+                    double fen2du = Convert.ToDouble(fen) / 60;
+                    double degree = Convert.ToDouble(du) + fen2du;
+                    string Degree = Convert.ToString(degree);
+                    return Degree;
+                }
+                catch(Exception)
+                { return "00.000"; }
             }
         }
     }

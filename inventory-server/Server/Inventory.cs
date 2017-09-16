@@ -41,6 +41,10 @@ namespace inventory_server.Server
         {
             return new OkResponse(ImportProject.SendProjData(request.name)).ToString(); 
         }
+        public string Get(ProjectFormsFill request)
+        {
+            return new OkResponse(FillAndPrintExcel.WriteXls(request.name)).ToString();
+        }
 
         /// <summary>
         /// 蓝牙
@@ -75,12 +79,6 @@ namespace inventory_server.Server
         }
         public string Get(PrintNmea request)
         {
-            // return SerialPortConnect.PrintNmeaData();
-            //var coordinate = new
-            //{
-            //    lat = SerialPortConnect.PrintNmeaData()[0],
-            //    lon = SerialPortConnect.PrintNmeaData()[1]
-            //};
             return new OkResponse(SerialPortConnect.PrintNmeaData()).ToString();
         }
     }
