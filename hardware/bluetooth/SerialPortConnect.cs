@@ -91,6 +91,7 @@ namespace hardware.bluetooth
         /// </summary>
         public static string spOpen(string spname)
         {
+            //端口打开无法设置bug
             _sp.PortName = spname;  // 端口名 
             _sp.BaudRate = 115200;  // 波特率
             _sp.DataBits = 8;       // 数据位
@@ -189,8 +190,12 @@ namespace hardware.bluetooth
 
             bool connect = true;
 
-            String requestmsg = "GET /" + " HTTP/1.0\r\n";
+            String requestmsg = "GET /" + _mountPoint
+                                    + " HTTP/1.0\r\n";
             requestmsg += "User-Agent: NTRIP GNSSInternetRadio/1.2.0\r\n";
+
+            requestmsg += "Authorization: " + _basicAccountAndKey;
+            requestmsg += "\r\n";
             requestmsg += "Accept: */*\r\n";
             requestmsg += "Connection: close\r\n";
             requestmsg += "\r\n";
@@ -203,7 +208,7 @@ namespace hardware.bluetooth
 
             while (size > 0 && connect == true)
             {
-                
+                size = clientSocket.Receive(bArr);
                 if (_sp.IsOpen)
                 {
                     _sp.Write(bArr, 0, size);
