@@ -63,11 +63,20 @@ namespace hardware.projectmanager
         public static string SendProjData(string pro)
         {
 
-            string Data1 = System.IO.File.ReadAllText(path +"\\"+ pro + "\\Forms\\all.txt");
-            List<Pro> all = JsonConvert.DeserializeObject<List<Pro>>(Data1);
+            string Data1 = System.IO.File.ReadAllText(path + "\\" + pro + "\\Forms\\all.txt");
+            List<Forms> all = JsonConvert.DeserializeObject<List<Forms>>(Data1);
             // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
             string t = JsonConvert.SerializeObject(all);
             return t;
+        }
+        public class Forms
+        {
+            public F1 f1 { get; set; }
+            public F2 f2 { get; set; }
+            public F3 f3 { get; set; }
+            public F5 f5 { get; set; }
+            public F6 f6 { get; set; }
+            public F7 f7 { get; set; }
         }
         public class F1
         {
@@ -127,10 +136,36 @@ namespace hardware.projectmanager
             public int[] LandBoundaryLocation { get; set; }
             public string[] LandBoundaryExplain { get; set; }
         }
-        public class Pro
+        public class F3
         {
-            public F1 f1 { get; set; }
-            public F2 f2 { get; set; }
+            public string[] StartPointCodeList { get; set; }
+            public string[] InnerPointCodeList { get; set; }
+            public string[] EndPointCodeList { get; set; }
+        }
+        public class F5
+        {
+            public string BoundaryPointExplain { get; set; }
+            public string MainBoundaryDirectionExplain { get; set; }
+        }
+        public class F6
+        {
+            public string PowerInvestigateRecord { get; set; }
+            public string PowerInvestigator { get; set; }
+            public string PowerInvestigateDate { get; set; }
+            public string SurveyRecord { get; set; }
+            public string SurveyRecorder { get; set; }
+            public string SurveyRecordDate { get; set; }
+            public string AuditOpinion { get; set; }
+            public string Auditor { get; set; }
+            public string AuditOpinionDate { get; set; }
+        }
+        public class F7
+        {
+            public string FixedCount { get; set; }
+            public string[] FixedCode { get; set; }
+            public double[] LandOwnUseArea { get; set; }
+            public double[] LandUniqueArea { get; set; }
+            public double[] CommonArea { get; set; }
         }
     }
 }
