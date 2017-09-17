@@ -37,12 +37,12 @@ namespace hardware.projectmanager
             xls.DisplayAlerts = false;//设置不显示确认修改提示
 
             // string json = @"[{'TaskRoleSpaces':'','TaskRoles':'','ProxyUserID':'5d9ad5dc1c5e494db1d1b4d8d79b60a7','UserID':'5d9ad5dc1c5e494db1d1b4d8d79b60a7','UserName':'姓名','UserSystemName':'2234','OperationName':'送合同负责人','OperationValue':'同意','OperationValueText':'','SignDate':'2013-06-19 10:31:26','Comment':'同意','FormDataHashCode':'','SignatureDivID':''},{'TaskRoleSpaces':'','TaskRoles':'','ProxyUserID':'2c96c3943826ea93013826eafe6d0089','UserID':'2c96c3943826ea93013826eafe6d0089','UserName':'姓名2','UserSystemName':'1234','OperationName':'送合同负责人','OperationValue':'同意','OperationValueText':'','SignDate':'2013-06-20 09:37:11','Comment':'同意','FormDataHashCode':'','SignatureDivID':''}]  ";
-            string Data1 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form1.txt");
-            string Data2 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form2.txt");
-            string Data3 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form3.txt");
-            string Data5 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form5.txt");
-            string Data6 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form6.txt");
-            string Data7 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form7.txt");
+            string Data1 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form1.txt",Encoding.Default);
+            string Data2 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form2.txt", Encoding.Default);
+            string Data3 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form3.txt", Encoding.Default);
+            string Data5 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form5.txt", Encoding.Default);
+            string Data6 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form6.txt", Encoding.Default);
+            string Data7 = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form7.txt", Encoding.Default);
             List<ZDJBXX> ZdjbxxForm = JsonConvert.DeserializeObject<List<ZDJBXX>>(Data1);
             List<JZBSB> JzbsForm = JsonConvert.DeserializeObject<List<JZBSB>>(Data2);
             List<JZQZ> JzqzForm = JsonConvert.DeserializeObject<List<JZQZ>>(Data3);
