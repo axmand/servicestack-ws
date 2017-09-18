@@ -249,11 +249,12 @@ namespace hardware.bluetooth
                 //return gnrmc;//    gnrmc=3031.69748195,N,11421.38629542,E
                 string lat = gnrmc.Substring(0, 13);
                 string lon = gnrmc.Substring(16, 13);
-                if (IsCoordinate(lat) && IsCoordinate(lon))
+                if (IsCoordinate(lat) && IsCoordinate(lon)&&model=="D")
                 {
                     lat = DF2D(lat);
                     lon = DF2D(lon);
-                    string[] od = { lat, lon ,model};
+                     //string[] od = { lat, lon ,model};
+                    string[] od = { lat, lon };
                     List<string> coordinate = new List<string>(od);
 
                     return coordinate;
