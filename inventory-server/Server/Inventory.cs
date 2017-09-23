@@ -3,6 +3,8 @@ using ServiceStack.ServiceInterface;
 using hardware.bluetooth;
 using hardware.projectmanager;
 using System.Collections.Generic;
+using System.IO;
+using static hardware.projectmanager.ImportProject;
 
 namespace inventory_server.Server
 {
@@ -30,22 +32,33 @@ namespace inventory_server.Server
             //    "项目1", "项目2" ,"项目3"
             //};
             //return new OkResponse(list).ToString();
-            return new OkResponse(ImportProject.ShowProj()).ToString();            
+            return new OkResponse(ImportProject.ShowProj()).ToString();
         }
         public string Get(ProjectCreate request)
         {
             return new OkResponse(ImportProject.CreateProj(request.name)).ToString();
         }
-
         public string Get(ProjectOpen request)
         {
-            return new OkResponse(ImportProject.SendProjData(request.name)).ToString(); 
+            return new OkResponse(ImportProject.SendProjData(request.name)).ToString();
         }
         public string Get(ProjectFormsFill request)
         {
             return new OkResponse(FillAndPrintExcel.WriteXls(request.name)).ToString();
         }
-
+        public string Get(ProjectFormsPrint request)
+        {
+            return new OkResponse(FillAndPrintExcel.CreateAndPrintPdf(request.proname, request.formnumber)).ToString();
+        }
+        public string Get(ProjectFormsPost request)
+        {
+            using (StreamReader dat = new StreamReader(request.RequestStream))
+            {
+                string str = dat.ReadToEnd();
+                return new OkResponse(SaveProject.SavePro(request.proname,str)).ToString();
+            }
+        }
+        
         /// <summary>
         /// 蓝牙
         /// </summary>

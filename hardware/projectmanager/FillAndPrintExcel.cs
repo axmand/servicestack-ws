@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using Microsoft.Office.Interop.Excel;
 using System.Reflection;
 using System.IO;
+using Spire.Pdf;
+using hardware.bluetooth;
 
 namespace hardware.projectmanager
 {
@@ -197,13 +199,51 @@ namespace hardware.projectmanager
             //如果表已经存在，直接用下面的命令保存即可
             book.Save();
             book.Close(false, Missing.Value, Missing.Value);//关闭打开的表
+            xls.Quit();//Excel程序退出//sheet,book,xls设置为null，防止内存泄露
+            sheet = null;
+            book = null;
+            xls = null;
+            GC.Collect();//系统回收资源
+            return "fill form ok";
+        }
+
+        public static bool CreateAndPrintPdf(string projname,int i)
+        {
+            if (Directory.Exists(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname))
+            {
+
+            }
+            else
+            {
+                return false;
+            }
+            string sourceFile = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\"+ projname+"\\Forms\\DataCopy2Print.xlsx";
+            //启动Excel应用程序
+            Microsoft.Office.Interop.Excel.Application xls = new Microsoft.Office.Interop.Excel.Application();
+            //_Workbook book = xls.Workbooks.Add(Missing.Value); //创建一张表，一张表可以包含多个sheet
+            //如果表已经存在，可以用下面的命令打开
+            _Workbook book = xls.Workbooks.Open(sourceFile, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value);
+            _Worksheet sheet;//定义sheet变量
+            xls.Visible = false;//设置Excel后台运行
+            xls.DisplayAlerts = false;//设置不显示确认修改提示
+            //获取到对应的表格
+            sheet = (_Worksheet)book.Worksheets.get_Item(i);
+            sheet.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, "D:\\ProjectFormTemplet\\form"+i+".pdf"); //导出位置
+            book.Close(false, Missing.Value, Missing.Value);//关闭打开的表
             xls.Quit();//Excel程序退出
                        //sheet,book,xls设置为null，防止内存泄露
             sheet = null;
             book = null;
             xls = null;
             GC.Collect();//系统回收资源
-            return "fill form ok";
+            PdfDocument doc = new PdfDocument();
+            doc.LoadFromFile("D:\\ProjectFormTemplet\\form" + i + ".pdf");
+            
+            doc.PrintDocument.Print();
+            
+            return true;
+
+           
         }
         public class ZDJBXX
         {
@@ -295,6 +335,6 @@ namespace hardware.projectmanager
             public double[] LandUniqueArea { get; set; }
             public double[] CommonArea { get; set; }
         }
-
+        
     }
 }

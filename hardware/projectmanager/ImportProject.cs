@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
 
+
 namespace hardware.projectmanager
 {
     public class ImportProject
@@ -66,8 +67,6 @@ namespace hardware.projectmanager
             string Data1 = System.IO.File.ReadAllText(path + "\\" + pro + "\\Forms\\all.txt",Encoding.Default);
             List<Forms> all = JsonConvert.DeserializeObject<List<Forms>>(Data1);
             // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
-            //string t = JsonConvert.SerializeObject(all);
-            //return t;
             return all;
         }
         public class Forms
