@@ -9,9 +9,18 @@ using Newtonsoft.Json;
 
 namespace hardware.projectmanager
 {
+    /// <summary>
+    /// 包含三个部分： 1、创建空项目。2、显示所有项目名称。3、打开项目（发送选中的项目的all.txt信息）
+    /// </summary>
     public class ImportProject
     {
         public static string path = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest";
+        public static string _importProjectName;
+        /// <summary>
+        /// 创建项目
+        /// </summary>
+        /// <param name="projectName">输入的项目名字</param>
+        /// <returns>“OK”或者“false”</returns>
         public static string CreateProj(string projectName)
         {
 
@@ -33,8 +42,10 @@ namespace hardware.projectmanager
             }
 
         }
-
-        //public static string ShowProj()
+        /// <summary>
+       /// 显示所有项目名称
+       /// </summary>
+       /// <returns></returns>
         public static List<string> ShowProj()
         {
 
@@ -61,14 +72,22 @@ namespace hardware.projectmanager
 
             return list;
         }
+        /// <summary>
+        /// 打开项目（发送选中的项目的all.txt信息）
+        /// </summary>
+        /// <param name="pro">打开的项目名称</param>
+        /// <returns>all.txt项目的内容</returns>
         public static List<Forms> SendProjData(string pro)
         {
-
+            _importProjectName = pro;
             string Data1 = System.IO.File.ReadAllText(path + "\\" + pro + "\\Forms\\all.txt",Encoding.Default);
             List<Forms> all = JsonConvert.DeserializeObject<List<Forms>>(Data1);
             // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
             return all;
         }
+        /// <summary>
+        /// Forms类型的数据结构
+        /// </summary>
         public class Forms
         {
             public F1 f1 { get; set; }
@@ -78,7 +97,7 @@ namespace hardware.projectmanager
             public F6 f6 { get; set; }
             public F7 f7 { get; set; }
         }
-        public class F1
+        public class F1//宗地基本信息表
         {
             public long TableID { get; set; }
             public string ParcelCode { get; set; }
@@ -127,7 +146,7 @@ namespace hardware.projectmanager
             public string CommonUse { get; set; }
             public string Explain { get; set; }
         }
-        public class F2
+        public class F2//界址标示表
         {
             public string[] LandPointCodeList { get; set; }
             public int[] LandPointTypeList { get; set; }
@@ -136,18 +155,18 @@ namespace hardware.projectmanager
             public int[] LandBoundaryLocation { get; set; }
             public string[] LandBoundaryExplain { get; set; }
         }
-        public class F3
+        public class F3//界址签章表
         {
             public string[] StartPointCodeList { get; set; }
             public string[] InnerPointCodeList { get; set; }
             public string[] EndPointCodeList { get; set; }
         }
-        public class F5
+        public class F5//界址说明表
         {
             public string BoundaryPointExplain { get; set; }
             public string MainBoundaryDirectionExplain { get; set; }
         }
-        public class F6
+        public class F6//调查审核表
         {
             public string PowerInvestigateRecord { get; set; }
             public string PowerInvestigator { get; set; }
@@ -159,7 +178,7 @@ namespace hardware.projectmanager
             public string Auditor { get; set; }
             public string AuditOpinionDate { get; set; }
         }
-        public class F7
+        public class F7//共用共有宗地面积分摊表
         {
             public string FixedCount { get; set; }
             public string[] FixedCode { get; set; }

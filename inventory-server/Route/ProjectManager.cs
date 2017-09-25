@@ -31,21 +31,19 @@ namespace inventory_server.Route
     {
         public string name { get; set; }
     }
-    [Route("/project/fill/{name}", "GET")]
+    [Route("/project/fill", "GET")]
     public class ProjectFormsFill
     {
-        public string name { get; set; }
+        public string response { get; set; }
     }
-    [Route("/project/print/{proname}/{formnumber}", "GET")]
+    [Route("/project/print/{formnumber}", "GET")]
     public class ProjectFormsPrint
     {
-        public string proname { get; set; }
         public int formnumber { get; set; }
     }
-    [Route("/project/forms/{proname}/post", "POST")]
+    [Route("/project/forms/post", "POST")]
     public class ProjectFormsPost : IRequiresRequestStream
     {
-        public string proname { get; set; }
         public System.IO.Stream RequestStream{get;set;}
     }
     /// <summary>
@@ -70,6 +68,7 @@ namespace inventory_server.Route
     [Route("/bluetooth/connect/sp/{spname}", "GET")]
     public class ConnectSp
     {
+        
         public string spname { get; set; }
     }
     [Route("/bluetooth/connect/closesp/{spname}", "GET")]

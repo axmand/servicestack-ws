@@ -14,7 +14,16 @@ namespace inventory_server
 
         public override void Configure(Container container)
         {
-            this.Plugins.Add(new CorsFeature());//跨域
+            // this.Plugins.Add(new CorsFeature());//跨域
+            base.SetConfig(new EndpointHostConfig()
+            {
+                GlobalResponseHeaders =
+                {
+                    { "Access-Control-Allow-Origin", "*" },
+                    { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
+                    { "Access-Control-Allow-Headers", "Content-Type" },
+                },
+            });
         }
 
     }

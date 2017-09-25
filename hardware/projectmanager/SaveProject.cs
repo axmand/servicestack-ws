@@ -14,9 +14,15 @@ namespace hardware.projectmanager
 {
     public class SaveProject
     {
-        public static bool SavePro(string projname,string str)
+        /// <summary>
+        /// 接收到前端返回的修改数据进行判断修改并保存
+        /// </summary>
+        /// <param name="str">接收到的前端返回值</param>
+        /// <returns>true or false</returns>
+        public static bool SavePro( string str)
         {
-            string _oldDataStr = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\form1.txt", Encoding.Default);
+            string _oldDataStr = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\Forms\\form1.txt", Encoding.Default);
+            //string _oldDataStr = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\Project1\\Forms\\form1.txt", Encoding.Default);
             Type _listFormsType = typeof(List<Forms>);
             Type _formsType = typeof(Forms);
             var _listFormsTypeProperties = _listFormsType.GetProperties();
@@ -45,7 +51,8 @@ namespace hardware.projectmanager
             }
             string _fixDataStr = Newtonsoft.Json.JsonConvert.SerializeObject(_oldData);
             var ja = JArray.Parse(_fixDataStr);
-            using (FileStream fs = new FileStream(@"D:\ProjectFormTemplet\test0921.txt", FileMode.Append, FileAccess.Write))
+
+            using (FileStream fs = new FileStream(@"D:\ProjectFormTemplet\test0921.txt", FileMode.Append, FileAccess.Write))//保存的新数据库的地址
             {
 
                 fs.Lock(0, fs.Length);

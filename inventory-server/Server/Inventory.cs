@@ -44,18 +44,20 @@ namespace inventory_server.Server
         }
         public string Get(ProjectFormsFill request)
         {
-            return new OkResponse(FillAndPrintExcel.WriteXls(request.name)).ToString();
+            return new OkResponse(FillAndPrintExcel.WriteXls()).ToString();
         }
         public string Get(ProjectFormsPrint request)
         {
-            return new OkResponse(FillAndPrintExcel.CreateAndPrintPdf(request.proname, request.formnumber)).ToString();
+            return new OkResponse(FillAndPrintExcel.CreateAndPrintPdf(request.formnumber)).ToString();
         }
-        public string Get(ProjectFormsPost request)
+        public string Post(ProjectFormsPost request)
         {
             using (StreamReader dat = new StreamReader(request.RequestStream))
             {
                 string str = dat.ReadToEnd();
-                return new OkResponse(SaveProject.SavePro(request.proname,str)).ToString();
+              // return new OkResponse(str).ToString();
+             
+                return new OkResponse(SaveProject.SavePro(str)).ToString();
             }
         }
         
