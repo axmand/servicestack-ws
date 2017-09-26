@@ -23,54 +23,65 @@ namespace hardware.projectmanager
         /// <returns>“OK”或者“false”</returns>
         public static string CreateProj(string projectName)
         {
-
-            string _projPath = path + "/" + projectName;// 存成项目名字
-            string _formPath = path + "/" + projectName + "\\Forms";
-            string _fingerPath = path + "/" + projectName + "\\Fingers";
-            string _picPath = path + "/" + projectName + "\\pics";
-            if (!Directory.Exists(_projPath))
+            try
             {
-                Directory.CreateDirectory(_projPath);
-                Directory.CreateDirectory(_formPath);
-                Directory.CreateDirectory(_fingerPath);
-                Directory.CreateDirectory(_picPath);
-                return "OK";
+                string _projPath = path + "/" + projectName;// 存成项目名字
+                string _formPath = path + "/" + projectName + "\\Forms";
+                string _fingerPath = path + "/" + projectName + "\\Fingers";
+                string _picPath = path + "/" + projectName + "\\pics";
+                if (!Directory.Exists(_projPath))
+                {
+                    Directory.CreateDirectory(_projPath);
+                    Directory.CreateDirectory(_formPath);
+                    Directory.CreateDirectory(_fingerPath);
+                    Directory.CreateDirectory(_picPath);
+                    return "OK";
+                }
+                else
+                {
+                    return "false";
+                }
             }
-            else
-            {
-                return "false";
-            }
+            catch (Exception) { return "false"; }
 
         }
         /// <summary>
-       /// 显示所有项目名称
-       /// </summary>
-       /// <returns></returns>
+        /// 显示所有项目名称
+        /// </summary>
+        /// <returns></returns>
         public static List<string> ShowProj()
         {
 
-
-            if (File.Exists(path))
+            try
             {
+                if (File.Exists(path))
+                {
 
+                }
+                else
+                {
+                    System.IO.Directory.CreateDirectory(path);
+                }
+
+                string[] _proList;
+                _proList = Directory.GetDirectories(path);
+
+                int n = _proList.Length;
+                for (int i = 0; i < n; i++)
+                {
+                    int m = _proList[i].LastIndexOf("\\") + 1;
+                    _proList[i] = _proList[i].Substring(m, _proList[i].Length - m);
+                }
+                List<string> list = new List<string>(_proList);
+
+                return list;
             }
-            else
+            catch (Exception)
             {
-                System.IO.Directory.CreateDirectory(path);
+                string erro = "Wrong";
+                List<string> wrong = JsonConvert.DeserializeObject<List<string>>(erro);
+                return wrong;
             }
-
-            string[] _proList;
-            _proList = Directory.GetDirectories(path);
-
-            int n = _proList.Length;
-            for (int i = 0; i < n; i++)
-            {
-                int m = _proList[i].LastIndexOf("\\") + 1;
-                _proList[i] = _proList[i].Substring(m, _proList[i].Length - m);
-            }
-            List<string> list = new List<string>(_proList);
-
-            return list;
         }
         /// <summary>
         /// 打开项目（发送选中的项目的all.txt信息）
@@ -79,23 +90,32 @@ namespace hardware.projectmanager
         /// <returns>all.txt项目的内容</returns>
         public static List<Forms> SendProjData(string pro)
         {
-            _importProjectName = pro;
-            string Data1 = System.IO.File.ReadAllText(path + "\\" + pro + "\\Forms\\all.txt",Encoding.Default);
-            List<Forms> all = JsonConvert.DeserializeObject<List<Forms>>(Data1);
-            // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
-            return all;
+            try
+            {
+                _importProjectName = pro;
+                string Data1 = System.IO.File.ReadAllText(path + "\\" + pro + "\\Forms\\all.txt", Encoding.Default);
+                List<Forms> all = JsonConvert.DeserializeObject<List<Forms>>(Data1);
+                // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
+                return all;
+            }
+            catch (Exception)
+            {
+                string erro = "Wrong";
+                List<Forms> wrong = JsonConvert.DeserializeObject<List<Forms>>(erro);
+                return wrong;
+            };
         }
         /// <summary>
         /// Forms类型的数据结构
         /// </summary>
         public class Forms
         {
-            public F1 f1 { get; set; }
-            public F2 f2 { get; set; }
-            public F3 f3 { get; set; }
-            public F5 f5 { get; set; }
-            public F6 f6 { get; set; }
-            public F7 f7 { get; set; }
+            public F1 F1 { get; set; }
+            public F2 F2 { get; set; }
+            public F3 F3 { get; set; }
+            public F5 F5 { get; set; }
+            public F6 F6 { get; set; }
+            public F7 F7 { get; set; }
         }
         public class F1//宗地基本信息表
         {

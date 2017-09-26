@@ -19,49 +19,54 @@ namespace hardware.projectmanager
         /// </summary>
         /// <param name="str">接收到的前端返回值</param>
         /// <returns>true or false</returns>
-        public static bool SavePro( string str)
+        public static bool SavePro(string str)
         {
-            string _oldDataStr = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\Forms\\form1.txt", Encoding.Default);
-            //string _oldDataStr = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\Project1\\Forms\\form1.txt", Encoding.Default);
-            Type _listFormsType = typeof(List<Forms>);
-            Type _formsType = typeof(Forms);
-            var _listFormsTypeProperties = _listFormsType.GetProperties();
-            var _formsTypeProperties = _formsType.GetProperties();
-            List<Forms> _inputData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Forms>>(str);
-            List<Forms> _oldData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Forms>>(_oldDataStr);
-
-            for (int i = 0; i < _inputData.Count; i++)
+            try
             {
-                Forms _inputForms = _inputData[i];
-                Forms _oldForms = _oldData[i];
-                Type t1 = _inputForms.GetType();
-                PropertyInfo[] p = t1.GetProperties();
+                string _oldDataStr = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\Forms\\all.txt", Encoding.Default);
+                Type _listFormsType = typeof(List<Forms>);
+                Type _formsType = typeof(List<Forms>);
+                var _listFormsTypeProperties = _listFormsType.GetProperties();
+                var _formsTypeProperties = _formsType.GetProperties();
+                List<Forms> _oldData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Forms>>(_oldDataStr);
+                List<Forms> _inputData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Forms>>(str);
 
-                for (int j = 0; j < p.Length; j++)
+
+                for (int i = 0; i < _inputData.Count; i++)
                 {
-                    string name1 = p[j].Name;
-                    object value1 = p[j].GetValue(_inputForms, null);
-                    object value2 = p[j].GetValue(_oldForms, null);
-                    if (value1 != value2)
+                    Forms _inputForms = _inputData[i];
+                    Forms _oldForms = _oldData[i];
+                    Type t1 = _inputForms.GetType();
+                    PropertyInfo[] p = t1.GetProperties();
+
+                    for (int j = 0; j < p.Length; j++)
                     {
-                        p[j].SetValue(_oldForms, value1);
+                        string name1 = p[j].Name;
+                        object value1 = p[j].GetValue(_inputForms, null);
+                        object value2 = p[j].GetValue(_oldForms, null);
+                        if (value1 != value2)
+                        {
+                            p[j].SetValue(_oldForms, value1);
+                        }
                     }
+                    _oldData[i] = _oldForms;
                 }
-                _oldData[i] = _oldForms;
-            }
-            string _fixDataStr = Newtonsoft.Json.JsonConvert.SerializeObject(_oldData);
-            var ja = JArray.Parse(_fixDataStr);
+                string _fixDataStr = Newtonsoft.Json.JsonConvert.SerializeObject(_oldData);
+                var ja = JArray.Parse(_fixDataStr);
 
-            using (FileStream fs = new FileStream(@"D:\ProjectFormTemplet\test0921.txt", FileMode.Append, FileAccess.Write))//保存的新数据库的地址
-            {
+                using (FileStream fs = new FileStream(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\Forms\\all.txt", FileMode.Create, FileAccess.Write))//保存的新数据库的地址
+                {
 
-                fs.Lock(0, fs.Length);
-                StreamWriter sw = new StreamWriter(fs);
-                sw.Write(ja);
-                sw.Flush();
+                    fs.Lock(0, fs.Length);
+                    StreamWriter sw = new StreamWriter(fs);
+                    sw.Write(ja);
+                    sw.Flush();
+                }
+                return true;
             }
-            return true;
+            catch (Exception) { return false; }
         }
+
         
     }
 }
