@@ -66,6 +66,7 @@
     <Compile Include="bluetooth\SerialPortConnect.cs" />
     <Compile Include="projectmanager\FillAndPrintExcel.cs" />
     <Compile Include="projectmanager\ImportProject.cs" />
+    <Compile Include="projectmanager\Photo.cs" />
     <Compile Include="projectmanager\SaveProject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

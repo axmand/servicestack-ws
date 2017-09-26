@@ -46,6 +46,11 @@ namespace inventory_server.Route
     {
         public System.IO.Stream RequestStream{get;set;}
     }
+    [Route ("/project/photo","POST")]
+    public class ProjectPhoto : IRequiresRequestStream
+    {
+        public System.IO.Stream RequestStream { get; set; }
+    }
     /// <summary>
     /// 蓝牙
     /// </summary>

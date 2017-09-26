@@ -60,7 +60,16 @@ namespace inventory_server.Server
                 return new OkResponse(SaveProject.SavePro(str)).ToString();
             }
         }
-        
+        public string Post(ProjectPhoto request)
+        {
+            using (StreamReader dat = new StreamReader(request.RequestStream))
+            {
+                string str = dat.ReadToEnd();
+                // return new OkResponse(str).ToString();
+
+                return new OkResponse(Photo.Base64ToPng(str)).ToString();
+            }
+        }
         /// <summary>
         /// 蓝牙
         /// </summary>
