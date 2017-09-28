@@ -5,6 +5,7 @@ using hardware.projectmanager;
 using System.Collections.Generic;
 using System.IO;
 using static hardware.projectmanager.ImportProject;
+using static hardware.projectmanager.Photo;
 
 namespace inventory_server.Server
 {
@@ -68,6 +69,17 @@ namespace inventory_server.Server
                 // return new OkResponse(str).ToString();
 
                 return new OkResponse(Photo.Base64ToPng(str)).ToString();
+            }
+        }
+        public string Get(ProjectPhotolist request)
+        {
+            if (Photo.PngToBase64() == null)
+            {
+                return new FailResponse("false").ToString();
+            }
+            else
+            {
+                return new OkResponse(Photo.PngToBase64()).ToString();
             }
         }
         /// <summary>

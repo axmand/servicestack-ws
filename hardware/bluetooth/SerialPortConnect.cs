@@ -35,9 +35,10 @@ namespace hardware.bluetooth
         static string _account;
         static string _key;
         static string _basicAccountAndKey = "";
-
+        public static int RtcmConnectNumber = 0;
         static int closeNumber = 0;
         static bool _bAccpet;
+
         public static string str;
         /// <summary>
         /// 线程
@@ -91,11 +92,7 @@ namespace hardware.bluetooth
         /// </summary>
         public static string spOpen(string spname)
         {
-            //端口打开无法设置bug
-            _sp.PortName = spname;  // 端口名 
-            _sp.BaudRate = 115200;  // 波特率
-            _sp.DataBits = 8;       // 数据位
-            _sp.StopBits = (StopBits)int.Parse("1"); // 停止位
+
 
             if (_sp.IsOpen)
             {
@@ -105,6 +102,11 @@ namespace hardware.bluetooth
             {
                 try
                 {
+                    //端口打开无法设置bug
+                    _sp.PortName = spname;  // 端口名 
+                    _sp.BaudRate = 115200;  // 波特率
+                    _sp.DataBits = 8;       // 数据位
+                    _sp.StopBits = (StopBits)int.Parse("1"); // 停止位
                     _sp.Open();
                     _bAccpet = true;
                     printdata();
@@ -115,6 +117,8 @@ namespace hardware.bluetooth
                     return "can't find " + spname;
                 }
             }
+
+
         }
         public static void printdata()
         {
@@ -123,6 +127,7 @@ namespace hardware.bluetooth
             if (closeNumber > 0)
             {
                 pr.Resume();
+                
             }
             else
             {
@@ -134,12 +139,20 @@ namespace hardware.bluetooth
         }
         public static string spClose(string spname)
         {
-            _bAccpet = false;
-            pr.Suspend();
-            if (closeNumber > 0) { th.Suspend(); }
-            _sp.Close();
-            closeNumber++;
-            return "close ok";
+            try
+            {
+                _bAccpet = false;
+                pr.Suspend();
+                
+                if (closeNumber > 0&& RtcmConnectNumber>0) { th.Suspend(); }
+                _sp.Close();
+                closeNumber++;
+                return "close ok";
+            }
+            catch (Exception)
+            {
+                return "error";
+            }
         }
         /// <summary>
         /// 发送RTCM数据
@@ -154,6 +167,7 @@ namespace hardware.bluetooth
         }
         public static string GetRTCMdata(string address, string mountPoint)
         {
+            
             string[] AddressMessage = address.Split(':');
             _address = AddressMessage[0];
             if (AddressMessage.Length != 1)
@@ -161,17 +175,18 @@ namespace hardware.bluetooth
             else
                 port = 80;
             _mountPoint = mountPoint;
-            int i = 0;
-            if (closeNumber > 0 && i > 0)
+            
+            if (closeNumber > 0 && RtcmConnectNumber > 0)
             {
                 th.Resume();
+                
             }
             else
             {
                 th.Start();
                 th.IsBackground = true;
             }
-            i++;
+            RtcmConnectNumber++;
             //th.Start();
             //th.IsBackground = true;
             return "RTCM Transport Success";
@@ -249,11 +264,11 @@ namespace hardware.bluetooth
                 //return gnrmc;//    gnrmc=3031.69748195,N,11421.38629542,E
                 string lat = gnrmc.Substring(0, 13);
                 string lon = gnrmc.Substring(16, 13);
-                if (IsCoordinate(lat) && IsCoordinate(lon)&&model=="D")
+                if (IsCoordinate(lat) && IsCoordinate(lon) && model == "D")
                 {
                     lat = DF2D(lat);
                     lon = DF2D(lon);
-                     //string[] od = { lat, lon ,model};
+                    //string[] od = { lat, lon ,model};
                     string[] od = { lat, lon };
                     List<string> coordinate = new List<string>(od);
 
@@ -304,7 +319,7 @@ namespace hardware.bluetooth
                     string Degree = Convert.ToString(degree);
                     return Degree;
                 }
-                catch(Exception)
+                catch (Exception)
                 { return "00.000"; }
             }
         }

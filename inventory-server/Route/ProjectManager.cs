@@ -51,6 +51,11 @@ namespace inventory_server.Route
     {
         public System.IO.Stream RequestStream { get; set; }
     }
+    [Route ("/project/photolist","GET")]
+    public class ProjectPhotolist
+    {
+        public string [] _photolist { get; set; }
+    }
     /// <summary>
     /// 蓝牙
     /// </summary>

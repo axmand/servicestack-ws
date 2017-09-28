@@ -100,8 +100,8 @@ namespace hardware.projectmanager
             }
             catch (Exception)
             {
-                string erro = "Wrong";
-                List<Forms> wrong = JsonConvert.DeserializeObject<List<Forms>>(erro);
+                
+                List<Forms> wrong=null ;
                 return wrong;
             };
         }
