@@ -43,6 +43,10 @@ namespace inventory_server.Server
         {
             return new OkResponse(ImportProject.SendProjData(request.name)).ToString();
         }
+        //public string Get(ProjectLayersOpen request)
+        //{
+        //    return new OkResponse(ImportProject.SendLayersData()).ToString();
+        //}
         public string Get(ProjectFormsFill request)
         {
             return new OkResponse(FillAndPrintExcel.WriteXls()).ToString();

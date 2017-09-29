@@ -52,14 +52,13 @@ namespace hardware.projectmanager
                     _oldData[i] = _oldForms;
                 }
                 string _fixDataStr = Newtonsoft.Json.JsonConvert.SerializeObject(_oldData);
-                var ja = JArray.Parse(_fixDataStr);
 
                 using (FileStream fs = new FileStream(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\Forms\\all.txt", FileMode.Create, FileAccess.Write))//保存的新数据库的地址
                 {
 
                     fs.Lock(0, fs.Length);
-                    StreamWriter sw = new StreamWriter(fs);
-                    sw.Write(ja);
+                    StreamWriter sw = new StreamWriter(fs,Encoding.GetEncoding("gb2312"));
+                    sw.Write(_fixDataStr);
                     sw.Flush();
                 }
                 return true;

@@ -31,6 +31,11 @@ namespace inventory_server.Route
     {
         public string name { get; set; }
     }
+    //[Route("/project/openlayers", "GET")]
+    //public class ProjectLayersOpen
+    //{
+    //    public string name { get; set; }
+    //}
     [Route("/project/fill", "GET")]
     public class ProjectFormsFill
     {

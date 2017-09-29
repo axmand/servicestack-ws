@@ -29,12 +29,14 @@ namespace hardware.projectmanager
                 string _formPath = path + "/" + projectName + "\\Forms";
                 string _fingerPath = path + "/" + projectName + "\\Fingers";
                 string _picPath = path + "/" + projectName + "\\pics";
+                // string _layerPath = path + "/" + projectName + "\\layers";
                 if (!Directory.Exists(_projPath))
                 {
                     Directory.CreateDirectory(_projPath);
                     Directory.CreateDirectory(_formPath);
                     Directory.CreateDirectory(_fingerPath);
                     Directory.CreateDirectory(_picPath);
+                    //   Directory.CreateDirectory(_layerPath);
                     return "OK";
                 }
                 else
@@ -98,11 +100,11 @@ namespace hardware.projectmanager
                 // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
                 return all;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                
-                List<Forms> wrong=null ;
-                return wrong;
+
+                List<Forms> wrong =null;
+                return wrong;// wrong;
             };
         }
         /// <summary>
@@ -116,6 +118,7 @@ namespace hardware.projectmanager
             public F5 F5 { get; set; }
             public F6 F6 { get; set; }
             public F7 F7 { get; set; }
+            public Layers L { get; set; }
         }
         public class F1//宗地基本信息表
         {
@@ -206,6 +209,36 @@ namespace hardware.projectmanager
             public double[] LandUniqueArea { get; set; }
             public double[] CommonArea { get; set; }
         }
+        public class Layers
+        {
+            public string jzdJSONData { get; set; }
+            public string szJSONData { get; set; }
+            public string zdJSONData { get; set; }
+            public string zjJSONData { get; set; }
+        }//图层
+        /// <summary>
+        /// 导入layers的数据txt
+        /// </summary>
+        /// <param name="pro">项目名称</param>
+        /// <returns>List of Layers</returns>
+        //public static List<Layers> SendLayersData()
+        //{
+        //    try
+        //    {
+        //        string Data1 = System.IO.File.ReadAllText(path + "\\" + _importProjectName + "\\layers\\layers.txt", Encoding.Default);
+        //        List<Layers> all = JsonConvert.DeserializeObject<List<Layers>>(Data1);
+        //        // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
+        //        return all;
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        List<Layers> wrong = null;
+        //        return wrong;
+        //    };
+        //}
+
+
     }
 }
 
