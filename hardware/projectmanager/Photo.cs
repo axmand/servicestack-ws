@@ -8,7 +8,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using Newtonsoft.Json;
-
+using Spire.Pdf;
+using Spire.Pdf.Graphics;
 
 namespace hardware.projectmanager
 {
@@ -22,7 +23,7 @@ namespace hardware.projectmanager
                 byte[] ByteData = Convert.FromBase64String(Data.PhotoString);
                 MemoryStream ms = new MemoryStream(ByteData);
                 Bitmap bmp = new Bitmap(ms);
-                bmp.Save(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\pics\\" + Data.PhotoId + ".png", ImageFormat.Png);
+                bmp.Save(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\photos\\" + Data.PhotoId + ".png", ImageFormat.Png);
                 return true;
             }
             catch (Exception)
@@ -36,7 +37,7 @@ namespace hardware.projectmanager
         {
             try
             {
-                string PngFileName = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\pics";
+                string PngFileName = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\photos";
                 string[] _photoPathList;
                 string[] _photoNameList;
                 _photoPathList = Directory.GetFiles(PngFileName);
@@ -63,13 +64,69 @@ namespace hardware.projectmanager
                     bmp.Dispose();
                     string base64 = Convert.ToBase64String(arr);
                     PhotoData photo = new PhotoData();
-                    photo.PhotoId= _photoNameList[i];
+                    photo.PhotoId = _photoNameList[i];
                     photo.PhotoString = base64;
                     AllPhoto.Add(photo);
                 }
                 return AllPhoto;
             }
             catch (Exception) { return null; }
+        }
+    }
+    public class Pics
+    {
+        public static bool SavePic(string Base64Data)
+        {
+            try
+            {
+                
+                byte[] ByteData = Convert.FromBase64String(Base64Data);
+                MemoryStream ms = new MemoryStream(ByteData);
+                Bitmap bmp = new Bitmap(ms);
+                bmp.Save(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\pics\\unitpics.png", ImageFormat.Png);
+                bmp.Dispose();
+                ms.Dispose();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                var ms = ex;
+                return false;
+            }
+
+        }
+        public static bool PrintPic()
+        {
+            try
+            {
+                PdfDocument doc = new PdfDocument();
+                PdfDocument print = new PdfDocument();
+                PdfSection section = doc.Sections.Add();
+                PdfPageBase page = doc.Pages.Add();
+
+                PdfImage image = PdfImage.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\pics\\unitpics.png");
+                float widthFitRate = image.PhysicalDimension.Width / page.Canvas.ClientSize.Width;
+
+                float heightFitRate = image.PhysicalDimension.Height / page.Canvas.ClientSize.Height;
+
+                float fitRate = Math.Max(widthFitRate, heightFitRate);
+
+                float fitWidth = image.PhysicalDimension.Width / fitRate;
+
+                float fitHeight = image.PhysicalDimension.Height / fitRate;
+
+                page.Canvas.DrawImage(image, 20, 20, fitWidth, fitHeight);
+                doc.SaveToFile(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\pics\\pic.pdf");
+                print.LoadFromFile(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\pics\\pic.pdf");
+                print.PrintDocument.Print();
+                print.Close();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
     public class PhotoData

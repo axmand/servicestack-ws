@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
-
+using Newtonsoft.Json.Linq;
 
 namespace hardware.projectmanager
 {
@@ -29,14 +29,14 @@ namespace hardware.projectmanager
                 string _formPath = path + "/" + projectName + "\\Forms";
                 string _fingerPath = path + "/" + projectName + "\\Fingers";
                 string _picPath = path + "/" + projectName + "\\pics";
-                // string _layerPath = path + "/" + projectName + "\\layers";
+                string _photoPath = path + "/" + projectName + "\\photos";
                 if (!Directory.Exists(_projPath))
                 {
                     Directory.CreateDirectory(_projPath);
                     Directory.CreateDirectory(_formPath);
                     Directory.CreateDirectory(_fingerPath);
                     Directory.CreateDirectory(_picPath);
-                    //   Directory.CreateDirectory(_layerPath);
+                    Directory.CreateDirectory(_photoPath);
                     return "OK";
                 }
                 else
@@ -99,11 +99,12 @@ namespace hardware.projectmanager
                 List<Forms> all = JsonConvert.DeserializeObject<List<Forms>>(Data1);
                 // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
                 return all;
+               
             }
             catch (Exception e)
             {
 
-                List<Forms> wrong =null;
+                List<Forms> wrong = null;
                 return wrong;// wrong;
             };
         }
@@ -211,6 +212,11 @@ namespace hardware.projectmanager
         }
         public class Layers
         {
+            //public JObject jzdJSONData { get; set; }
+            //public JObject szJSONData { get; set; }
+            //public JObject zdJSONData { get; set; }
+            //public JObject zjJSONData { get; set; }
+
             public string jzdJSONData { get; set; }
             public string szJSONData { get; set; }
             public string zdJSONData { get; set; }

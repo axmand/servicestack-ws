@@ -240,6 +240,7 @@ namespace hardware.projectmanager
 
                 doc.PrintDocument.Print();
 
+                doc.Close();
                 return true;
             }
             catch(Exception) { return false; }

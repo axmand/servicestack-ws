@@ -75,6 +75,18 @@ namespace inventory_server.Server
                 return new OkResponse(Photo.Base64ToPng(str)).ToString();
             }
         }
+        public string Post(ProjectSavePic request)
+        {
+            using (StreamReader dat = new StreamReader(request.RequestStream))
+            {
+                string str = dat.ReadToEnd();
+                return new OkResponse(Pics.SavePic(str)).ToString();
+            }
+        }
+        public string Get(ProjectPrintPic request)
+        {
+            return new OkResponse(Pics.PrintPic()).ToString();
+        }
         public string Get(ProjectPhotolist request)
         {
             if (Photo.PngToBase64() == null)
@@ -86,6 +98,7 @@ namespace inventory_server.Server
                 return new OkResponse(Photo.PngToBase64()).ToString();
             }
         }
+
         /// <summary>
         /// 蓝牙
         /// </summary>

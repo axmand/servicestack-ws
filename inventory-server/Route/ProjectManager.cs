@@ -49,18 +49,30 @@ namespace inventory_server.Route
     [Route("/project/forms/post", "POST")]
     public class ProjectFormsPost : IRequiresRequestStream
     {
-        public System.IO.Stream RequestStream{get;set;}
+        public System.IO.Stream RequestStream { get; set; }
     }
-    [Route ("/project/photo","POST")]
+    [Route("/project/photo", "POST")]
     public class ProjectPhoto : IRequiresRequestStream
     {
         public System.IO.Stream RequestStream { get; set; }
     }
-    [Route ("/project/photolist","GET")]
+    [Route("/project/photolist", "GET")]
     public class ProjectPhotolist
     {
-        public string [] _photolist { get; set; }
+        public string[] _photolist { get; set; }
     }
+    [Route("/project/savepicture", "POST")]
+    public class ProjectSavePic : IRequiresRequestStream
+    {
+        public System.IO.Stream RequestStream { get; set; }
+    }
+    [Route("/project/printpicture","GET")]
+    public class ProjectPrintPic
+    {
+        public string response { get; set; }
+    }
+
+
     /// <summary>
     /// 蓝牙
     /// </summary>
@@ -83,7 +95,7 @@ namespace inventory_server.Route
     [Route("/bluetooth/connect/sp/{spname}", "GET")]
     public class ConnectSp
     {
-        
+
         public string spname { get; set; }
     }
     [Route("/bluetooth/connect/closesp/{spname}", "GET")]

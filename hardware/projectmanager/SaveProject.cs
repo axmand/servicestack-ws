@@ -63,7 +63,10 @@ namespace hardware.projectmanager
                 }
                 return true;
             }
-            catch (Exception) { return false; }
+            catch (Exception ex) {
+                var msg = ex;
+                return false;
+            }
         }
 
         
