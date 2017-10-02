@@ -23,6 +23,7 @@ namespace hardware.projectmanager
         {
             try
             {
+                
                 string _oldDataStr = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\Forms\\all.txt", Encoding.Default);
                 Type _listFormsType = typeof(List<Forms>);
                 Type _formsType = typeof(List<Forms>);

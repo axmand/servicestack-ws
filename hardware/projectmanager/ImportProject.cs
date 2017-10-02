@@ -212,15 +212,11 @@ namespace hardware.projectmanager
         }
         public class Layers
         {
-            //public JObject jzdJSONData { get; set; }
-            //public JObject szJSONData { get; set; }
-            //public JObject zdJSONData { get; set; }
-            //public JObject zjJSONData { get; set; }
-
-            public string jzdJSONData { get; set; }
-            public string szJSONData { get; set; }
-            public string zdJSONData { get; set; }
-            public string zjJSONData { get; set; }
+            public JValue jzdJSONData { get; set; }
+            public JValue szJSONData { get; set; }
+            public JValue zdJSONData { get; set; }
+            public JValue zjJSONData { get; set; }
+            
         }//图层
         /// <summary>
         /// 导入layers的数据txt
