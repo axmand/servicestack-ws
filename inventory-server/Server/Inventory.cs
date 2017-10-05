@@ -60,8 +60,8 @@ namespace inventory_server.Server
             using (StreamReader dat = new StreamReader(request.RequestStream))
             {
                 string str = dat.ReadToEnd();
-              // return new OkResponse(str).ToString();
-             
+                // return new OkResponse(str).ToString();
+
                 return new OkResponse(SaveProject.SavePro(str)).ToString();
             }
         }
@@ -104,18 +104,19 @@ namespace inventory_server.Server
         /// </summary>
         public string Get(GetBlueToothList request)
         {
-            return BlueToothList.getlist();
-            
+            return new OkResponse(BlueToothList.getlist()).ToString();
+
         }
-        public void Get(ConnectBlueTooth request)
+        public string Get(ConnectBlueTooth request)
         {
-            BlueToothList.connect(request.devicename);
+
+            return new OkResponse(BlueToothList.connect(request.devicename, request.key)).ToString();
         }
         public string Get(GetSpList request)
         {
-            return SerialPortConnect.spList();
+            return new OkResponse(SerialPortConnect.spList()).ToString();
         }
-        public string  Get(ConnectSp request)
+        public string Get(ConnectSp request)
         {
             //SerialPortConnect.spOpen(request.spname);
             return new OkResponse(SerialPortConnect.spOpen(request.spname)).ToString();
@@ -126,7 +127,7 @@ namespace inventory_server.Server
         }
         public string Get(ConnectStation request)
         {
-            SerialPortConnect.setAccountAndKey(request.account,request.key);
+            SerialPortConnect.setAccountAndKey(request.account, request.key);
             //SerialPortConnect.GetRTCMdata(request.address,request.mountpoint);
             return new OkResponse(SerialPortConnect.GetRTCMdata(request.address, request.mountpoint)).ToString();
         }

@@ -82,10 +82,11 @@ namespace inventory_server.Route
         public string _list { get; set; }
     }
 
-    [Route("/bluetooth/connect/{devicename}", "GET")]
+    [Route("/bluetooth/connect/{devicename}/{key}", "GET")]
     public class ConnectBlueTooth
     {
         public string devicename { get; set; }
+        public string key { get; set; }
     }
     [Route("/bluetooth/connect/splist", "GET")]
     public class GetSpList

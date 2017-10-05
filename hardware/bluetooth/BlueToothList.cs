@@ -36,11 +36,17 @@ namespace hardware.bluetooth
 
             // return Newtonsoft.Json.JsonConvert.SerializeObject(_deviceAddresses);
         }
-        public static void connect(string selectdevice)
+        public static string connect(string selectdevice,string password)
         {
-            _blueToothClient.SetPin(_deviceAddresses[selectdevice], "1234");//输入密码
-            // _blueToothClient.Connect(_deviceAddresses[selectdevice], BluetoothService.Handsfree);//选择connect RTK名称后  System.Net.Sockets.SocketException:“在其上下文中，该请求的地址无效。” 
-            _blueToothClient.Connect(_deviceAddresses[selectdevice], BluetoothService.SerialPort);
+            try
+            {
+                _blueToothClient.SetPin(_deviceAddresses[selectdevice], password);//输入密码 "1234"
+                                                                                // _blueToothClient.Connect(_deviceAddresses[selectdevice], BluetoothService.Handsfree);//选择connect RTK名称后  System.Net.Sockets.SocketException:“在其上下文中，该请求的地址无效。” 
+                _blueToothClient.Connect(_deviceAddresses[selectdevice], BluetoothService.SerialPort);
+
+                return "connect success";
+            }
+            catch (Exception){ return "connect fail"; }
         }
     }
 }
