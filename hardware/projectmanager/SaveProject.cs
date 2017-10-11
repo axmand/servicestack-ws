@@ -23,8 +23,8 @@ namespace hardware.projectmanager
         {
             try
             {
-                
-                string _oldDataStr = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\Forms\\all.txt", Encoding.Default);
+
+                string _oldDataStr = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Forms\\all.txt", Encoding.Default);
                 Type _listFormsType = typeof(List<Forms>);
                 Type _formsType = typeof(List<Forms>);
                 var _listFormsTypeProperties = _listFormsType.GetProperties();
@@ -54,22 +54,23 @@ namespace hardware.projectmanager
                 }
                 string _fixDataStr = Newtonsoft.Json.JsonConvert.SerializeObject(_oldData);
 
-                using (FileStream fs = new FileStream(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\Forms\\all.txt", FileMode.Create, FileAccess.Write))//保存的新数据库的地址
+                using (FileStream fs = new FileStream(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Forms\\all.txt", FileMode.Create, FileAccess.Write))//保存的新数据库的地址
                 {
 
                     fs.Lock(0, fs.Length);
-                    StreamWriter sw = new StreamWriter(fs,Encoding.GetEncoding("gb2312"));
+                    StreamWriter sw = new StreamWriter(fs, Encoding.GetEncoding("gb2312"));
                     sw.Write(_fixDataStr);
                     sw.Flush();
                 }
                 return true;
             }
-            catch (Exception ex) {
-                var msg = ex;
+            catch (Exception)
+            {
+                //var msg = ex;
                 return false;
             }
         }
 
-        
+
     }
 }

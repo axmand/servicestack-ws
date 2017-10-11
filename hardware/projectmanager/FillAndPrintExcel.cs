@@ -29,7 +29,7 @@ namespace hardware.projectmanager
                 string projname = _importProjectName;
                 string sourceFile = System.IO.Directory.GetCurrentDirectory() + "\\Form.xlsx";   //  此处是默认的表格模板
                                                                                                  //string  = @"D:\\ProjectFormTemplet\\testCopy2.xlsx";
-                string destinationFile = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\DataCopy2Print.xlsx";
+                string destinationFile = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\DataCopy2Print.xlsx";
                 bool isrewrite = true; // true=覆盖已存在的同名文件,false则反之
                 System.IO.File.Copy(sourceFile, destinationFile, isrewrite);//复制一份模板文档
                                                                             //启动Excel应用程序
@@ -41,7 +41,7 @@ namespace hardware.projectmanager
                 xls.Visible = false;//设置Excel后台运行
                 xls.DisplayAlerts = false;//设置不显示确认修改提示
 
-                string Data = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\all.txt", Encoding.Default);
+                string Data = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\all.txt", Encoding.Default);
                 List<Forms> _projectData = JsonConvert.DeserializeObject<List<Forms>>(Data);
                 for (int i = 1; i < 8; i++)//循环创建并写入数据到sheet
                 {
@@ -210,7 +210,7 @@ namespace hardware.projectmanager
             try
             {
                 string projname = _importProjectName;
-                if (Directory.Exists(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname))
+                if (Directory.Exists(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname))
                 {
 
                 }
@@ -218,7 +218,7 @@ namespace hardware.projectmanager
                 {
                     return false;
                 }
-                string sourceFile = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\DataCopy2Print.xlsx";//填写后的表格
+                string sourceFile = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\DataCopy2Print.xlsx";//填写后的表格
                                                                                                                                               //启动Excel应用程序
                 Microsoft.Office.Interop.Excel.Application xls = new Microsoft.Office.Interop.Excel.Application();
                 //如果表已经存在，可以用下面的命令打开

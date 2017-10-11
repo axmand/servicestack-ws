@@ -14,8 +14,10 @@ namespace hardware.projectmanager
     /// </summary>
     public class ImportProject
     {
-        public static string path = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest";
+        public static string path = System.IO.Directory.GetCurrentDirectory() + "\\Project";
         public static string _importProjectName;
+        public static bool showprojstate = true;
+        public static bool projdatastate = true;
         /// <summary>
         /// 创建项目
         /// </summary>
@@ -39,7 +41,7 @@ namespace hardware.projectmanager
                     Directory.CreateDirectory(_photoPath);
                     string sourceFile = System.IO.Directory.GetCurrentDirectory() + "\\Form.xlsx";   //  此处是默认的表格模板
                                                                                                      //string  = @"D:\\ProjectFormTemplet\\testCopy2.xlsx";
-                    string destinationFile = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projectName + "\\Forms\\Form.xlsx";
+                    string destinationFile = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projectName + "\\Forms\\Form.xlsx";
                     bool isrewrite = true; // true=覆盖已存在的同名文件,false则反之
                     System.IO.File.Copy(sourceFile, destinationFile, isrewrite);
                     return "OK";
@@ -61,7 +63,7 @@ namespace hardware.projectmanager
 
             try
             {
-                if (File.Exists(path))
+                if (Directory.Exists(path))
                 {
 
                 }
@@ -80,12 +82,13 @@ namespace hardware.projectmanager
                     _proList[i] = _proList[i].Substring(m, _proList[i].Length - m);
                 }
                 List<string> list = new List<string>(_proList);
-
+                showprojstate = true;
                 return list;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                string erro = "Wrong";
+                showprojstate = false;
+                string erro = e.ToString();
                 List<string> wrong = JsonConvert.DeserializeObject<List<string>>(erro);
                 return wrong;
             }
@@ -103,12 +106,13 @@ namespace hardware.projectmanager
                 string Data1 = System.IO.File.ReadAllText(path + "\\" + pro + "\\Forms\\all.txt", Encoding.Default);
                 List<Forms> all = JsonConvert.DeserializeObject<List<Forms>>(Data1);
                 // 取值 ： all[0].f1.PrincipalCertificateType   但是只有一个 能不能就是 all.f1.....而不是list这样all好多页
+                projdatastate = true;
                 return all;
-               
-            }
-            catch (Exception e)
-            {
 
+            }
+            catch (Exception)
+            {
+                projdatastate = false;
                 List<Forms> wrong = null;
                 return wrong;// wrong;
             };

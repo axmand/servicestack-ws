@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.IO;
 using static hardware.projectmanager.ImportProject;
 using static hardware.projectmanager.Photo;
+using static hardware.bluetooth.BlueToothList;
+using static hardware.bluetooth.SerialPortConnect;
 
 namespace inventory_server.Server
 {
@@ -18,6 +20,7 @@ namespace inventory_server.Server
         /// Project
         /// </summary>
 
+        #region 测试
         public string Get(ProjectRemoveGet request)
         {
             var s = new
@@ -26,22 +29,43 @@ namespace inventory_server.Server
             };
             return Newtonsoft.Json.JsonConvert.SerializeObject(s);
         }
+        #endregion
+
         public string Get(ProjecListGet request)
         {
-            //List<string> list = new List<string>()
-            //{
-            //    "项目1", "项目2" ,"项目3"
-            //};
-            //return new OkResponse(list).ToString();
-            return new OkResponse(ImportProject.ShowProj()).ToString();
+
+            List<string> ans = ImportProject.ShowProj();
+            if (ImportProject.showprojstate)
+            {
+                return new OkResponse(ans).ToString();
+            }
+            else
+            {
+                return new FailResponse(ans).ToString();
+            }
         }
         public string Get(ProjectCreate request)
         {
-            return new OkResponse(ImportProject.CreateProj(request.name)).ToString();
+
+            if (ImportProject.CreateProj(request.name) == "OK")
+            {
+                return new OkResponse("create ok").ToString();
+            }
+            else
+            {
+                return new FailResponse("false").ToString();
+            }
+
         }
         public string Get(ProjectOpen request)
         {
-            return new OkResponse(ImportProject.SendProjData(request.name)).ToString();
+            List<Forms> ans = ImportProject.SendProjData(request.name);
+            if (ImportProject.projdatastate)
+            { return new OkResponse(ans).ToString(); }
+            else
+            {
+                return new FailResponse(ans).ToString();
+            }
         }
         //public string Get(ProjectLayersOpen request)
         //{
@@ -73,8 +97,15 @@ namespace inventory_server.Server
             {
                 string str = dat.ReadToEnd();
                 // return new OkResponse(str).ToString();
+                if (SaveProject.SavePro(str))
+                {
+                    return new OkResponse("save success").ToString();
+                }
+                else
+                {
+                    return new FailResponse("save failed").ToString();
+                }
 
-                return new OkResponse(SaveProject.SavePro(str)).ToString();
             }
         }
         public string Post(ProjectPhoto request)
@@ -83,8 +114,15 @@ namespace inventory_server.Server
             {
                 string str = dat.ReadToEnd();
                 // return new OkResponse(str).ToString();
+                if (Photo.Base64ToPng(str))
+                {
+                    return new OkResponse("save photo success").ToString();
+                }
+                else
+                {
+                    return new FailResponse("save photo failed").ToString();
+                }
 
-                return new OkResponse(Photo.Base64ToPng(str)).ToString();
             }
         }
         public string Post(ProjectSavePic request)
@@ -92,22 +130,32 @@ namespace inventory_server.Server
             using (StreamReader dat = new StreamReader(request.RequestStream))
             {
                 string str = dat.ReadToEnd();
-                return new OkResponse(Pics.SavePic(str)).ToString();
+                if (Pics.SavePic(str))
+
+                { return new OkResponse("save picture success").ToString(); }
+                else
+                {
+                    return new FailResponse("save picture fail").ToString();
+                }
+
             }
         }
         public string Get(ProjectPrintPic request)
         {
-            return new OkResponse(Pics.PrintPic()).ToString();
+            if (Pics.PrintPic()) { return new OkResponse("print success").ToString(); }
+            else { return new FailResponse("print fail").ToString(); }
+
         }
         public string Get(ProjectPhotolist request)
         {
-            if (Photo.PngToBase64() == null)
+            List<PhotoData> ans = Photo.PngToBase64();
+            if (pngtobase64state)
             {
-                return new FailResponse("false").ToString();
+                return new FailResponse(ans).ToString();
             }
             else
             {
-                return new OkResponse(Photo.PngToBase64()).ToString();
+                return new FailResponse(ans).ToString();
             }
         }
 
@@ -116,36 +164,106 @@ namespace inventory_server.Server
         /// </summary>
         public string Get(GetBlueToothList request)
         {
-            return new OkResponse(BlueToothList.getlist()).ToString();
+            string ans = BlueToothList.getlist();
+            if (getliststate)
+            { return new OkResponse(ans).ToString(); }
+            else
+            {
+                return new FailResponse(ans).ToString();
+            }
+
 
         }
         public string Get(ConnectBlueTooth request)
         {
+            string ans = BlueToothList.connect(request.devicename, request.key);
+            if (connectstate)
+            {
+                return new OkResponse(ans).ToString();
 
-            return new OkResponse(BlueToothList.connect(request.devicename, request.key)).ToString();
+            }
+            else
+            {
+                return new FailResponse(ans).ToString();
+            }
+
         }
         public string Get(GetSpList request)
         {
-            return new OkResponse(SerialPortConnect.spList()).ToString();
+            string ans = SerialPortConnect.spList();
+            if (spListstate)
+            {
+                return new OkResponse(ans).ToString();
+            }
+            else
+            {
+                return new FailResponse(ans).ToString();
+            }
+
         }
         public string Get(ConnectSp request)
         {
-            //SerialPortConnect.spOpen(request.spname);
-            return new OkResponse(SerialPortConnect.spOpen(request.spname)).ToString();
+            
+            string ans = SerialPortConnect.spOpen(request.spname);
+            if (spOpenstate)
+            {
+                return new OkResponse(ans).ToString();
+
+            }
+            else
+            {
+                return new FailResponse(ans).ToString();
+            }
+
         }
         public string Get(CloseSp request)
         {
-            return new OkResponse(SerialPortConnect.spClose(request.spname)).ToString();
+            
+            string ans = SerialPortConnect.spClose(request.spname);
+            if (spClosestate)
+            {
+                return new OkResponse(ans).ToString();
+
+            }
+            else
+            {
+                return new FailResponse(ans).ToString();
+            }
         }
         public string Get(ConnectStation request)
         {
-            SerialPortConnect.setAccountAndKey(request.account, request.key);
+
+            string ansofaccount = SerialPortConnect.setAccountAndKey(request.account, request.key);
+            string ansofGetRTCM;
+            if(ansofaccount== "Account set ok")
+            {
+                ansofGetRTCM = SerialPortConnect.GetRTCMdata(request.address, request.mountpoint);
+                if(GetRTCMdatastate)
+                {
+                    return new OkResponse(ansofGetRTCM).ToString();
+                }
+                else
+                {
+                    return new FailResponse(ansofGetRTCM).ToString();
+                }
+            }
+            else
+            {
+                return new FailResponse(ansofaccount).ToString();
+            }
             //SerialPortConnect.GetRTCMdata(request.address,request.mountpoint);
-            return new OkResponse(SerialPortConnect.GetRTCMdata(request.address, request.mountpoint)).ToString();
         }
         public string Get(PrintNmea request)
         {
-            return new OkResponse(SerialPortConnect.PrintNmeaData()).ToString();
+            List<string> ans = SerialPortConnect.PrintNmeaData();
+            if (printNMEAstate)
+            {
+                return new OkResponse(ans).ToString();
+            }
+            else
+            {
+                return new FailResponse(ans).ToString();
+            }
         }
     }
 }

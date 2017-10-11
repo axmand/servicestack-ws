@@ -14,10 +14,10 @@ namespace hardware.projectmanager
     {
 
         public static string projname = _importProjectName;
-       // public static string sourceFile = System.IO.Directory.GetCurrentDirectory() + "\\Form.xlsx";   //  此处是默认的表格模板                                                                  //string  = @"D:\\ProjectFormTemplet\\testCopy2.xlsx";
-        public static string destinationFile = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\Form.xlsx";
-        
-        public static Application xls ;
+        // public static string sourceFile = System.IO.Directory.GetCurrentDirectory() + "\\Form.xlsx";   //  此处是默认的表格模板                                                                  //string  = @"D:\\ProjectFormTemplet\\testCopy2.xlsx";
+        public static string destinationFile;
+
+        public static Application xls;
         public static _Worksheet sheet;//定义sheet变量
         public static _Workbook book;
 
@@ -25,9 +25,18 @@ namespace hardware.projectmanager
         {
             try
             {
+                string destinationFile = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\Form.xlsx"; ;
+                if (!File.Exists(destinationFile))
+                {
+                    string sourceFile = System.IO.Directory.GetCurrentDirectory() + "\\Form.xlsx";   //  此处是默认的表格模板                                                                     //string  = @"D:\\ProjectFormTemplet\\testCopy2.xlsx";
+                    bool isrewrite = true; // true=覆盖已存在的同名文件,false则反之
+                    System.IO.File.Copy(sourceFile, destinationFile, isrewrite);
+                }
+                else
+                { }
                 xls = new Microsoft.Office.Interop.Excel.Application();
                 book = xls.Workbooks.Open(destinationFile, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value);
-                string Data = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\all.txt", Encoding.Default);
+                string Data = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\all.txt", Encoding.Default);
                 List<Forms> _projectData = JsonConvert.DeserializeObject<List<Forms>>(Data);
                 sheet = (_Worksheet)book.Worksheets.get_Item(formNum);
                 sheet.Activate();
@@ -178,10 +187,14 @@ namespace hardware.projectmanager
                     //  F7 三个合计和备注没有字段
 
                 }
-
                 return true;
+
+
             }
-            catch (Exception e) { var s = e.ToString(); return false; }
+            catch (Exception)
+            { //var s = e.ToString(); 
+                return false;
+            }
         }
 
         public static void AutoRange(int inputRow, int inputCol, int sheetNumber)
@@ -254,23 +267,26 @@ namespace hardware.projectmanager
 
         public static void endAndPrintExcel()
         {
+            try
+            {
+                sheet.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\pirntForm.pdf"); //导出位置
+                                                                                                                                                                         ///资源回收
+                book.Save();
+                book.Close(false, Missing.Value, Missing.Value);//关闭打开的表
+                xls.Quit();//Excel
+                sheet = null;
+                book = null;
+                xls = null;
+                GC.Collect();
 
-            sheet.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, "D:\\ProjectFormTemplet\\form.pdf"); //导出位置
-            ///资源回收
-            book.Save();
-            book.Close(false, Missing.Value, Missing.Value);//关闭打开的表
-            xls.Quit();//Excel
-            sheet = null;
-            book = null;
-            xls = null;
-            GC.Collect();
+                PdfDocument doc = new PdfDocument();
+                doc.LoadFromFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\pirntForm.pdf");
 
-            PdfDocument doc = new PdfDocument();
-            doc.LoadFromFile("D:\\ProjectFormTemplet\\form.pdf");
+                doc.PrintDocument.Print();
 
-            doc.PrintDocument.Print();
-
-            doc.Close();
+                doc.Close();
+            }
+            catch (Exception) { }
 
         }
 

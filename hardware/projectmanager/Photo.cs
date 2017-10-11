@@ -15,6 +15,7 @@ namespace hardware.projectmanager
 {
     public class Photo
     {
+        public static bool pngtobase64state = true;
         public static bool Base64ToPng(string Base64Data)
         {
             try
@@ -23,7 +24,7 @@ namespace hardware.projectmanager
                 byte[] ByteData = Convert.FromBase64String(Data.PhotoString);
                 MemoryStream ms = new MemoryStream(ByteData);
                 Bitmap bmp = new Bitmap(ms);
-                bmp.Save(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\photos\\" + Data.PhotoId + ".png", ImageFormat.Png);
+                bmp.Save(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\photos\\" + Data.PhotoId + ".png", ImageFormat.Png);
                 return true;
             }
             catch (Exception)
@@ -37,7 +38,7 @@ namespace hardware.projectmanager
         {
             try
             {
-                string PngFileName = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\photos";
+                string PngFileName = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\photos";
                 string[] _photoPathList;
                 string[] _photoNameList;
                 _photoPathList = Directory.GetFiles(PngFileName);
@@ -68,9 +69,14 @@ namespace hardware.projectmanager
                     photo.PhotoString = base64;
                     AllPhoto.Add(photo);
                 }
+                pngtobase64state = true;
                 return AllPhoto;
             }
-            catch (Exception) { return null; }
+            catch (Exception)
+            {
+                pngtobase64state = false;
+                return null;
+            }
         }
     }
     public class Pics
@@ -79,11 +85,11 @@ namespace hardware.projectmanager
         {
             try
             {
-                
+
                 byte[] ByteData = Convert.FromBase64String(Base64Data);
                 MemoryStream ms = new MemoryStream(ByteData);
                 Bitmap bmp = new Bitmap(ms);
-                bmp.Save(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\pics\\unitpics.png", ImageFormat.Png);
+                bmp.Save(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\pics\\unitpics.png", ImageFormat.Png);
                 bmp.Dispose();
                 ms.Dispose();
                 return true;
@@ -104,7 +110,7 @@ namespace hardware.projectmanager
                 PdfSection section = doc.Sections.Add();
                 PdfPageBase page = doc.Pages.Add();
 
-                PdfImage image = PdfImage.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\pics\\unitpics.png");
+                PdfImage image = PdfImage.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\pics\\unitpics.png");
                 float widthFitRate = image.PhysicalDimension.Width / page.Canvas.ClientSize.Width;
 
                 float heightFitRate = image.PhysicalDimension.Height / page.Canvas.ClientSize.Height;
@@ -116,8 +122,8 @@ namespace hardware.projectmanager
                 float fitHeight = image.PhysicalDimension.Height / fitRate;
 
                 page.Canvas.DrawImage(image, 20, 20, fitWidth, fitHeight);
-                doc.SaveToFile(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\pics\\pic.pdf");
-                print.LoadFromFile(System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + _importProjectName + "\\pics\\pic.pdf");
+                doc.SaveToFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\pics\\pic.pdf");
+                print.LoadFromFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\pics\\pic.pdf");
                 print.PrintDocument.Print();
                 print.Close();
 

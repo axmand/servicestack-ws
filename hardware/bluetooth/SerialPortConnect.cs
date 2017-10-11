@@ -45,14 +45,30 @@ namespace hardware.bluetooth
         /// </summary>
         static Thread pr = new Thread(_printNmea);
         static Thread th = new Thread(download);
+        ///定义状态
+        public static bool spListstate = true;
+        public static bool spOpenstate = true;
+        public static bool spClosestate = true;
+        public static bool GetRTCMdatastate = true;
+        public static bool printNMEAstate = true;
         /// <summary>
         /// 获取可用端口名称
         /// </summary>
         public static string spList()
         {
+
             //string[] _spList = SerialPort.GetPortNames();
-            string[] _spList = MulGetHardwareInfo(HardwareEnum.Win32_SerialPort, "Name");
-            return Newtonsoft.Json.JsonConvert.SerializeObject(_spList);
+            try
+            {
+                string[] _spList = MulGetHardwareInfo(HardwareEnum.Win32_SerialPort, "Name");
+                spListstate = true;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(_spList);
+            }
+            catch (Exception)
+            {
+                spListstate = false;
+                return null;
+            }
         }
         public enum HardwareEnum
         {
@@ -78,10 +94,12 @@ namespace hardware.bluetooth
                     }
                     searcher.Dispose();
                 }
+                spListstate = true;
                 return strs.ToArray();
             }
             catch
             {
+                spListstate = false;
                 return null;
             }
             finally
@@ -114,6 +132,7 @@ namespace hardware.bluetooth
                 }
                 catch (Exception)
                 {
+                    spOpenstate = false;
                     return "can't find " + spname;
                 }
             }
@@ -122,19 +141,21 @@ namespace hardware.bluetooth
         }
         public static void printdata()
         {
-
-            // 开启接收数据的线程
-            if (closeNumber > 0)
+            try
             {
-                pr.Resume();
-                
-            }
-            else
-            {
-                pr.Start();
-                pr.IsBackground = true;
-            }
+                // 开启接收数据的线程
+                if (closeNumber > 0)
+                {
+                    pr.Resume();
 
+                }
+                else
+                {
+                    pr.Start();
+                    pr.IsBackground = true;
+                }
+            }
+            catch (Exception) { }
 
         }
         public static string spClose(string spname)
@@ -143,109 +164,135 @@ namespace hardware.bluetooth
             {
                 _bAccpet = false;
                 pr.Suspend();
-                
-                if (closeNumber > 0&& RtcmConnectNumber>0) { th.Suspend(); }
+
+                if (closeNumber > 0 && RtcmConnectNumber > 0) { th.Suspend(); }
                 _sp.Close();
                 closeNumber++;
+                spOpenstate = true;
                 return "close ok";
             }
             catch (Exception)
             {
+                spOpenstate = false;
                 return "error";
             }
         }
         /// <summary>
         /// 发送RTCM数据
         /// </summary>
-        public static void setAccountAndKey(string account, string key)
+        public static string setAccountAndKey(string account, string key)
         {
-            _account = account;
-            _key = key;
-            byte[] byteArray = System.Text.Encoding.Default.GetBytes(account + ":" + key);
-            _basicAccountAndKey = Convert.ToBase64String(byteArray);
-            _basicAccountAndKey = "Basic " + _basicAccountAndKey;
+            try
+            {
+                _account = account;
+                _key = key;
+                byte[] byteArray = System.Text.Encoding.Default.GetBytes(account + ":" + key);
+                _basicAccountAndKey = Convert.ToBase64String(byteArray);
+                _basicAccountAndKey = "Basic " + _basicAccountAndKey;
+                GetRTCMdatastate = true;
+                return "Account set ok";
+            }
+            catch (Exception)
+            {
+                GetRTCMdatastate = false;
+                return "Account set fail";
+            }
         }
         public static string GetRTCMdata(string address, string mountPoint)
         {
-            
-            string[] AddressMessage = address.Split(':');
-            _address = AddressMessage[0];
-            if (AddressMessage.Length != 1)
-                port = int.Parse(AddressMessage[1]);
-            else
-                port = 80;
-            _mountPoint = mountPoint;
-            
-            if (closeNumber > 0 && RtcmConnectNumber > 0)
+            try
             {
-                th.Resume();
-                
-            }
-            else
-            {
-                th.Start();
-                th.IsBackground = true;
-            }
-            RtcmConnectNumber++;
-            //th.Start();
-            //th.IsBackground = true;
-            return "RTCM Transport Success";
+                string[] AddressMessage = address.Split(':');
+                _address = AddressMessage[0];
+                if (AddressMessage.Length != 1)
+                    port = int.Parse(AddressMessage[1]);
+                else
+                    port = 80;
+                _mountPoint = mountPoint;
 
+                if (closeNumber > 0 && RtcmConnectNumber > 0)
+                {
+                    th.Resume();
+
+                }
+                else
+                {
+                    th.Start();
+                    th.IsBackground = true;
+                }
+                RtcmConnectNumber++;
+                //th.Start();
+                //th.IsBackground = true;
+                GetRTCMdatastate = true;
+                return "RTCM Transport Success";
+            }
+            catch (Exception)
+            {
+                GetRTCMdatastate = false;
+                return "RTCM Transport fail";
+            }
 
         }
         public static void download()
         {
-            string uriaddress = _address;
-            IPAddress ipAddress = IPAddress.Parse(uriaddress);
-            IPEndPoint iep = new IPEndPoint(ipAddress, port);
-            Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-
-            clientSocket.Connect(iep);
-
-            bool connect = true;
-
-            String requestmsg = "GET /" + _mountPoint
-                                    + " HTTP/1.0\r\n";
-            requestmsg += "User-Agent: NTRIP GNSSInternetRadio/1.2.0\r\n";
-
-            requestmsg += "Authorization: " + _basicAccountAndKey;
-            requestmsg += "\r\n";
-            requestmsg += "Accept: */*\r\n";
-            requestmsg += "Connection: close\r\n";
-            requestmsg += "\r\n";
-            string message = requestmsg;
-            byte[] sendbytes = System.Text.Encoding.UTF8.GetBytes(message);
-            int successSendBtyes = clientSocket.Send(sendbytes, sendbytes.Length, SocketFlags.None);
-
-            byte[] bArr = new byte[1024];
-            int size = clientSocket.Receive(bArr);
-
-            while (size > 0 && connect == true)
+            try
             {
-                size = clientSocket.Receive(bArr);
-                if (_sp.IsOpen)
+                string uriaddress = _address;
+                IPAddress ipAddress = IPAddress.Parse(uriaddress);
+                IPEndPoint iep = new IPEndPoint(ipAddress, port);
+                Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                clientSocket.Connect(iep);
+
+                bool connect = true;
+
+                String requestmsg = "GET /" + _mountPoint
+                                        + " HTTP/1.0\r\n";
+                requestmsg += "User-Agent: NTRIP GNSSInternetRadio/1.2.0\r\n";
+
+                requestmsg += "Authorization: " + _basicAccountAndKey;
+                requestmsg += "\r\n";
+                requestmsg += "Accept: */*\r\n";
+                requestmsg += "Connection: close\r\n";
+                requestmsg += "\r\n";
+                string message = requestmsg;
+                byte[] sendbytes = System.Text.Encoding.UTF8.GetBytes(message);
+                int successSendBtyes = clientSocket.Send(sendbytes, sendbytes.Length, SocketFlags.None);
+
+                byte[] bArr = new byte[1024];
+                int size = clientSocket.Receive(bArr);
+
+                while (size > 0 && connect == true)
                 {
-                    _sp.Write(bArr, 0, size);
-                }
-                else
-                {
-                    break;
+                    size = clientSocket.Receive(bArr);
+                    if (_sp.IsOpen)
+                    {
+                        _sp.Write(bArr, 0, size);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
+            catch (Exception)
+            {
 
+            }
         }
-
         /// <summary>
         /// 实时收取NEMA数据的线程
         /// </summary>
         public static void _printNmea()
         {
-            while (_bAccpet)
+            try
             {
-                str = _sp.ReadExisting();
-                Thread.Sleep(1000);
+                while (_bAccpet)
+                {
+                    str = _sp.ReadExisting();
+                    Thread.Sleep(1000);
+                }
             }
+            catch (Exception) { }
         }
         /// <summary>
         /// 获取经纬度JSON数据
@@ -271,7 +318,7 @@ namespace hardware.bluetooth
                     //string[] od = { lat, lon ,model};
                     string[] od = { lat, lon };
                     List<string> coordinate = new List<string>(od);
-
+                    printNMEAstate = true;
                     return coordinate;
                 }
                 else
@@ -280,7 +327,7 @@ namespace hardware.bluetooth
                     lon = "00.000";
                     string[] od = { lat, lon };
                     List<string> coordinate = new List<string>(od);
-
+                    printNMEAstate = false;
                     return coordinate;
 
                 }
@@ -291,7 +338,7 @@ namespace hardware.bluetooth
                 string lon = "00.000";
                 string[] od = { lat, lon };
                 List<string> coordinate = new List<string>(od);
-
+                printNMEAstate = false;
                 return coordinate;
 
             }
@@ -304,6 +351,7 @@ namespace hardware.bluetooth
                 }
                 catch
                 {
+                    printNMEAstate = false;
                     return false;
                 }
             }
@@ -320,7 +368,9 @@ namespace hardware.bluetooth
                     return Degree;
                 }
                 catch (Exception)
-                { return "00.000"; }
+                {
+                    printNMEAstate = false; return "00.000";
+                }
             }
         }
     }

@@ -11,11 +11,14 @@ namespace inventory_server.Route
     /// <summary>
     /// Project
     /// </summary>
+    #region 测试
     [Route("/project/remove/{id}", "GET")]
     public class ProjectRemoveGet
     {
         public string id { get; set; }
     }
+    #endregion
+
     [Route("/project/list", "GET")]
     public class ProjecListGet
     {
