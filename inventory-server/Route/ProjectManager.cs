@@ -36,11 +36,16 @@ namespace inventory_server.Route
     //{
     //    public string name { get; set; }
     //}
-    [Route("/project/fill", "GET")]
-    public class ProjectFormsFill
-    {
-        public string response { get; set; }
-    }
+
+    /// <summary>
+    /// 这个不用了 10.10
+    /// </summary>
+    //[Route("/project/fill", "GET")]
+    //public class ProjectFormsFill
+    //{
+    //    public string response { get; set; }
+    //}
+
     [Route("/project/print/{formnumber}", "GET")]
     public class ProjectFormsPrint
     {

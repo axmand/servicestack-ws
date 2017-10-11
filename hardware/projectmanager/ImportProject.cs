@@ -37,6 +37,11 @@ namespace hardware.projectmanager
                     Directory.CreateDirectory(_fingerPath);
                     Directory.CreateDirectory(_picPath);
                     Directory.CreateDirectory(_photoPath);
+                    string sourceFile = System.IO.Directory.GetCurrentDirectory() + "\\Form.xlsx";   //  此处是默认的表格模板
+                                                                                                     //string  = @"D:\\ProjectFormTemplet\\testCopy2.xlsx";
+                    string destinationFile = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projectName + "\\Forms\\Form.xlsx";
+                    bool isrewrite = true; // true=覆盖已存在的同名文件,false则反之
+                    System.IO.File.Copy(sourceFile, destinationFile, isrewrite);
                     return "OK";
                 }
                 else
@@ -216,7 +221,9 @@ namespace hardware.projectmanager
             public JValue szJSONData { get; set; }
             public JValue zdJSONData { get; set; }
             public JValue zjJSONData { get; set; }
-            
+            public JValue jzxJSONData { get; set; }
+
+
         }//图层
         /// <summary>
         /// 导入layers的数据txt

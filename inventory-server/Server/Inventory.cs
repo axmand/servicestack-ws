@@ -47,13 +47,25 @@ namespace inventory_server.Server
         //{
         //    return new OkResponse(ImportProject.SendLayersData()).ToString();
         //}
-        public string Get(ProjectFormsFill request)
-        {
-            return new OkResponse(FillAndPrintExcel.WriteXls()).ToString();
-        }
+
+        ///这个不用了 10.0
+        //public string Get(ProjectFormsFill request)
+        //{
+        //    return new OkResponse(FillAndPrintExcel.WriteXls()).ToString();
+        //}
         public string Get(ProjectFormsPrint request)
         {
-            return new OkResponse(FillAndPrintExcel.CreateAndPrintPdf(request.formnumber)).ToString();
+            //return new OkResponse(FillAndPrintExcel.CreateAndPrintPdf(request.formnumber)).ToString();
+            if (PrintForm.receivePrintForm(request.formnumber))
+            {
+
+                PrintForm.endAndPrintExcel();
+                return new OkResponse("success").ToString();
+            }
+            else
+            {
+                return new FailResponse("fail").ToString();
+            }
         }
         public string Post(ProjectFormsPost request)
         {

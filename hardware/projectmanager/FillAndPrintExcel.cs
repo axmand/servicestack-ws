@@ -15,6 +15,7 @@ namespace hardware.projectmanager
 {
     public class FillAndPrintExcel
     {
+        ///这个不用了10.10
         
         /// <summary>
         /// 填写表格，将txt数据库中的数据填写到表格中并保存
@@ -25,7 +26,7 @@ namespace hardware.projectmanager
 
             try
             {
-                 string projname = _importProjectName;
+                string projname = _importProjectName;
                 string sourceFile = System.IO.Directory.GetCurrentDirectory() + "\\Form.xlsx";   //  此处是默认的表格模板
                                                                                                  //string  = @"D:\\ProjectFormTemplet\\testCopy2.xlsx";
                 string destinationFile = System.IO.Directory.GetCurrentDirectory() + "\\ProjectTest\\" + projname + "\\Forms\\DataCopy2Print.xlsx";
@@ -122,7 +123,7 @@ namespace hardware.projectmanager
                                 sheet.Cells[(2 * n + 4), 7] = _projectData[0].F2.LandPointDistance[n];
                                 sheet.Cells[(2 * n + 4), (_projectData[0].F2.LandBoundaryType[n] + 8)] = "√";
                                 sheet.Cells[(2 * n + 4), (_projectData[0].F2.LandBoundaryLocation[n] + 16)] = "√";
-                                sheet.Cells[(2 * n + 4), 19] = _projectData[0].F2.LandBoundaryExplain[0];
+                                sheet.Cells[(2 * n + 4), 19] = _projectData[0].F2.LandBoundaryExplain[n];
                             }
                             continue;
                         }
@@ -227,6 +228,17 @@ namespace hardware.projectmanager
                 xls.DisplayAlerts = false;//设置不显示确认修改提示
                                           //获取到对应的表格
                 sheet = (_Worksheet)book.Worksheets.get_Item(i);
+                sheet.Activate();
+                //修改格式
+                //if (i == 1)
+                //{
+
+                //}
+
+
+
+
+
                 sheet.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, "D:\\ProjectFormTemplet\\form" + i + ".pdf"); //导出位置
                 book.Close(false, Missing.Value, Missing.Value);//关闭打开的表
                 xls.Quit();//Excel程序退出
@@ -247,5 +259,6 @@ namespace hardware.projectmanager
 
         }
 
+       
     }
 }
