@@ -13,6 +13,7 @@ using static hardware.projectmanager.ImportProject;
 
 namespace hardware.projectmanager
 {
+#region
     public class FillAndPrintExcel
     {
         ///这个不用了10.10
@@ -261,4 +262,5 @@ namespace hardware.projectmanager
 
        
     }
+#endregion
 }

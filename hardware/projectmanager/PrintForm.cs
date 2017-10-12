@@ -166,6 +166,9 @@ namespace hardware.projectmanager
                 }
                 else if (formNum == 7)
                 {
+                    sheet.Cells[2, 2] = _projectData[0].F1.Location;
+                    sheet.Cells[3, 2] = _projectData[0].F1.ParcelCode;
+                    sheet.Cells[4, 2] = _projectData[0].F1.ParcelArea;
                     sheet.Cells[4, 4] = _projectData[0].F7.FixedCount;
                     int intFixedCount;
                     int.TryParse(_projectData[0].F7.FixedCount, out intFixedCount);
@@ -179,6 +182,7 @@ namespace hardware.projectmanager
                     }
                     for (int n = 0; n < _projectData[0].F7.FixedCode.Length; n++)
                     {
+
                         sheet.Cells[n + 6, 1] = _projectData[0].F7.FixedCode[n];
                         sheet.Cells[n + 6, 2] = _projectData[0].F7.LandOwnUseArea[n];
                         sheet.Cells[n + 6, 3] = _projectData[0].F7.LandUniqueArea[n];
