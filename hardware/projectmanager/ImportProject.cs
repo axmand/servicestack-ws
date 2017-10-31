@@ -30,8 +30,8 @@ namespace hardware.projectmanager
                 string _projPath = path + "/" + projectName;// 存成项目名字
                 string _formPath = path + "/" + projectName + "\\Forms";
                 string _fingerPath = path + "/" + projectName + "\\Fingers";
-                string _picPath = path + "/" + projectName + "\\pics";
-                string _photoPath = path + "/" + projectName + "\\photos";
+                string _picPath = path + "/" + projectName + "\\Pics";
+                string _photoPath = path + "/" + projectName + "\\Photos";
                 if (!Directory.Exists(_projPath))
                 {
                     Directory.CreateDirectory(_projPath);
