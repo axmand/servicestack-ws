@@ -151,11 +151,22 @@ namespace inventory_server.Server
             List<PhotoData> ans = Photo.PngToBase64();
             if (pngtobase64state)
             {
-                return new FailResponse(ans).ToString();
+                return new OkResponse(ans).ToString();
             }
             else
             {
                 return new FailResponse(ans).ToString();
+            }
+        }
+        public string Get(ProjectDeletePhoto request)
+        {
+            if (Photo.DeletePhoto(request.photoname))
+            {
+                return new OkResponse("Delete Success!").ToString() ;
+            }
+            else
+            {
+                return new FailResponse("Delete Fail!").ToString(); 
             }
         }
 
@@ -190,7 +201,8 @@ namespace inventory_server.Server
         }
         public string Get(GetSpList request)
         {
-            string ans = SerialPortConnect.spList();
+            //string ans = SerialPortConnect.spList();
+            string[] ans = SerialPortConnect.spList();
             if (spListstate)
             {
                 return new OkResponse(ans).ToString();

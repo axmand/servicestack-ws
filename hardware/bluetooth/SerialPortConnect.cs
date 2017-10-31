@@ -54,15 +54,21 @@ namespace hardware.bluetooth
         /// <summary>
         /// 获取可用端口名称
         /// </summary>
-        public static string spList()
+        public static string[] spList()
         {
 
             //string[] _spList = SerialPort.GetPortNames();
             try
             {
                 string[] _spList = MulGetHardwareInfo(HardwareEnum.Win32_SerialPort, "Name");
+
+                //string[] _spList = new string[2];
+                //_spList[0] = "io大苏打似的";
+                //_spList[1] = "技术的绝杀";
+                
                 spListstate = true;
-                return Newtonsoft.Json.JsonConvert.SerializeObject(_spList);
+                // return Newtonsoft.Json.JsonConvert.SerializeObject(_spList);
+                return _spList;
             }
             catch (Exception)
             {

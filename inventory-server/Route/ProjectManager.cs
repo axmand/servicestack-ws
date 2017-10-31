@@ -79,7 +79,11 @@ namespace inventory_server.Route
     {
         public string response { get; set; }
     }
-
+    [Route("/project/deletephoto/{photoname}","GET")]
+    public class ProjectDeletePhoto
+    {
+        public string photoname { get; set; }
+    }
 
     /// <summary>
     /// 蓝牙

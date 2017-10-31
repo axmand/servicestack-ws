@@ -33,7 +33,19 @@ namespace hardware.projectmanager
             }
 
         }
-
+        public static bool DeletePhoto(string photoName)
+        {
+            try
+            {
+                File.Delete(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\photos\\" + photoName + ".png");
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
+        }
         public static List<PhotoData> PngToBase64()
         {
             try
