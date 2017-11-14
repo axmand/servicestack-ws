@@ -49,7 +49,7 @@ namespace inventory_server.Route
     //    public string response { get; set; }
     //}
 
-    [Route("/project/print/{formnumber}", "GET")]
+    [Route("/project/printforms", "GET")]
     public class ProjectFormsPrint
     {
         public int formnumber { get; set; }

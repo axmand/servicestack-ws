@@ -8,6 +8,7 @@ using static hardware.projectmanager.ImportProject;
 using static hardware.projectmanager.Photo;
 using static hardware.bluetooth.BlueToothList;
 using static hardware.bluetooth.SerialPortConnect;
+using static hardware.projectmanager.Print;
 
 namespace inventory_server.Server
 {
@@ -80,11 +81,20 @@ namespace inventory_server.Server
         public string Get(ProjectFormsPrint request)
         {
             //return new OkResponse(FillAndPrintExcel.CreateAndPrintPdf(request.formnumber)).ToString();
-            if (PrintForm.receivePrintForm(request.formnumber))
+            //if (Print.FillForms() && Print.FillForms2() && Print.FillForms3())
+            if(FillForm())
             {
-
-                PrintForm.endAndPrintExcel();
                 return new OkResponse("success").ToString();
+                //有打印机再测试
+                //if (Print.PrintForm())
+                //{
+                //    return new OkResponse("success").ToString();
+                //}
+                //else
+                //{
+                //    return new FailResponse("fail").ToString();
+                //}
+
             }
             else
             {
@@ -162,11 +172,11 @@ namespace inventory_server.Server
         {
             if (Photo.DeletePhoto(request.photoname))
             {
-                return new OkResponse("Delete Success!").ToString() ;
+                return new OkResponse("Delete Success!").ToString();
             }
             else
             {
-                return new FailResponse("Delete Fail!").ToString(); 
+                return new FailResponse("Delete Fail!").ToString();
             }
         }
 
@@ -215,7 +225,7 @@ namespace inventory_server.Server
         }
         public string Get(ConnectSp request)
         {
-            
+
             string ans = SerialPortConnect.spOpen(request.spname);
             if (spOpenstate)
             {
@@ -230,7 +240,7 @@ namespace inventory_server.Server
         }
         public string Get(CloseSp request)
         {
-            
+
             string ans = SerialPortConnect.spClose(request.spname);
             if (spClosestate)
             {
@@ -247,10 +257,10 @@ namespace inventory_server.Server
 
             string ansofaccount = SerialPortConnect.setAccountAndKey(request.account, request.key);
             string ansofGetRTCM;
-            if(ansofaccount== "Account set ok")
+            if (ansofaccount == "Account set ok")
             {
                 ansofGetRTCM = SerialPortConnect.GetRTCMdata(request.address, request.mountpoint);
-                if(GetRTCMdatastate)
+                if (GetRTCMdatastate)
                 {
                     return new OkResponse(ansofGetRTCM).ToString();
                 }

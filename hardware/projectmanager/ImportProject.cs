@@ -193,6 +193,8 @@ namespace hardware.projectmanager
             public string[] StartPointCodeList { get; set; }
             public string[] InnerPointCodeList { get; set; }
             public string[] EndPointCodeList { get; set; }
+            public string[] AdjoinName { get; set; }
+            public string[] AdjoinId { get; set; }
         }
         public class F5//界址说明表
         {
