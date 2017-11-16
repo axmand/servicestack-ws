@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace hardware.bluetooth
 {
+    
     public class BlueToothList
     {
         static BluetoothClient _blueToothClient = new BluetoothClient();
@@ -58,4 +59,5 @@ namespace hardware.bluetooth
             catch (Exception) { connectstate = false; return "connect fail"; }
         }
     }
+   
 }

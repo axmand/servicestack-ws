@@ -84,16 +84,16 @@ namespace inventory_server.Server
             //if (Print.FillForms() && Print.FillForms2() && Print.FillForms3())
             if(FillForm())
             {
-                return new OkResponse("success").ToString();
-                //有打印机再测试
-                //if (Print.PrintForm())
-                //{
-                //    return new OkResponse("success").ToString();
-                //}
-                //else
-                //{
-                //    return new FailResponse("fail").ToString();
-                //}
+               
+               
+                if (Print.PrintForm())
+                {
+                    return new OkResponse("success").ToString();
+                }
+                else
+                {
+                    return new FailResponse("fail").ToString();
+                }
 
             }
             else

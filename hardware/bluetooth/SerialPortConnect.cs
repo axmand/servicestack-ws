@@ -57,15 +57,19 @@ namespace hardware.bluetooth
         public static string[] spList()
         {
 
-            //string[] _spList = SerialPort.GetPortNames();
+            
             try
             {
-                string[] _spList = MulGetHardwareInfo(HardwareEnum.Win32_SerialPort, "Name");
+                
+                string[] _spList = SerialPort.GetPortNames();
 
                 //string[] _spList = new string[2];
                 //_spList[0] = "io大苏打似的";
                 //_spList[1] = "技术的绝杀";
-                
+
+                //string[] _spList = MulGetHardwareInfo(HardwareEnum.Win32_SerialPort, "Name");
+
+
                 spListstate = true;
                 // return Newtonsoft.Json.JsonConvert.SerializeObject(_spList);
                 return _spList;
@@ -76,41 +80,41 @@ namespace hardware.bluetooth
                 return null;
             }
         }
-        public enum HardwareEnum
-        {
+        //public enum HardwareEnum
+        //{
 
-            Win32_SerialPort, // 串口
-        }
-        public static string[] MulGetHardwareInfo(HardwareEnum hardType, string propKey)
-        {
+        //    Win32_SerialPort, // 串口
+        //}
+        //public static string[] MulGetHardwareInfo(HardwareEnum hardType, string propKey)
+        //{
 
-            List<string> strs = new List<string>();
-            try
-            {
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from " + hardType))
-                {
-                    var hardInfos = searcher.Get();
-                    foreach (var hardInfo in hardInfos)
-                    {
-                        if (hardInfo.Properties[propKey].Value.ToString().Contains("COM"))
-                        {
-                            strs.Add(hardInfo.Properties[propKey].Value.ToString());
-                        }
+        //    List<string> strs = new List<string>();
+        //    try
+        //    {
+        //        using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from " + hardType))
+        //        {
+        //            var hardInfos = searcher.Get();
+        //            foreach (var hardInfo in hardInfos)
+        //            {
+        //                if (hardInfo.Properties[propKey].Value.ToString().Contains("COM"))
+        //                {
+        //                    strs.Add(hardInfo.Properties[propKey].Value.ToString());
+        //                }
 
-                    }
-                    searcher.Dispose();
-                }
-                spListstate = true;
-                return strs.ToArray();
-            }
-            catch
-            {
-                spListstate = false;
-                return null;
-            }
-            finally
-            { strs = null; }
-        }
+        //            }
+        //            searcher.Dispose();
+        //        }
+        //        spListstate = true;
+        //        return strs.ToArray();
+        //    }
+        //    catch
+        //    {
+        //        spListstate = false;
+        //        return null;
+        //    }
+        //    finally
+        //    { strs = null; }
+        //}
         /// <summary>
         /// 开关端口
         /// </summary>
@@ -306,18 +310,25 @@ namespace hardware.bluetooth
         /// <returns></returns>
         public static List<string> PrintNmeaData()
         {
-
-            int indexR = str.LastIndexOf("$GPRMC");
+            //11.16修改
+            //int indexR = str.LastIndexOf("$GPRMC");
+            //int indexM = str.LastIndexOf("*");
+            int indexR = str.LastIndexOf("$GPGGA");
+            int indexM = str.IndexOf("*");
+            //11.16修改结束
             int indexN = str.Length;
-            int indexM = str.LastIndexOf("*");
+            
             if (indexN > (indexR + 50))
             {
-                string model = str.Substring((indexM - 1), 1);
-                string gnrmc = str.Substring((indexR + 18), 32);
+                //11.16修改
+                //string model = str.Substring((indexM - 1), 1);
+                string model = str.Substring((indexR + 50), 1);
+                //11.16修改结束
+                string gnrmc = str.Substring((indexR + 17), 32);
                 //return gnrmc;//    gnrmc=3031.69748195,N,11421.38629542,E
                 string lat = gnrmc.Substring(0, 13);
                 string lon = gnrmc.Substring(16, 13);
-                if (IsCoordinate(lat) && IsCoordinate(lon) && model == "D")
+                if (IsCoordinate(lat) && IsCoordinate(lon) && model == "2")
                 {
                     lat = DF2D(lat);
                     lon = DF2D(lon);

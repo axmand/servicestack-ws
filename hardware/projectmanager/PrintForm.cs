@@ -9,7 +9,8 @@ using Spire.Pdf;
 using static hardware.projectmanager.ImportProject;
 
 namespace hardware.projectmanager
-{//不用
+{ 
+    #region 不用
     public class PrintForm
     {
 
@@ -296,4 +297,5 @@ namespace hardware.projectmanager
 
 
     }
+    #endregion
 }

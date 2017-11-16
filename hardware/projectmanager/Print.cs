@@ -19,7 +19,8 @@ namespace hardware.projectmanager
         public static Application xls;
         public static _Worksheet sheet;//定义sheet变量
         public static _Workbook book;
-
+        public static int _Form2Number;
+        public static int _Form3Number;
         #region 需要等待十几秒 淘汰
         /// <summary>
         /// 效率慢
@@ -304,8 +305,7 @@ namespace hardware.projectmanager
             try
             {
                 string destinationFile = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\Forms.xlsx";
-                int _Form2Number;
-                int _Form3Number;
+                
 
                 if (!File.Exists(destinationFile))
                 {
@@ -400,6 +400,7 @@ namespace hardware.projectmanager
 
                 if (_Form2Number == 0 || l1 == 19)
                 {
+                    _Form2Number=1;
                     if (l1 == l2 && l1 == l4 + 1 && l1 == l5 + 1 && l1 == l6 + 1)
                     {
                         sheet.Cells[4, 1] = _projectData[0].F2.LandPointCodeList[0];
@@ -421,6 +422,7 @@ namespace hardware.projectmanager
                 }
                 else if (_Form2Number == 1 && l1 > 19)
                 {
+                    _Form2Number = 2;
                     if (l1 == l2 && l1 == l4 + 1 && l1 == l5 + 1 && l1 == l6 + 1)
                     {
                         sheet.Cells[4, 1] = _projectData[0].F2.LandPointCodeList[0];
@@ -466,6 +468,7 @@ namespace hardware.projectmanager
                 _Form3Number = l1 / 21;
                 if (_Form3Number == 0 || l1 == 21)
                 {
+                    _Form3Number = 1;
                     for (int n = 0; n < l1; n++)
                     {
                         sheet.Cells[n + 5, 1] = _projectData[0].F3.StartPointCodeList[n];
@@ -478,6 +481,7 @@ namespace hardware.projectmanager
                 }
                 else if (_Form3Number == 1 && l1 > 21)
                 {
+                    _Form3Number = 2;
                     for (int n = 0; n < 21; n++)
                     {
                         sheet.Cells[n + 5, 1] = _projectData[0].F3.StartPointCodeList[n];
@@ -516,37 +520,31 @@ namespace hardware.projectmanager
         {
             try
             {
+                String[] files = new String[2+_Form2Number+_Form3Number];
+                
+                string _filename = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\";
+
+                if (_Form2Number==1)
+                {
+                    files = new String[] { _filename + "Cover.pdf", _filename + "F1.pdf", _filename + "F2-1.pdf", _filename + "F3-1.pdf" };
+                }
+                else if (_Form2Number == 2 && _Form3Number == 2)
+                {
+                    files= new String[] { _filename + "Cover.pdf", _filename + "F1.pdf", _filename + "F2-1.pdf", _filename + "F2-2.pdf", _filename + "F3-1.pdf", _filename + "F3-2.pdf" };
+                }
+                else
+                {
+                    files = new String[] { _filename + "Cover.pdf", _filename + "F1.pdf", _filename + "F2-1.pdf", _filename + "F3-1.pdf", _filename + "F3-2.pdf" };
+                }
+
+                string outputFile = _filename + "Print.pdf";
+                PdfDocumentBase doc2 = PdfDocument.MergeFiles(files);
+                doc2.Save(outputFile, FileFormat.PDF);
                 PdfDocument doc = new PdfDocument();
-                doc.LoadFromFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\Cover.pdf");
+                doc.LoadFromFile(_filename + "Print.pdf");
+                doc.PrintDocument.DefaultPageSettings.PrinterSettings.Duplex = System.Drawing.Printing.Duplex.Vertical;
                 doc.PrintDocument.Print();
                 doc.Close();
-
-                doc.LoadFromFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\F1.pdf");
-                doc.PrintDocument.Print();
-                doc.Close();
-
-
-                doc.LoadFromFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\F2-1.pdf");
-                doc.PrintDocument.Print();
-                doc.Close();
-
-                if (File.Exists(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\F2-2.pdf"))
-                {
-                    doc.LoadFromFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\F2-2.pdf");
-                    doc.PrintDocument.Print();
-                    doc.Close();
-                }
-
-                doc.LoadFromFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\F3-1.pdf");
-                doc.PrintDocument.Print();
-                doc.Close();
-
-                if (File.Exists(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\F3-2.pdf"))
-                {
-                    doc.LoadFromFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\F3-2.pdf");
-                    doc.PrintDocument.Print();
-                    doc.Close();
-                }
             }
             catch (Exception) { return false; }
 
