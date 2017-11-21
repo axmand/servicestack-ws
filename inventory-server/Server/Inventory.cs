@@ -158,7 +158,7 @@ namespace inventory_server.Server
         }
         public string Get(ProjectPhotolist request)
         {
-            List<PhotoData> ans = Photo.PngToBase64();
+            List<PhotoData> ans = Photo.PngToBase64(request.id);
             if (pngtobase64state)
             {
                 return new OkResponse(ans).ToString();

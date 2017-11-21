@@ -22,9 +22,16 @@ namespace hardware.projectmanager
             {
                 PhotoData Data = JsonConvert.DeserializeObject<PhotoData>(Base64Data);
                 byte[] ByteData = Convert.FromBase64String(Data.PhotoString);
+                int n = Data.PhotoId.IndexOf("-");
+                string photoId = Data.PhotoId.Substring(0, n);
+                string PngFileName=path + "\\" + _importProjectName + "\\Photos\\" + photoId;
+                if (!Directory.Exists(PngFileName))
+                {
+                    Directory.CreateDirectory(PngFileName);
+                }
                 MemoryStream ms = new MemoryStream(ByteData);
                 Bitmap bmp = new Bitmap(ms);
-                bmp.Save(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Photos\\" + Data.PhotoId + ".png", ImageFormat.Png);
+                bmp.Save(PngFileName + "\\" + Data.PhotoId + ".png", ImageFormat.Png);
                 return true;
             }
             catch (Exception)
@@ -46,11 +53,18 @@ namespace hardware.projectmanager
             }
             
         }
-        public static List<PhotoData> PngToBase64()
+        public static List<PhotoData> PngToBase64(string photoId)
         {
             try
             {
-                string PngFileName = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Photos";
+                
+                string PngFileName = path + "\\" + _importProjectName + "\\Photos\\"+photoId;
+                if (!Directory.Exists(PngFileName))
+                {
+                    Directory.CreateDirectory(PngFileName);
+                }
+                
+
                 string[] _photoPathList;
                 string[] _photoNameList;
                 _photoPathList = Directory.GetFiles(PngFileName);

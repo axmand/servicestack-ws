@@ -264,16 +264,42 @@ namespace hardware.bluetooth
                 requestmsg += "Accept: */*\r\n";
                 requestmsg += "Connection: close\r\n";
                 requestmsg += "\r\n";
-                string message = requestmsg;
-                byte[] sendbytes = System.Text.Encoding.UTF8.GetBytes(message);
+           
+                byte[] sendbytes = System.Text.Encoding.UTF8.GetBytes(requestmsg);
                 int successSendBtyes = clientSocket.Send(sendbytes, sendbytes.Length, SocketFlags.None);
 
                 byte[] bArr = new byte[1024];
+
+              
+
+                clientSocket.Receive(bArr);
+                //string str = System.Text.Encoding.Default.GetString(bArr);
+
+                string time = string.Format("{0:D2}{1:D2}{2:00.00}", DateTime.UtcNow.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                string GGA_Message = "$GPGGA," + time + ",2249.1295,N,10822.0005,E,1,05,1.0,0.0,M,,M,,*";// "$GPGGA,094233.0000,2300.0000,N,10830.5084,E,1,06,1.2,44.6,M,-5.7,M,,0000*\r\n";
+
+                //计算检校和
+                char[] CharMsg = GGA_Message.ToCharArray();
+                int result, index;
+                for (result = CharMsg[1], index = 2; CharMsg[index] != '*'; index++)
+                {
+                    result ^= CharMsg[index];
+                }
+                GGA_Message = GGA_Message + result.ToString("X") + "\r\n" + "\r\n";
+
+
+                byte[] GGA_Bytes = System.Text.Encoding.UTF8.GetBytes(GGA_Message);
+                clientSocket.Send(GGA_Bytes, GGA_Bytes.Length, SocketFlags.None);
+
+
+
                 int size = clientSocket.Receive(bArr);
 
                 while (size > 0 && connect == true)
                 {
                     size = clientSocket.Receive(bArr);
+
+                    Console.WriteLine(size);
                     if (_sp.IsOpen)
                     {
                         _sp.Write(bArr, 0, size);

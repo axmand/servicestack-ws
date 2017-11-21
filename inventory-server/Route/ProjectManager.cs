@@ -64,9 +64,10 @@ namespace inventory_server.Route
     {
         public System.IO.Stream RequestStream { get; set; }
     }
-    [Route("/project/photolist", "GET")]
+    [Route("/project/photolist/{id}", "GET")]
     public class ProjectPhotolist
     {
+        public string id { get; set; }
         public string[] _photolist { get; set; }
     }
     [Route("/project/savepicture", "POST")]
