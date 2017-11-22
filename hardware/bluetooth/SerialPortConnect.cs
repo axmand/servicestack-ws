@@ -38,7 +38,8 @@ namespace hardware.bluetooth
         public static int RtcmConnectNumber = 0;
         static int closeNumber = 0;
         static bool _bAccpet;
-
+        static int indexR;
+        static int indexN;
         public static string str;
         /// <summary>
         /// 线程
@@ -80,6 +81,7 @@ namespace hardware.bluetooth
                 return null;
             }
         }
+        #region 获取串口名字 效率太慢
         //public enum HardwareEnum
         //{
 
@@ -115,6 +117,7 @@ namespace hardware.bluetooth
         //    finally
         //    { strs = null; }
         //}
+#endregion
         /// <summary>
         /// 开关端口
         /// </summary>
@@ -275,8 +278,36 @@ namespace hardware.bluetooth
                 clientSocket.Receive(bArr);
                 //string str = System.Text.Encoding.Default.GetString(bArr);
 
+                //11.22修改
+                // 中海达RTK与苍穹返回值不同
+                //中海达：
+                //indexR = str.LastIndexOf("$GPGGA");
+                //
+                //苍穹
+                while (str.IndexOf("GGA")>=0)
+                {
+                    indexR = str.IndexOf("GGA");
+                    break;
+                }
+                
+                indexN = str.Length;
+                string gnrmc=null;
+                while (indexN > (indexR + 50))
+                {
+                    //string model = str.Substring((indexR + 50), 1);
+                     gnrmc = str.Substring((indexR + 14), 32);
+                    break;
+                }
+                
+                //11.22修改结束
                 string time = string.Format("{0:D2}{1:D2}{2:00.00}", DateTime.UtcNow.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-                string GGA_Message = "$GPGGA," + time + ",2249.1295,N,10822.0005,E,1,05,1.0,0.0,M,,M,,*";// "$GPGGA,094233.0000,2300.0000,N,10830.5084,E,1,06,1.2,44.6,M,-5.7,M,,0000*\r\n";
+
+                //string GGA_Message = "$GPGGA," + time + ","+ gnrmc + ",1,05,1.0,0.0,M,,M,,*"; //获取当地坐标：
+                // "$GPGGA,094233.0000,2300.0000,N,10830.5084,E,1,06,1.2,44.6,M,-5.7,M,,0000*\r\n";
+                string GGA_Message = "$GPGGA," + time + ",2249.12951221,N,10822.00052222,E,1,05,1.0,0.0,M,,M,,*"; //南宁八位小数 好用 
+                //string GGA_Message = "$GPGGA," + time + ",3031.6979,N,11421.3852,E,1,05,1.0,0.0,M,,M,,*";//武汉坐标 不好用
+                //string GGA_Message = "$GPGGA," + time + ",2249.1295,N,10822.0005,E,1,05,1.0,0.0,M,,M,,*"; //南宁坐标好用
+                //总结： 南宁cors在武汉用不了。。
 
                 //计算检校和
                 char[] CharMsg = GGA_Message.ToCharArray();
@@ -339,18 +370,28 @@ namespace hardware.bluetooth
             //11.16修改
             //int indexR = str.LastIndexOf("$GPRMC");
             //int indexM = str.LastIndexOf("*");
-            int indexR = str.LastIndexOf("$GPGGA");
-            int indexM = str.IndexOf("*");
+
+            //中海达：
+            //indexR = str.LastIndexOf("$GPGGA");
+            //
+            //苍穹
+            //indexR = str.LastIndexOf("$GNGGA");
+            //统一
+            while (str.IndexOf("GGA") >= 0)
+            {
+                indexR = str.IndexOf("GGA");
+                break;
+            }
             //11.16修改结束
-            int indexN = str.Length;
+            indexN = str.Length;
             
             if (indexN > (indexR + 50))
             {
                 //11.16修改
                 //string model = str.Substring((indexM - 1), 1);
-                string model = str.Substring((indexR + 50), 1);
+                string model = str.Substring((indexR + 47), 1);
                 //11.16修改结束
-                string gnrmc = str.Substring((indexR + 17), 32);
+                string gnrmc = str.Substring((indexR + 14), 32);
                 //return gnrmc;//    gnrmc=3031.69748195,N,11421.38629542,E
                 string lat = gnrmc.Substring(0, 13);
                 string lon = gnrmc.Substring(16, 13);
