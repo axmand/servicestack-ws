@@ -16,6 +16,7 @@ namespace hardware.projectmanager
     public class Photo
     {
         public static bool pngtobase64state = true;
+        //照照片
         public static bool Base64ToPng(string Base64Data)
         {
             try
@@ -40,6 +41,7 @@ namespace hardware.projectmanager
             }
 
         }
+        //删除照片
         public static bool DeletePhoto(string photoName)
         {
             try
@@ -53,11 +55,11 @@ namespace hardware.projectmanager
             }
             
         }
+        //看照片
         public static List<PhotoData> PngToBase64(string photoId)
         {
             try
-            {
-                
+            { 
                 string PngFileName = path + "\\" + _importProjectName + "\\Photos\\"+photoId;
                 if (!Directory.Exists(PngFileName))
                 {

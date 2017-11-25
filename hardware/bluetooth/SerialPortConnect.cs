@@ -127,6 +127,7 @@ namespace hardware.bluetooth
 
             if (_sp.IsOpen)
             {
+                spOpenstate = true;
                 return "ok";
             }
             else
@@ -176,18 +177,20 @@ namespace hardware.bluetooth
             try
             {
                 _bAccpet = false;
+                closeNumber++;
                 pr.Suspend();
-
+                
                 if (closeNumber > 0 && RtcmConnectNumber > 0) { th.Suspend(); }
                 _sp.Close();
-                closeNumber++;
-                spOpenstate = true;
+                
+                spClosestate = true;
                 return "close ok";
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                spOpenstate = false;
-                return "error";
+                var s = e.ToString();
+                spClosestate = false;
+                return "close fail";
             }
         }
         /// <summary>
@@ -239,7 +242,7 @@ namespace hardware.bluetooth
                 GetRTCMdatastate = true;
                 return "RTCM Transport Success";
             }
-            catch (Exception)
+            catch (Exception e )
             {
                 GetRTCMdatastate = false;
                 return "RTCM Transport fail";
