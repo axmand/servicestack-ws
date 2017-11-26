@@ -179,7 +179,21 @@ namespace inventory_server.Server
                 return new FailResponse("Delete Fail!").ToString();
             }
         }
+        public string Post(ChangeId request)
+        {
+            using (StreamReader dat = new StreamReader(request.RequestStream))
+            {
+                string str = dat.ReadToEnd();
+                if (Photo.IdChange(str))
 
+                { return new OkResponse("Id change ok").ToString(); }
+                else
+                {
+                    return new FailResponse("id change fail").ToString();
+                }
+
+            }
+        }
         /// <summary>
         /// 蓝牙
         /// </summary>

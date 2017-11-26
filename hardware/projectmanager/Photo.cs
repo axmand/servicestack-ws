@@ -106,6 +106,36 @@ namespace hardware.projectmanager
                 return null;
             }
         }
+        //修改照片文件夹ID
+        public static bool IdChange(string s)
+        {
+            try
+            {
+                List<PhotoIdData> Data = JsonConvert.DeserializeObject<List<PhotoIdData>>(s);
+
+                int n = Data.Count;
+                for (int i = 0; i < n; i++)
+                {
+                    string srcFolderPath = path + "\\" + _importProjectName + "\\Photos\\" + Data[i].BeforeId;
+                    string destFolderPath = path + "\\" + _importProjectName + "\\Photos\\" + Data[i].AfterId;
+
+                    if (System.IO.Directory.Exists(srcFolderPath))
+                    {
+                        System.IO.Directory.Move(srcFolderPath, destFolderPath);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
     }
     public class Pics
     {
@@ -167,5 +197,10 @@ namespace hardware.projectmanager
     {
         public string PhotoId { get; set; }
         public string PhotoString { get; set; }
+    }
+    public class PhotoIdData
+    {
+        public string BeforeId { get; set; }
+        public string AfterId { get; set; }
     }
 }

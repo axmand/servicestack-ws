@@ -85,6 +85,11 @@ namespace inventory_server.Route
     {
         public string photoname { get; set; }
     }
+    [Route("/project/changeid","POST")]
+    public class ChangeId:IRequiresRequestStream
+    {
+        public System.IO.Stream RequestStream { get; set; }
+    }
 
     /// <summary>
     /// 蓝牙
