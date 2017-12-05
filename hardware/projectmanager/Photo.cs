@@ -141,44 +141,44 @@ namespace hardware.projectmanager
     {
         public static bool SavePic(string Base64Data)
         {
-            //try
-            //{
-
-            //    byte[] ByteData = Convert.FromBase64String(Base64Data);
-            //    MemoryStream ms = new MemoryStream(ByteData);
-            //    Bitmap bmp = new Bitmap(ms);
-            //    bmp.Save(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Pics\\unitpics.png", ImageFormat.Png);
-            //    bmp.Dispose();
-            //    ms.Dispose();
-            //    return true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    var ms = ex;
-            //    return false;
-            //}
-
-            //
             try
             {
-                PhotoData Data = JsonConvert.DeserializeObject<PhotoData>(Base64Data);
-                byte[] ByteData = Convert.FromBase64String(Data.PhotoString);
-                //int n = Data.PhotoId.IndexOf("-");
-                //string photoId = Data.PhotoId.Substring(0, n);
-                string PngFileName = path + "\\" + _importProjectName + "\\Pics";
-                if (!Directory.Exists(PngFileName))
-                {
-                    Directory.CreateDirectory(PngFileName);
-                }
+
+                byte[] ByteData = Convert.FromBase64String(Base64Data);
                 MemoryStream ms = new MemoryStream(ByteData);
                 Bitmap bmp = new Bitmap(ms);
-                bmp.Save(PngFileName + "\\" + Data.PhotoId + ".png", ImageFormat.Png);
+                bmp.Save(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Pics\\unitpics.png", ImageFormat.Png);
+                bmp.Dispose();
+                ms.Dispose();
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var ms = ex;
                 return false;
             }
+
+            //
+            //try
+            //{
+            //    PhotoData Data = JsonConvert.DeserializeObject<PhotoData>(Base64Data);
+            //    byte[] ByteData = Convert.FromBase64String(Data.PhotoString);
+            //    //int n = Data.PhotoId.IndexOf("-");
+            //    //string photoId = Data.PhotoId.Substring(0, n);
+            //    string PngFileName = path + "\\" + _importProjectName + "\\Pics";
+            //    if (!Directory.Exists(PngFileName))
+            //    {
+            //        Directory.CreateDirectory(PngFileName);
+            //    }
+            //    MemoryStream ms = new MemoryStream(ByteData);
+            //    Bitmap bmp = new Bitmap(ms);
+            //    bmp.Save(PngFileName + "\\" + Data.PhotoId + ".png", ImageFormat.Png);
+            //    return true;
+            //}
+            //catch (Exception)
+            //{
+            //    return false;
+            //}
 
         }
         public static bool PrintPic()

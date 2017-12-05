@@ -110,7 +110,7 @@ namespace hardware.projectmanager
                 return all;
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 projdatastate = false;
                 List<Forms> wrong = null;
