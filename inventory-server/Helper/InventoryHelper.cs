@@ -1,4 +1,6 @@
-﻿namespace inventory_server.Helper
+﻿using hardware.projectmanager;
+
+namespace inventory_server.Helper
 {
     /// <summary>
     /// singleton 
@@ -9,6 +11,9 @@
 
         public static void Start(string url)
         {
+            VectorToTile.Build();
+
+
             _appHost = new AppHost();
             _appHost.Init();
             _appHost.Start(url);

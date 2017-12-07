@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "servicestack-ws", "servicestack-ws\servicestack-ws.csproj", "{D1A5F94F-2E8F-47FB-9DC7-B1E8C7F1D2AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hardware", "hardware\hardware.csproj", "{42E94936-2FD9-4542-B994-80C6A776E9E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inventory-server", "inventory-server\inventory-server.csproj", "{492FB8B1-B780-45F2-A216-DA353BF4E5CE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inventory", "inventory\inventory.csproj", "{E80D704F-5D18-4706-8BB8-E11C47B4F97A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,12 +27,11 @@ Global
 		{492FB8B1-B780-45F2-A216-DA353BF4E5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{492FB8B1-B780-45F2-A216-DA353BF4E5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{492FB8B1-B780-45F2-A216-DA353BF4E5CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E80D704F-5D18-4706-8BB8-E11C47B4F97A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E80D704F-5D18-4706-8BB8-E11C47B4F97A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E80D704F-5D18-4706-8BB8-E11C47B4F97A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E80D704F-5D18-4706-8BB8-E11C47B4F97A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B12EC4FB-CA2B-455D-A787-0EC7FA848258}
 	EndGlobalSection
 EndGlobal
