@@ -30,7 +30,7 @@ namespace hardware.projectmanager
             for(int i = _startLevel; i < _endLevel; i++)
                 pointGrid.Build(pointReader.Bounds, i);
             //1.1切片输出
-            pointGrid.CutShape(pointReader, _outDir);
+            pointGrid.CutShapeOrderByGrid(pointReader, _outDir);
         }
 
 
