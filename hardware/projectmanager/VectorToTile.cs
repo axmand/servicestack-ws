@@ -24,13 +24,13 @@ namespace hardware.projectmanager
 
         public static void Build()
         {
-            //1.搜索点
-            IShpReader pointReader = new ShpReader(_dir + @"\" + _lineName);
-            WebMercatorGrid pointGrid = new WebMercatorGrid();
-            for(int i = _startLevel; i < _endLevel; i++)
-                pointGrid.Build(pointReader.Bounds, i);
-            //1.1切片输出
-            pointGrid.CutShapeOrderByGrid(pointReader, _outDir);
+            ////1.搜索点
+            //IShpReader pointReader = new ShpReader(_dir + @"\" + _lineName);
+            //WebMercatorGrid pointGrid = new WebMercatorGrid();
+            //for(int i = _startLevel; i < _endLevel; i++)
+            //    pointGrid.Build(pointReader.Bounds, i);
+            ////1.1切片输出
+            //pointGrid.CutShapeOrderByGrid(pointReader, _outDir);
         }
 
 

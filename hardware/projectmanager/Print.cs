@@ -305,7 +305,7 @@ namespace hardware.projectmanager
             try
             {
                 string destinationFile = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\Forms.xlsx";
-                
+
 
                 if (!File.Exists(destinationFile))
                 {
@@ -400,7 +400,7 @@ namespace hardware.projectmanager
 
                 if (_Form2Number == 0 || l1 == 19)
                 {
-                    _Form2Number=1;
+                    _Form2Number = 1;
                     if (l1 == l2 && l1 == l4 + 1 && l1 == l5 + 1 && l1 == l6 + 1)
                     {
                         sheet.Cells[4, 1] = _projectData[0].F2.LandPointCodeList[0];
@@ -520,17 +520,17 @@ namespace hardware.projectmanager
         {
             try
             {
-                String[] files = new String[2+_Form2Number+_Form3Number];
-                
+                String[] files = new String[2 + _Form2Number + _Form3Number];
+
                 string _filename = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\";
 
-                if (_Form2Number==1)
+                if (_Form2Number == 1)
                 {
                     files = new String[] { _filename + "Cover.pdf", _filename + "F1.pdf", _filename + "F2-1.pdf", _filename + "F3-1.pdf" };
                 }
                 else if (_Form2Number == 2 && _Form3Number == 2)
                 {
-                    files= new String[] { _filename + "Cover.pdf", _filename + "F1.pdf", _filename + "F2-1.pdf", _filename + "F2-2.pdf", _filename + "F3-1.pdf", _filename + "F3-2.pdf" };
+                    files = new String[] { _filename + "Cover.pdf", _filename + "F1.pdf", _filename + "F2-1.pdf", _filename + "F2-2.pdf", _filename + "F3-1.pdf", _filename + "F3-2.pdf" };
                 }
                 else
                 {
@@ -545,10 +545,15 @@ namespace hardware.projectmanager
                 doc.PrintDocument.DefaultPageSettings.PrinterSettings.Duplex = System.Drawing.Printing.Duplex.Vertical;
                 doc.PrintDocument.Print();
                 doc.Close();
+                return true;
             }
-            catch (Exception) { return false; }
+            catch (Exception e)
+            {
+                var s = e.ToString();
+                return false;
+            }
 
-            return true;
+            
         }
     }
 }

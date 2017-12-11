@@ -143,13 +143,15 @@ namespace hardware.projectmanager
         {
             try
             {
-
+                string Compass = System.IO.Directory.GetCurrentDirectory()+ "//compass.png";
+                string PngFileName = path + "\\" + _importProjectName + "\\Pics\\";
                 byte[] ByteData = Convert.FromBase64String(Base64Data);
                 MemoryStream ms = new MemoryStream(ByteData);
                 Bitmap bmp = new Bitmap(ms);
-                bmp.Save(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Pics\\unitpics.png", ImageFormat.Png);
+                bmp.Save(PngFileName+"\\unitpics.png", ImageFormat.Png);
                 bmp.Dispose();
                 ms.Dispose();
+                CombinImage(Compass, PngFileName + "\\unitpics.png");
                 return true;
             }
             catch (Exception ex)
@@ -157,7 +159,7 @@ namespace hardware.projectmanager
                 var ms = ex;
                 return false;
             }
-
+            #region 同时发送好多图 弃用
             //
             //try
             //{
@@ -179,6 +181,38 @@ namespace hardware.projectmanager
             //{
             //    return false;
             //}
+#endregion
+        }
+        public static void CombinImage(string sourceImg, string destImg)
+        {
+            try
+            {
+                string PngFileName = path + "\\" + _importProjectName + "\\Pics\\" ;
+                System.Drawing.Image imgBack = System.Drawing.Image.FromFile(sourceImg);     //相框图片   
+                System.Drawing.Image img = System.Drawing.Image.FromFile(destImg);        //照片图片  
+                                                                                          //从指定的System.Drawing.Image创建新的System.Drawing.Graphics         
+                Graphics g = Graphics.FromImage(imgBack);
+
+                g.DrawImage(imgBack, 0, 0, imgBack.Width, imgBack.Height);      // g.DrawImage(imgBack, 0, 0, 相框宽, 相框高);  
+                                                                                //g.FillRectangle(System.Drawing.Brushes.Black, 16, 16, (int)112 + 2, ((int)73 + 2));//相片四周刷一层黑色边框  
+                                                                                //g.DrawImage(img, 照片与相框的左边距, 照片与相框的上边距, 照片宽, 照片高);  
+                g.DrawImage(img, 410, 85, 40, 36);//(img,起点x，起点y，宽，高)
+                GC.Collect();
+
+                //输出文件流  
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+
+                imgBack.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                Bitmap bmp = new Bitmap(ms);
+                bmp.Save(PngFileName+"printpic.png", ImageFormat.Png);
+                //System.Web.HttpContext.Current.Response.ClearContent();
+                //System.Web.HttpContext.Current.Response.ContentType = "image/png";
+                //System.Web.HttpContext.Current.Response.BinaryWrite(ms.ToArray());
+                bmp.Dispose();
+                ms.Dispose();
+                imgBack.Dispose();
+            }
+            catch (Exception) { };
 
         }
         public static bool PrintPic()
@@ -190,7 +224,7 @@ namespace hardware.projectmanager
                 PdfSection section = doc.Sections.Add();
                 PdfPageBase page = doc.Pages.Add();
 
-                PdfImage image = PdfImage.FromFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Pics\\unitpics.png");
+                PdfImage image = PdfImage.FromFile(path + "\\" + _importProjectName + "\\Pics\\printpic.png");
                 float widthFitRate = image.PhysicalDimension.Width / page.Canvas.ClientSize.Width;
 
                 float heightFitRate = image.PhysicalDimension.Height / page.Canvas.ClientSize.Height;
@@ -202,8 +236,8 @@ namespace hardware.projectmanager
                 float fitHeight = image.PhysicalDimension.Height / fitRate;
 
                 page.Canvas.DrawImage(image, 20, 20, fitWidth, fitHeight);
-                doc.SaveToFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Pics\\pic.pdf");
-                print.LoadFromFile(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Pics\\pic.pdf");
+                doc.SaveToFile(path+ "\\" + _importProjectName + "\\Pics\\pic.pdf");
+                print.LoadFromFile(path + "\\Project\\" + _importProjectName + "\\Pics\\pic.pdf");
                 print.PrintDocument.Print();
                 print.Close();
 
