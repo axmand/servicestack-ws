@@ -513,7 +513,11 @@ namespace hardware.projectmanager
                 return true;
 
             }
-            catch (Exception) { return false; }
+            catch (Exception e)
+            {
+                var s = e.ToString();
+                return false;
+            }
         }
 
         public static bool PrintForm()
@@ -553,7 +557,7 @@ namespace hardware.projectmanager
                 return false;
             }
 
-            
+
         }
     }
 }

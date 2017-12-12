@@ -58,10 +58,10 @@ namespace hardware.bluetooth
         public static string[] spList()
         {
 
-            
+
             try
             {
-                
+
                 string[] _spList = SerialPort.GetPortNames();
 
                 //string[] _spList = new string[2];
@@ -117,7 +117,7 @@ namespace hardware.bluetooth
         //    finally
         //    { strs = null; }
         //}
-#endregion
+        #endregion
         /// <summary>
         /// 开关端口
         /// </summary>
@@ -153,36 +153,26 @@ namespace hardware.bluetooth
 
 
         }
-        public static void printdata()
-        {
-            try
-            {
-                // 开启接收数据的线程
-                if (closeNumber > 0)
-                {
-                    pr.Resume();
-
-                }
-                else
-                {
-                    pr.Start();
-                    pr.IsBackground = true;
-                }
-            }
-            catch (Exception) { }
-
-        }
         public static string spClose(string spname)
         {
             try
             {
                 _bAccpet = false;
                 closeNumber++;
-                pr.Suspend();
-                
-                if (closeNumber > 0 && RtcmConnectNumber > 0) { th.Suspend(); }
+                ////////1212 删除suspend 和resume
+
+                //if (pr.ThreadState == ThreadState.Stopped) { }
+                //else { pr.Suspend(); }
+
+
+                //if (closeNumber > 0 && RtcmConnectNumber > 0)
+                //{
+                //   
+                //    th.Suspend();
+                //}
+                // 调试用 var s = th.ThreadState;
                 _sp.Close();
-                
+
                 spClosestate = true;
                 return "close ok";
             }
@@ -193,9 +183,52 @@ namespace hardware.bluetooth
                 return "close fail";
             }
         }
+
+        // 控制线程pr的开启和挂起
+        public static void printdata()
+        {
+            try
+            {
+                // 开启接收数据的线程
+                //if (closeNumber > 0)
+                if (pr.ThreadState == ThreadState.Stopped)
+                {
+                    pr = new Thread(_printNmea);
+                    pr.Start();
+                }
+                else if (pr.ThreadState == ThreadState.Unstarted)
+                {
+
+                    pr.Start();
+                    pr.IsBackground = true;
+
+                }
+                //else // 不会走到这步
+                //{
+                //    pr.Resume();
+                //}
+            }
+            catch (Exception) { }
+
+        }
+        /// 线程pr 连接蓝牙后接收坐标
+        public static void _printNmea()
+        {
+            try
+            {
+                while (_bAccpet)
+                {
+                    str = _sp.ReadExisting();
+                    Thread.Sleep(1000);
+                }
+            }
+            catch (Exception) { }
+        }
         /// <summary>
-        /// 发送RTCM数据
+        /// 控制发送RTCM数据
         /// </summary>
+
+        // 设置密码
         public static string setAccountAndKey(string account, string key)
         {
             try
@@ -214,6 +247,8 @@ namespace hardware.bluetooth
                 return "Account set fail";
             }
         }
+
+        //连接节点 涉及th线程的开启 执行连接接口后的返回值
         public static string GetRTCMdata(string address, string mountPoint)
         {
             try
@@ -226,29 +261,39 @@ namespace hardware.bluetooth
                     port = 80;
                 _mountPoint = mountPoint;
 
-                if (closeNumber > 0 && RtcmConnectNumber > 0)
+                //if (closeNumber > 0 && RtcmConnectNumber > 0)
+                //if(th.ThreadState==ThreadState.Suspended)//||th.ThreadState="ThreadState.Background|Suspended")
+                if (th.ThreadState == ThreadState.Unstarted)
                 {
-                    th.Resume();
 
-                }
-                else
-                {
+
                     th.Start();
                     th.IsBackground = true;
+
                 }
+                else if (th.ThreadState == ThreadState.Stopped)
+                {
+                    th = new Thread(download);
+                    th.Start();
+                }
+                //else
+                //{
+                //    th.Resume();
+                //}
                 RtcmConnectNumber++;
                 //th.Start();
                 //th.IsBackground = true;
                 GetRTCMdatastate = true;
                 return "RTCM Transport Success";
             }
-            catch (Exception e )
+            catch (Exception e)
             {
                 GetRTCMdatastate = false;
                 return "RTCM Transport fail";
             }
 
         }
+        //线程th的程序
         public static void download()
         {
             try
@@ -270,13 +315,13 @@ namespace hardware.bluetooth
                 requestmsg += "Accept: */*\r\n";
                 requestmsg += "Connection: close\r\n";
                 requestmsg += "\r\n";
-           
+
                 byte[] sendbytes = System.Text.Encoding.UTF8.GetBytes(requestmsg);
                 int successSendBtyes = clientSocket.Send(sendbytes, sendbytes.Length, SocketFlags.None);
 
                 byte[] bArr = new byte[1024];
 
-              
+
 
                 clientSocket.Receive(bArr);
                 //string str = System.Text.Encoding.Default.GetString(bArr);
@@ -287,21 +332,21 @@ namespace hardware.bluetooth
                 //indexR = str.LastIndexOf("$GPGGA");
                 //
                 //苍穹
-                while (str.IndexOf("GGA")>=0)
+                while (str.IndexOf("GGA") >= 0)
                 {
                     indexR = str.IndexOf("GGA");
                     break;
                 }
-                
+
                 indexN = str.Length;
-                string gnrmc=null;
+                string gnrmc = null;
                 while (indexN > (indexR + 50))
                 {
                     //string model = str.Substring((indexR + 50), 1);
-                     gnrmc = str.Substring((indexR + 14), 32);
+                    gnrmc = str.Substring((indexR + 14), 32);
                     break;
                 }
-                
+
                 //11.22修改结束
                 string time = string.Format("{0:D2}{1:D2}{2:00.00}", DateTime.UtcNow.Hour, DateTime.Now.Minute, DateTime.Now.Second);
 
@@ -333,7 +378,7 @@ namespace hardware.bluetooth
                 {
                     size = clientSocket.Receive(bArr);
 
-                    Console.WriteLine(size);
+                    //Console.WriteLine(size);
                     if (_sp.IsOpen)
                     {
                         _sp.Write(bArr, 0, size);
@@ -344,26 +389,12 @@ namespace hardware.bluetooth
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                var s = e.ToString();
+            }
+        }
 
-            }
-        }
-        /// <summary>
-        /// 实时收取NEMA数据的线程
-        /// </summary>
-        public static void _printNmea()
-        {
-            try
-            {
-                while (_bAccpet)
-                {
-                    str = _sp.ReadExisting();
-                    Thread.Sleep(1000);
-                }
-            }
-            catch (Exception) { }
-        }
         /// <summary>
         /// 获取经纬度JSON数据
         /// </summary>
@@ -387,7 +418,7 @@ namespace hardware.bluetooth
             }
             //11.16修改结束
             indexN = str.Length;
-            
+
             if (indexN > (indexR + 50))
             {
                 //11.16修改
