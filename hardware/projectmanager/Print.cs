@@ -12,7 +12,7 @@ namespace hardware.projectmanager
 {
     public class Print
     {
-        public static string projname = _importProjectName;
+        public static string projname;
         // public static string sourceFile = System.IO.Directory.GetCurrentDirectory() + "\\Form.xlsx";   //  此处是默认的表格模板                                                                  //string  = @"D:\\ProjectFormTemplet\\testCopy2.xlsx";
         public static string destinationFile;
 
@@ -304,6 +304,7 @@ namespace hardware.projectmanager
         {
             try
             {
+                projname = _importProjectName;
                 string destinationFile = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\Forms.xlsx";
 
 
@@ -404,15 +405,46 @@ namespace hardware.projectmanager
                     if (l1 == l2 && l1 == l4 + 1 && l1 == l5 + 1 && l1 == l6 + 1)
                     {
                         sheet.Cells[4, 1] = _projectData[0].F2.LandPointCodeList[0];
-                        sheet.Cells[4, (_projectData[0].F2.LandPointTypeList[0] + 2)] = "√";
+                        if (_projectData[0].F2.LandPointTypeList[0] == -1)
+                        {
+                            
+                        }
+                        else
+                        {
+                            sheet.Cells[4, (_projectData[0].F2.LandPointTypeList[0] + 2)] = "√";
+                        }
+
 
                         for (int n = 0; n < l4; n++)
                         {
                             sheet.Cells[(2 * n + 5), 1] = _projectData[0].F2.LandPointCodeList[n + 1];
-                            sheet.Cells[(2 * n + 5), (_projectData[0].F2.LandPointTypeList[n + 1] + 2)] = "√";
+
+                            if (_projectData[0].F2.LandPointTypeList[n + 1] == -1)
+                            {
+
+                            }
+                            else
+                            {
+                                sheet.Cells[(2 * n + 5), (_projectData[0].F2.LandPointTypeList[n + 1] + 2)] = "√";
+                            }
                             sheet.Cells[(2 * n + 4), 7] = _projectData[0].F2.LandPointDistance[n];
-                            sheet.Cells[(2 * n + 4), (_projectData[0].F2.LandBoundaryType[n] + 8)] = "√";
-                            sheet.Cells[(2 * n + 4), (_projectData[0].F2.LandBoundaryLocation[n] + 16)] = "√";
+                            if (_projectData[0].F2.LandBoundaryType[n] == -1)
+                            {
+
+                            }
+                            else
+                            {
+                                sheet.Cells[(2 * n + 4), (_projectData[0].F2.LandBoundaryType[n] + 8)] = "√";
+                            }
+                            if (_projectData[0].F2.LandBoundaryLocation[n] == -1)
+                            {
+
+                            }
+                            else
+                            {
+                                sheet.Cells[(2 * n + 4), (_projectData[0].F2.LandBoundaryLocation[n] + 16)] = "√";
+                            }
+                            
                             //sheet.Cells[(2 * n + 4), 19] = _projectData[0].F2.LandBoundaryExplain[n]; 说明不填写
                         }
                         sheet.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\F2-1.pdf");
@@ -524,6 +556,7 @@ namespace hardware.projectmanager
         {
             try
             {
+                projname = _importProjectName;
                 String[] files = new String[2 + _Form2Number + _Form3Number];
 
                 string _filename = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\";

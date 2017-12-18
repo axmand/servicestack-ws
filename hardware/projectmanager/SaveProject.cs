@@ -59,6 +59,7 @@ namespace hardware.projectmanager
 
                     fs.Lock(0, fs.Length);
                     StreamWriter sw = new StreamWriter(fs, Encoding.GetEncoding("gb2312"));
+                    //StreamWriter sw = new StreamWriter(fs, Encoding.GetEncoding("UTF-8"));
                     sw.Write(_fixDataStr);
                     sw.Flush();
                 }
