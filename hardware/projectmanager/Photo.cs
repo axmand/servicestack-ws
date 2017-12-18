@@ -233,7 +233,7 @@ namespace hardware.projectmanager
 
                 page.Canvas.DrawImage(image, 20, 20, fitWidth, fitHeight);
                 doc.SaveToFile(path+ "\\" + _importProjectName + "\\Pics\\pic.pdf");
-                print.LoadFromFile(path + "\\Project\\" + _importProjectName + "\\Pics\\pic.pdf");
+                print.LoadFromFile(path + "\\" + _importProjectName + "\\Pics\\pic.pdf");
                 print.PrintDocument.Print();
                 print.Close();
 
