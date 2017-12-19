@@ -135,4 +135,43 @@ namespace inventory_server.Route
     {
         public string nmea { get; set; }
     }
+
+    [Route("/layer/build", "GET")]
+    public class BuildVectorTile
+    {
+
+    }
+
+
+    /// <summary>
+    /// 点图层
+    /// </summary>
+    [Route("/layer/point/{z}/{x}/{y}", "GET")]
+    public class PointLayer
+    {
+        public int z { get; set; }
+        public int x { get; set; }
+        public int y { get; set; }
+    }
+    /// <summary>
+    /// 线图层
+    /// </summary>
+    [Route("/layer/line/{z}/{x}/{y}", "GET")]
+    public class LineLayer
+    {
+        public int z { get; set; }
+        public int x { get; set; }
+        public int y { get; set; }
+    }
+    /// <summary>
+    /// 面图层
+    /// </summary>
+    [Route("/layer/polygon/{z}/{x}/{y}", "GET")]
+    public class PolygonLayer
+    {
+        public int z { get; set; }
+        public int x { get; set; }
+        public int y { get; set; }
+    }
+
 }

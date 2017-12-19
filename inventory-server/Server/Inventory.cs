@@ -9,6 +9,8 @@ using static hardware.projectmanager.Photo;
 using static hardware.bluetooth.BlueToothList;
 using static hardware.bluetooth.SerialPortConnect;
 using static hardware.projectmanager.Print;
+using System;
+using System.Drawing;
 
 namespace inventory_server.Server
 {
@@ -82,10 +84,10 @@ namespace inventory_server.Server
         {
             //return new OkResponse(FillAndPrintExcel.CreateAndPrintPdf(request.formnumber)).ToString();
             //if (Print.FillForms() && Print.FillForms2() && Print.FillForms3())
-            if(FillForm())
+            if (FillForm())
             {
-               
-               
+
+
                 if (Print.PrintForm())
                 {
                     return new OkResponse("success").ToString();
@@ -301,5 +303,90 @@ namespace inventory_server.Server
                 return new FailResponse(ans).ToString();
             }
         }
+
+        #region
+
+        public string Get(BuildVectorTile request)
+        {
+            try
+            {
+                if (VectorToTile.IsRunning)
+                    return new FailResponse("切图正在进行").ToString();
+                else
+                    VectorToTile.Build();
+                return new OkResponse("已启动切图").ToString();
+            }
+            catch
+            {
+                return new FailResponse("切图启动失败").ToString();
+            }
+        }
+
+        public void Get(PointLayer request)
+        {
+            string rtPath = AppDomain.CurrentDomain.BaseDirectory + @"Data/Tile/point/" +
+              request.z + @"/" + request.x + "_" + request.y + "_" + request.z + ".png";
+            try
+            {
+                Bitmap bmp = Image.FromFile(rtPath) as Bitmap;
+                if (bmp != null)
+                {
+                    Response.ContentType = "image/png";
+                    bmp.Save(Response.OutputStream, System.Drawing.Imaging.ImageFormat.Png);
+                    Response.OutputStream.Position = 0;
+                    Response.Flush();
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        public void Get(LineLayer request)
+        {
+            string rtPath = AppDomain.CurrentDomain.BaseDirectory + @"Data/Tile/line/" +
+              request.z + @"/" + request.x + "_" + request.y + "_" + request.z + ".png";
+            try
+            {
+                Bitmap bmp = Image.FromFile(rtPath) as Bitmap;
+                if (bmp != null)
+                {
+                    Response.ContentType = "image/png";
+                    bmp.Save(Response.OutputStream, System.Drawing.Imaging.ImageFormat.Png);
+                    Response.OutputStream.Position = 0;
+                    Response.Flush();
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        public void Get(PolygonLayer request)
+        {
+            string rtPath = AppDomain.CurrentDomain.BaseDirectory + @"Data/Tile/polygon/" +
+           request.z + @"/" + request.x + "_" + request.y + "_" + request.z + ".png";
+            try
+            {
+                Bitmap bmp = Image.FromFile(rtPath) as Bitmap;
+                if (bmp != null)
+                {
+                    Response.ContentType = "image/png";
+                    bmp.Save(Response.OutputStream, System.Drawing.Imaging.ImageFormat.Png);
+                    Response.OutputStream.Position = 0;
+                    Response.Flush();
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        #endregion
+
+
     }
 }
