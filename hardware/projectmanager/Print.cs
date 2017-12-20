@@ -339,6 +339,7 @@ namespace hardware.projectmanager
                         sheet.Cells[3, 3] = _projectData[0].F1.UsePowerSide;
                         sheet.Cells[16, 9] = _projectData[0].F1.ParcelCode;
                         sheet.Cells[3, 9] = _projectData[0].F1.PowerSideType;
+                        sheet.Cells[9, 3] = _projectData[0].F1.PrincipalName;
                         sheet.Cells[4, 9] = _projectData[0].F1.PowerSideCertificateType;
                         sheet.Cells[5, 9] = _projectData[0].F1.PowerSideCertificateCode;
                         sheet.Cells[6, 9] = _projectData[0].F1.PowerSideAddress;
@@ -346,9 +347,8 @@ namespace hardware.projectmanager
                         sheet.Cells[7, 8] = _projectData[0].F1.PowerCharacter;
                         sheet.Cells[7, 10] = _projectData[0].F1.LandPowerCertificatePaper;
                         sheet.Cells[8, 3] = _projectData[0].F1.Location;
-                        sheet.Cells[9, 3] = _projectData[0].F1.PrincipalCertificateCode;
+                        sheet.Cells[10, 6] = _projectData[0].F1.PrincipalCertificateCode;
                         sheet.Cells[9, 6] = _projectData[0].F1.PrincipalCertificateType;
-                        sheet.Cells[10, 6] = _projectData[0].F1.ProcuratorCertificateCode;
                         sheet.Cells[9, 10] = _projectData[0].F1.PrincipalCertificateTelephone;
                         sheet.Cells[11, 3] = _projectData[0].F1.ProcuratorName;
                         sheet.Cells[11, 6] = _projectData[0].F1.ProcuratorCertificateType;
