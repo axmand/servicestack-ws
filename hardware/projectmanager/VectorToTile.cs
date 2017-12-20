@@ -16,7 +16,7 @@ namespace hardware.projectmanager
         //瓦片输出路径
         static string _outDir = System.IO.Directory.GetCurrentDirectory() + @"\Data\Tile\";
         //测试用的读取shp目录
-        static string _dir = @"C:\Users\81596\Desktop\Basemap\";
+        static string _dir = @"C:\NNLandGISServiceRepo\Basemap\";
         //搜索的文件
         //1.点文件
         static string _ptName = "point";
@@ -25,7 +25,7 @@ namespace hardware.projectmanager
         //3.面文件
         static string _polygonName = "polygon";
         //4起始格网
-        static int _startLevel = 15;
+        static int _startLevel = 10;
         //5终止格网
         static int _endLevel = 20;
 

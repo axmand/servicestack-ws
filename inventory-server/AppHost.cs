@@ -1,6 +1,7 @@
 ﻿using Funq;
 using inventory_server.Server;
 using ServiceStack;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface.Cors;
 using ServiceStack.WebHost.Endpoints;
 
@@ -17,6 +18,9 @@ namespace inventory_server
             // this.Plugins.Add(new CorsFeature());//跨域
             base.SetConfig(new EndpointHostConfig()
             {
+                AllowAclUrlReservation = true,
+                DefaultContentType = MimeTypes.Json,
+                EnableAccessRestrictions = true,
                 GlobalResponseHeaders =
                 {
                     { "Access-Control-Allow-Origin", "*" },
