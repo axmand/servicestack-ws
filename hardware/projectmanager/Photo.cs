@@ -231,7 +231,7 @@ namespace hardware.projectmanager
 
                 float fitHeight = image.PhysicalDimension.Height / fitRate;
 
-                page.Canvas.DrawImage(image, 20, 20, fitWidth, fitHeight);
+                page.Canvas.DrawImage(image, 3, 3, fitWidth, fitHeight);
                 doc.SaveToFile(path+ "\\" + _importProjectName + "\\Pics\\pic.pdf");
                 //print.LoadFromFile(path + "\\" + _importProjectName + "\\Pics\\pic.pdf");
                 //print.PrintDocument.Print();
