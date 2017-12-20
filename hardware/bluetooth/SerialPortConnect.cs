@@ -40,7 +40,9 @@ namespace hardware.bluetooth
         static bool _bAccpet;
         static int indexR;
         static int indexN;
-        public static string str;
+        public static string _str;
+
+        public static string _coordinate;
         /// <summary>
         /// 线程
         /// </summary>
@@ -48,7 +50,7 @@ namespace hardware.bluetooth
         static Thread th = new Thread(download);
         ///定义状态
         public static bool spListstate = true;
-        public static bool spOpenstate = true;
+        public static bool spOpenstate = false;
         public static bool spClosestate = true;
         public static bool GetRTCMdatastate = true;
         public static bool printNMEAstate = true;
@@ -57,8 +59,6 @@ namespace hardware.bluetooth
         /// </summary>
         public static string[] spList()
         {
-
-
             try
             {
 
@@ -140,6 +140,7 @@ namespace hardware.bluetooth
                     _sp.DataBits = 8;       // 数据位
                     _sp.StopBits = (StopBits)int.Parse("1"); // 停止位
                     _sp.Open();
+                    spOpenstate = true;
                     _bAccpet = true;
                     printdata();
                     return "ok";
@@ -218,7 +219,7 @@ namespace hardware.bluetooth
             {
                 while (_bAccpet)
                 {
-                    str = _sp.ReadExisting();
+                    _str = _sp.ReadExisting();
                     Thread.Sleep(1000);
                 }
             }
@@ -332,21 +333,23 @@ namespace hardware.bluetooth
                 //indexR = str.LastIndexOf("$GPGGA");
                 //
                 //苍穹
-                while (str.IndexOf("GGA") >= 0)
-                {
-                    indexR = str.IndexOf("GGA");
-                    break;
-                }
-
-                indexN = str.Length;
-                string gnrmc = null;
-                while (indexN > (indexR + 50))
-                {
-                    //string model = str.Substring((indexR + 50), 1);
-                    gnrmc = str.Substring((indexR + 14), 32);
-                    break;
-                }
-
+                //1218 放前面 直到接到坐标后进行下一步
+                //while (str.IndexOf("GGA") >= 0)
+                //{
+                //    indexR = str.IndexOf("GGA");
+                //    break;
+                //}
+                //indexN = str.Length;
+                //1218
+                //string gnrmc = null;
+                //1218
+                //while (indexN > (indexR + 50))
+                //{
+                //    //string model = str.Substring((indexR + 50), 1);
+                //    gnrmc = str.Substring((indexR + 14), 32);
+                //    break;
+                //}
+                //1218
                 //11.22修改结束
                 string time = string.Format("{0:D2}{1:D2}{2:00.00}", DateTime.UtcNow.Hour, DateTime.Now.Minute, DateTime.Now.Second);
 
@@ -374,11 +377,14 @@ namespace hardware.bluetooth
 
                 int size = clientSocket.Receive(bArr);
 
+
+
                 while (size > 0 && connect == true)
                 {
                     size = clientSocket.Receive(bArr);
 
                     //Console.WriteLine(size);
+                    // 1218
                     if (_sp.IsOpen)
                     {
                         _sp.Write(bArr, 0, size);
@@ -411,30 +417,31 @@ namespace hardware.bluetooth
             //苍穹
             //indexR = str.LastIndexOf("$GNGGA");
             //统一
-            while (str.IndexOf("GGA") >= 0)
+            while (_str.IndexOf("GGA") >= 0)
             {
-                indexR = str.IndexOf("GGA");
+                indexR = _str.IndexOf("GGA");
                 break;
             }
             //11.16修改结束
-            indexN = str.Length;
+            indexN = _str.Length;
 
             if (indexN > (indexR + 50))
             {
                 //11.16修改
                 //string model = str.Substring((indexM - 1), 1);
-                string model = str.Substring((indexR + 47), 1);
+                string model = _str.Substring((indexR + 47), 1);
                 //11.16修改结束
-                string gnrmc = str.Substring((indexR + 14), 32);
+                string gnrmc = _str.Substring((indexR + 14), 32);
                 //return gnrmc;//    gnrmc=3031.69748195,N,11421.38629542,E
                 string lat = gnrmc.Substring(0, 13);
                 string lon = gnrmc.Substring(16, 13);
-                if (IsCoordinate(lat) && IsCoordinate(lon) && model == "2")
+                //if (IsCoordinate(lat) && IsCoordinate(lon) && model == "2")
+                if (IsCoordinate(lat) && IsCoordinate(lon))
                 {
                     lat = DF2D(lat);
                     lon = DF2D(lon);
-                    //string[] od = { lat, lon ,model};
-                    string[] od = { lat, lon };
+                    string[] od = { lat, lon ,model};
+                    //string[] od = { lat, lon };
                     List<string> coordinate = new List<string>(od);
                     printNMEAstate = true;
                     return coordinate;
@@ -443,7 +450,7 @@ namespace hardware.bluetooth
                 {
                     lat = "00.000";
                     lon = "00.000";
-                    string[] od = { lat, lon };
+                    string[] od = { lat,lon,model };
                     List<string> coordinate = new List<string>(od);
                     printNMEAstate = false;
                     return coordinate;
