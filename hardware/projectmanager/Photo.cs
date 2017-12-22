@@ -194,7 +194,7 @@ namespace hardware.projectmanager
                 g.DrawImage(imgBack, 0, 0, imgBack.Width, imgBack.Height);      // g.DrawImage(imgBack, 0, 0, 相框宽, 相框高);  
                                                                                 //g.FillRectangle(System.Drawing.Brushes.Black, 16, 16, (int)112 + 2, ((int)73 + 2));//相片四周刷一层黑色边框  
                                                                                 //g.DrawImage(img, 照片与相框的左边距, 照片与相框的上边距, 照片宽, 照片高);  
-                g.DrawImage(img, 620, 120, 40, 36);//(img,起点x，起点y，宽，高)
+                g.DrawImage(img, 1850, 400, 70, 50);//(img,起点x，起点y，宽，高)
                 GC.Collect();
                 //输出文件流
                 System.IO.MemoryStream ms = new System.IO.MemoryStream();
