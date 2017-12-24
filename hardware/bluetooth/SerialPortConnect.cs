@@ -297,110 +297,126 @@ namespace hardware.bluetooth
         //线程th的程序
         public static void download()
         {
-            try
+            //while(true)
+            //{
+            //    try
+            //    {
+            //        //接收数据流程
+            //    } catch(Exception e)
+            //    {
+            //        //异常
+            //    }
+            //}
+            while (true)
             {
-                string uriaddress = _address;
-                IPAddress ipAddress = IPAddress.Parse(uriaddress);
-                IPEndPoint iep = new IPEndPoint(ipAddress, port);
-                Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                clientSocket.Connect(iep);
-
-                bool connect = true;
-
-                String requestmsg = "GET /" + _mountPoint
-                                        + " HTTP/1.0\r\n";
-                requestmsg += "User-Agent: NTRIP GNSSInternetRadio/1.2.0\r\n";
-
-                requestmsg += "Authorization: " + _basicAccountAndKey;
-                requestmsg += "\r\n";
-                requestmsg += "Accept: */*\r\n";
-                requestmsg += "Connection: close\r\n";
-                requestmsg += "\r\n";
-
-                byte[] sendbytes = System.Text.Encoding.UTF8.GetBytes(requestmsg);
-                int successSendBtyes = clientSocket.Send(sendbytes, sendbytes.Length, SocketFlags.None);
-
-                byte[] bArr = new byte[1024];
-
-
-
-                clientSocket.Receive(bArr);
-                //string str = System.Text.Encoding.Default.GetString(bArr);
-
-                //11.22修改
-                // 中海达RTK与苍穹返回值不同
-                //中海达：
-                //indexR = str.LastIndexOf("$GPGGA");
-                //
-                //苍穹
-                //1218 放前面 直到接到坐标后进行下一步
-                //while (str.IndexOf("GGA") >= 0)
-                //{
-                //    indexR = str.IndexOf("GGA");
-                //    break;
-                //}
-                //indexN = str.Length;
-                //1218
-                //string gnrmc = null;
-                //1218
-                //while (indexN > (indexR + 50))
-                //{
-                //    //string model = str.Substring((indexR + 50), 1);
-                //    gnrmc = str.Substring((indexR + 14), 32);
-                //    break;
-                //}
-                //1218
-                //11.22修改结束
-                string time = string.Format("{0:D2}{1:D2}{2:00.00}", DateTime.UtcNow.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-
-                //string GGA_Message = "$GPGGA," + time + ","+ gnrmc + ",1,05,1.0,0.0,M,,M,,*"; //获取当地坐标：
-                // "$GPGGA,094233.0000,2300.0000,N,10830.5084,E,1,06,1.2,44.6,M,-5.7,M,,0000*\r\n";
-                string GGA_Message = "$GPGGA," + time + ",2249.12951221,N,10822.00052222,E,1,05,1.0,0.0,M,,M,,*"; //南宁八位小数 好用 
-                //string GGA_Message = "$GPGGA," + time + ",3031.6979,N,11421.3852,E,1,05,1.0,0.0,M,,M,,*";//武汉坐标 不好用
-                //string GGA_Message = "$GPGGA," + time + ",2249.1295,N,10822.0005,E,1,05,1.0,0.0,M,,M,,*"; //南宁坐标好用
-                //总结： 南宁cors在武汉用不了。。
-
-                //计算检校和
-                char[] CharMsg = GGA_Message.ToCharArray();
-                int result, index;
-                for (result = CharMsg[1], index = 2; CharMsg[index] != '*'; index++)
+                try
                 {
-                    result ^= CharMsg[index];
-                }
-                GGA_Message = GGA_Message + result.ToString("X") + "\r\n" + "\r\n";
+                    string uriaddress = _address;
+                    IPAddress ipAddress = IPAddress.Parse(uriaddress);
+                    IPEndPoint iep = new IPEndPoint(ipAddress, port);
+                    Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    clientSocket.Connect(iep);
+
+                    bool connect = true;
+
+                    String requestmsg = "GET /" + _mountPoint
+                                            + " HTTP/1.0\r\n";
+                    requestmsg += "User-Agent: NTRIP GNSSInternetRadio/1.2.0\r\n";
+
+                    requestmsg += "Authorization: " + _basicAccountAndKey;
+                    requestmsg += "\r\n";
+                    requestmsg += "Accept: */*\r\n";
+                    requestmsg += "Connection: close\r\n";
+                    requestmsg += "\r\n";
+
+                    byte[] sendbytes = System.Text.Encoding.UTF8.GetBytes(requestmsg);
+                    int successSendBtyes = clientSocket.Send(sendbytes, sendbytes.Length, SocketFlags.None);
+
+                    byte[] bArr = new byte[1024];
 
 
-                byte[] GGA_Bytes = System.Text.Encoding.UTF8.GetBytes(GGA_Message);
-                clientSocket.Send(GGA_Bytes, GGA_Bytes.Length, SocketFlags.None);
 
+                    clientSocket.Receive(bArr);
+                    string str = System.Text.Encoding.Default.GetString(bArr);
 
-
-                int size = clientSocket.Receive(bArr);
-
-
-
-                while (size > 0 && connect == true)
-                {
-                    size = clientSocket.Receive(bArr);
-
-                    //Console.WriteLine(size);
-                    // 1218
-                    if (_sp.IsOpen)
+                    //11.22修改
+                    // 中海达RTK与苍穹返回值不同
+                    //中海达：
+                    //indexR = str.LastIndexOf("$GPGGA");
+                    //
+                    //苍穹
+                    //1218 放前面 直到接到坐标后进行下一步
+                    while (str.IndexOf("GGA") >= 0)
                     {
-                        _sp.Write(bArr, 0, size);
-                    }
-                    else
-                    {
+                        indexR = str.IndexOf("GGA");
                         break;
                     }
+                    indexN = str.Length;
+                    //1218
+                    string gnrmc = null;
+                    //1218
+                    while (indexN > (indexR + 50))
+                    {
+                        //string model = str.Substring((indexR + 50), 1);
+                        gnrmc = str.Substring((indexR + 14), 32);
+                        break;
+                    }
+                    //1218
+                    //11.22修改结束
+                    string time = string.Format("{0:D2}{1:D2}{2:00.00}", DateTime.UtcNow.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
+                    string GGA_Message = "$GPGGA," + time + ","+ gnrmc + ",1,05,1.0,0.0,M,,M,,*"; //获取当地坐标：
+                    // "$GPGGA,094233.0000,2300.0000,N,10830.5084,E,1,06,1.2,44.6,M,-5.7,M,,0000*\r\n";
+                    //string GGA_Message = "$GPGGA," + time + ",2249.12951221,N,10822.00052222,E,1,05,1.0,0.0,M,,M,,*"; //南宁八位小数 好用 
+                                                                                                                      //string GGA_Message = "$GPGGA," + time + ",3031.6979,N,11421.3852,E,1,05,1.0,0.0,M,,M,,*";//武汉坐标 不好用
+                                                                                                                      //string GGA_Message = "$GPGGA," + time + ",2249.1295,N,10822.0005,E,1,05,1.0,0.0,M,,M,,*"; //南宁坐标好用
+                                                                                                                      //总结： 南宁cors在武汉用不了。。
+
+                    //计算检校和
+                    char[] CharMsg = GGA_Message.ToCharArray();
+                    int result, index;
+                    for (result = CharMsg[1], index = 2; CharMsg[index] != '*'; index++)
+                    {
+                        result ^= CharMsg[index];
+                    }
+                    GGA_Message = GGA_Message + result.ToString("X") + "\r\n" + "\r\n";
+
+
+                    byte[] GGA_Bytes = System.Text.Encoding.UTF8.GetBytes(GGA_Message);
+                    clientSocket.Send(GGA_Bytes, GGA_Bytes.Length, SocketFlags.None);
+
+
+
+                    int size = clientSocket.Receive(bArr);
+
+
+
+                    while (size > 0 && connect == true)
+                    {
+                        size = clientSocket.Receive(bArr);
+
+                        //Console.WriteLine(size);
+                        //1218
+                        if (_sp.IsOpen)
+                        {
+                            _sp.Write(bArr, 0, size);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    var s = e.ToString();
+                }//接收数据流程
+                if (_bAccpet == false)
+                {
+                    break;
                 }
             }
-            catch (Exception e)
-            {
-                var s = e.ToString();
-            }
         }
-
         /// <summary>
         /// 获取经纬度JSON数据
         /// </summary>

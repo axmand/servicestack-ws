@@ -34,6 +34,19 @@ namespace inventory_server.Server
         }
         #endregion
 
+        public string Get(GetMac request)
+        {
+           string result=MAC.GetActivatedAdaptorMacAddress();
+            if (result == "0")
+            {
+                return new FailResponse(result).ToString();
+            }
+            else
+            {
+                return new OkResponse(result).ToString();
+            }
+        }
+
         public string Get(ProjecListGet request)
         {
 
@@ -89,6 +102,29 @@ namespace inventory_server.Server
 
 
                 if (Print.PrintForm())
+                {
+                    return new OkResponse("success").ToString();
+                }
+                else
+                {
+                    return new FailResponse("fail").ToString();
+                }
+
+            }
+            else
+            {
+                return new FailResponse("fail").ToString();
+            }
+        }
+        public string Get(ProjectFormsPrint2 request)
+        {
+            //return new OkResponse(FillAndPrintExcel.CreateAndPrintPdf(request.formnumber)).ToString();
+            //if (Print.FillForms() && Print.FillForms2() && Print.FillForms3())
+            if (FillForm())
+            {
+
+
+                if (Print.PrintForm2())
                 {
                     return new OkResponse("success").ToString();
                 }
@@ -276,9 +312,9 @@ namespace inventory_server.Server
             if (ansofaccount == "Account set ok")
             {
                 ansofGetRTCM = SerialPortConnect.GetRTCMdata(request.address, request.mountpoint);
-                if (GetRTCMdatastate)
+                if (ansofGetRTCM== "RTCM Transport Success")
                 {
-                    return new OkResponse(ansofGetRTCM).ToString();
+                    return new OkResponse(ansofaccount).ToString();
                 }
                 else
                 {

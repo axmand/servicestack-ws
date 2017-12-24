@@ -191,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="bluetooth\BlueToothList.cs" />
+    <Compile Include="bluetooth\MAC.cs" />
     <Compile Include="bluetooth\SerialPortConnect.cs" />
     <Compile Include="projectmanager\Print.cs" />
     <Compile Include="projectmanager\PrintForm.cs" />

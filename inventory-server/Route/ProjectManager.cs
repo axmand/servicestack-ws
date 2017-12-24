@@ -18,6 +18,11 @@ namespace inventory_server.Route
         public string id { get; set; }
     }
     #endregion
+    [Route("/device/getmac","GET")]
+    public class GetMac
+    {
+        public string mac { get; set; }
+    }
 
     [Route("/project/list", "GET")]
     public class ProjecListGet
@@ -51,6 +56,11 @@ namespace inventory_server.Route
 
     [Route("/project/printforms", "GET")]
     public class ProjectFormsPrint
+    {
+        public int formnumber { get; set; }
+    }
+    [Route("/project/printforms2","GET")]
+    public class ProjectFormsPrint2
     {
         public int formnumber { get; set; }
     }

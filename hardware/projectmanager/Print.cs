@@ -592,6 +592,47 @@ namespace hardware.projectmanager
 
 
         }
+
+        public static bool PrintForm2()
+        {
+            try
+            {
+                projname = _importProjectName;
+                String[] files = new String[2 + _Form2Number + _Form3Number];
+                string _blankPath = System.IO.Directory.GetCurrentDirectory() + "\\blank.pdf";
+                string _filename = System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + projname + "\\Forms\\";
+
+                if (_Form2Number == 1)
+                {
+                    files = new String[] { _filename + "Cover.pdf", _filename + "F1.pdf", _blankPath, _filename + "F3-1.pdf" };
+                }
+                else if (_Form2Number == 2 && _Form3Number == 2)
+                {
+                    files = new String[] { _filename + "Cover.pdf", _filename + "F1.pdf", _blankPath, _blankPath, _filename + "F3-1.pdf", _filename + "F3-2.pdf" };
+                }
+                else
+                {
+                    files = new String[] { _filename + "Cover.pdf", _filename + "F1.pdf", _blankPath, _filename + "F3-1.pdf", _filename + "F3-2.pdf" };
+                }
+
+                string outputFile = _filename + "Print.pdf";
+                PdfDocumentBase doc2 = PdfDocument.MergeFiles(files);
+                doc2.Save(outputFile, FileFormat.PDF);
+                PdfDocument doc = new PdfDocument();
+                doc.LoadFromFile(_filename + "Print.pdf");
+                doc.PrintDocument.DefaultPageSettings.PrinterSettings.Duplex = System.Drawing.Printing.Duplex.Vertical;
+                doc.PrintDocument.Print();
+                doc.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                var s = e.ToString();
+                return false;
+            }
+
+
+        }
     }
 }
 
