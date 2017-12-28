@@ -346,28 +346,28 @@ namespace hardware.bluetooth
                     //
                     //苍穹
                     //1218 放前面 直到接到坐标后进行下一步
-                    while (str.IndexOf("GGA") >= 0)
-                    {
-                        indexR = str.IndexOf("GGA");
-                        break;
-                    }
-                    indexN = str.Length;
-                    //1218
-                    string gnrmc = null;
-                    //1218
-                    while (indexN > (indexR + 50))
-                    {
-                        //string model = str.Substring((indexR + 50), 1);
-                        gnrmc = str.Substring((indexR + 14), 32);
-                        break;
-                    }
+                    //while (str.IndexOf("GGA") >= 0)
+                    //{
+                    //    indexR = str.IndexOf("GGA");
+                    //    break;
+                    //}
+                    //indexN = str.Length;
+                    ////1218
+                    //string gnrmc = null;
+                    ////1218
+                    //while (indexN > (indexR + 50))
+                    //{
+                    //    //string model = str.Substring((indexR + 50), 1);
+                    //    gnrmc = str.Substring((indexR + 14), 32);
+                    //    break;
+                   // }
                     //1218
                     //11.22修改结束
                     string time = string.Format("{0:D2}{1:D2}{2:00.00}", DateTime.UtcNow.Hour, DateTime.Now.Minute, DateTime.Now.Second);
 
-                    string GGA_Message = "$GPGGA," + time + ","+ gnrmc + ",1,05,1.0,0.0,M,,M,,*"; //获取当地坐标：
+                    //string GGA_Message = "$GPGGA," + time + ","+ gnrmc + ",1,05,1.0,0.0,M,,M,,*"; //获取当地坐标：
                     // "$GPGGA,094233.0000,2300.0000,N,10830.5084,E,1,06,1.2,44.6,M,-5.7,M,,0000*\r\n";
-                    //string GGA_Message = "$GPGGA," + time + ",2249.12951221,N,10822.00052222,E,1,05,1.0,0.0,M,,M,,*"; //南宁八位小数 好用 
+                    string GGA_Message = "$GPGGA," + time + ",2249.12951221,N,10822.00052222,E,1,05,1.0,0.0,M,,M,,*"; //南宁八位小数 好用 
                                                                                                                       //string GGA_Message = "$GPGGA," + time + ",3031.6979,N,11421.3852,E,1,05,1.0,0.0,M,,M,,*";//武汉坐标 不好用
                                                                                                                       //string GGA_Message = "$GPGGA," + time + ",2249.1295,N,10822.0005,E,1,05,1.0,0.0,M,,M,,*"; //南宁坐标好用
                                                                                                                       //总结： 南宁cors在武汉用不了。。
