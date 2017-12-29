@@ -93,6 +93,7 @@ namespace inventory_server.Route
     [Route("/project/deletephoto/{photoname}","GET")]
     public class ProjectDeletePhoto
     {
+    
         public string photoname { get; set; }
     }
     [Route("/project/changeid","POST")]

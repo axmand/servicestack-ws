@@ -24,8 +24,8 @@ namespace hardware.projectmanager
                 PhotoData Data = JsonConvert.DeserializeObject<PhotoData>(Base64Data);
                 byte[] ByteData = Convert.FromBase64String(Data.PhotoString);
                 int n = Data.PhotoId.IndexOf("-");
-                string photoId = Data.PhotoId.Substring(0, n);
-                string PngFileName=path + "\\" + _importProjectName + "\\Photos\\" + photoId;
+                string pointId = Data.PhotoId.Substring(0, n);
+                string PngFileName=path + "\\" + _importProjectName + "\\Photos\\" + pointId;
                 if (!Directory.Exists(PngFileName))
                 {
                     Directory.CreateDirectory(PngFileName);
@@ -45,7 +45,9 @@ namespace hardware.projectmanager
         {
             try
             {
-                File.Delete(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Photos\\" + photoName + ".png");
+                int n = photoName.IndexOf("-");
+                string pointId = photoName.Substring(0, n);
+                File.Delete(System.IO.Directory.GetCurrentDirectory() + "\\Project\\" + _importProjectName + "\\Photos\\" + pointId+"\\"+photoName + ".png");
                 return true;
             }
             catch (Exception)
@@ -194,7 +196,7 @@ namespace hardware.projectmanager
                 g.DrawImage(imgBack, 0, 0, imgBack.Width, imgBack.Height);      // g.DrawImage(imgBack, 0, 0, 相框宽, 相框高);  
                                                                                 //g.FillRectangle(System.Drawing.Brushes.Black, 16, 16, (int)112 + 2, ((int)73 + 2));//相片四周刷一层黑色边框  
                                                                                 //g.DrawImage(img, 照片与相框的左边距, 照片与相框的上边距, 照片宽, 照片高);  
-                g.DrawImage(img, 3000, 520, 100, 80);//(img,起点x，起点y，宽，高)
+                g.DrawImage(img, 1270, 270, 50, 40);//(img,起点x，起点y，宽，高)
                 GC.Collect();
                 //输出文件流
                 System.IO.MemoryStream ms = new System.IO.MemoryStream();
